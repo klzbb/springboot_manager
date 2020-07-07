@@ -1,4 +1,4 @@
-package com.konglingzhan.manager.mapper;
+package com.konglingzhan.manager.dao;
 
 import com.konglingzhan.manager.bean.Role;
 import org.apache.ibatis.annotations.Insert;

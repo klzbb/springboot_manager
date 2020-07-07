@@ -1,8 +1,7 @@
 package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.bean.User;
-import com.konglingzhan.manager.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.konglingzhan.manager.dao.UserMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

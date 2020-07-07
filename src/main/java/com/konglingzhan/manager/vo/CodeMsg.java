@@ -15,8 +15,9 @@ public class CodeMsg {
     public static CodeMsg NOT_FIND_DATA = new CodeMsg(500105,"查找不到对应数据");
     public static CodeMsg USER_EXIST = new CodeMsg(1000,"用户名已存在");
     public static CodeMsg ROLE_EXIST = new CodeMsg(1001,"角色已存在");
+    public static CodeMsg ACL_MODULE_EXIST = new CodeMsg(1002,"权限模块已存在");
 
-    private CodeMsg(int retCode, String message) {
+    public CodeMsg(int retCode, String message) {
         this.retCode = retCode;
         this.message = message;
     }

@@ -1,8 +1,7 @@
 package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.bean.Role;
-import com.konglingzhan.manager.mapper.RoleMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.konglingzhan.manager.dao.RoleMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
