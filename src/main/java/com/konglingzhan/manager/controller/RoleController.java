@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@Controller
 public class RoleController {
     @Resource
     private RoleService roleService;
@@ -30,10 +29,11 @@ public class RoleController {
             if(result == 1){
                 return Result.success("新建角色成功");
             } else {
-                return Result.error(CodeMsg.SERVER_EXCEPTION);
+                return Result.error();
             }
         } else {
-            return Result.error(CodeMsg.ROLE_EXIST);
+            int code = CodeMsg.CODE_ROLE_EXIST;
+            return new Result(code,CodeMsg.getMessage(code));
         }
     }
 

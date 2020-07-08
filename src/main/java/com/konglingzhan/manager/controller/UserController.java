@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@Controller
 public class UserController {
     @Resource
     private  UserService userService;
@@ -31,12 +30,11 @@ public class UserController {
             if (result == 1) {
                 return Result.success("注册用户成功");
             } else {
-                return Result.error(CodeMsg.SERVER_EXCEPTION);
+                return Result.error();
             }
         } else {
-            return Result.error(CodeMsg.USER_EXIST);
+            return Result.error("用户名重复");
         }
-
     }
 
     @PostMapping("/userAll")
