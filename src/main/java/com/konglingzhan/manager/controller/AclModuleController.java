@@ -6,6 +6,7 @@ import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class AclModuleController {
     private AclModuleService aclModuleService;
 
     @PostMapping("/aclmodule/add")
-    public Result insert(@Validated AclModule aclModule){
+    public Result insert(@Validated @ModelAttribute AclModule aclModule){
         String name = aclModule.getName();
         List<AclModule> list = aclModuleService.selectByName(name);
         if(list.size() == 0){

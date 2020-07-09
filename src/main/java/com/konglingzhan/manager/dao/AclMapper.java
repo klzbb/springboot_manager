@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.dao;
 
+import com.konglingzhan.manager.bean.Acl;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -9,12 +10,11 @@ import java.util.List;
 
 @Mapper
 public interface AclMapper {
-    @Insert("insert into sys_acl(name,parent_id,level,status,seq) values(#{name},#{parent_id},#{level},#{status},#{seq})")
-    int insert(AclMapper acl);
+
+    @Insert("insert into sys_acl(code,name,acl_module_id,url,type,status,seq,remark) values(#{code},#{name},#{acl_module_id},#{url},#{type},#{status},#{seq},#{remark})")
+    int insert(Acl acl);
 
     @Select("select * from sys_acl")
-    List<AclMapper> selectAll();
+    List<Acl> selectAll();
 
-    @Select("select * from sys_acl where name = #{name}")
-    List<AclMapper> selectByName(@Param("name") String name);
 }

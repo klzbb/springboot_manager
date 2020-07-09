@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -22,7 +24,7 @@ public class UserController {
     public Result register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
         List<User> person = userService.selectUserByUsername(username);
 
-        if(person.size() == 0){
+        if (person.size() == 0) {
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
