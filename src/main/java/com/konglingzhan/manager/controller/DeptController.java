@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DeptController {
-    @PostMapping("/dept/add")
-    public Result deptAdd(Dept dept){
-
-    }
+//    @PostMapping("/dept/add")
+//    public Result deptAdd(Dept dept){
+//
+//    }
 }

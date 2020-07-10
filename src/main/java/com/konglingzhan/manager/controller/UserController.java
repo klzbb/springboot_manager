@@ -1,9 +1,14 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.param.TestVo;
 import com.konglingzhan.manager.service.UserService;
+import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Slf4j
 public class UserController {
     @Resource
     private  UserService userService;
@@ -43,5 +49,22 @@ public class UserController {
     public Result userAll(){
         List<User> userList = userService.selectAllUser();
         return Result.success(userList);
+    }
+
+    @PostMapping("/test1")
+    public Result validate(TestVo vo) throws ParamException {
+        log.info("validate");
+        BeanValidator.check(vo);
+//        try{
+//            Map<String,String> map = BeanValidator.validateObject(vo);
+//            if(MapUtils.isNotEmpty(map)){
+//                for (Map.Entry<String,String> entry: map.entrySet()){
+//                    log.info("{}=>{}",entry.getKey(),entry.getValue());
+//                }
+//            }
+//        } catch (Exception e){
+//
+//        }
+        return Result.success();
     }
 }
