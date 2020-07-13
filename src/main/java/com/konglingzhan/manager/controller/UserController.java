@@ -55,16 +55,6 @@ public class UserController {
     public Result validate(TestVo vo) throws ParamException {
         log.info("validate");
         BeanValidator.check(vo);
-//        try{
-//            Map<String,String> map = BeanValidator.validateObject(vo);
-//            if(MapUtils.isNotEmpty(map)){
-//                for (Map.Entry<String,String> entry: map.entrySet()){
-//                    log.info("{}=>{}",entry.getKey(),entry.getValue());
-//                }
-//            }
-//        } catch (Exception e){
-//
-//        }
         return Result.success();
     }
 }

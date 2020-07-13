@@ -1,10 +1,15 @@
 package com.konglingzhan.manager.bean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 /*
 * 部门实体类
 */
+@Getter
+@Setter
 public class Dept {
 
     private int id;
