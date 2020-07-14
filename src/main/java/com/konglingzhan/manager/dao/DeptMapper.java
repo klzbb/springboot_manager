@@ -1,11 +1,9 @@
 package com.konglingzhan.manager.dao;
 
 import com.konglingzhan.manager.bean.Dept;
-import com.konglingzhan.manager.bean.Role;
-import com.konglingzhan.manager.param.DeptVo;
+import com.konglingzhan.manager.param.DeptParam;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -28,8 +26,11 @@ public interface DeptMapper {
                     "<if test='seq != null'> and seq=#{seq} </if>",
             "</script>"
     })
-    List<Dept> search(DeptVo vo);
+    List<Dept> search(DeptParam vo);
 
     @Select("select * from sys_dept where name = #{name}")
     List<Dept> selectByName(String name);
+
+    @Select("select * from sys_dept where id = #{deptId}")
+    List<Dept> selectByPrimaryKey(Integer deptId);
 }

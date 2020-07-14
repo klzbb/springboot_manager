@@ -17,15 +17,17 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)// 拦截所有异常
     public Result exceptionHandler(Exception e) {
-        log.info("Exception");
+
         if (e instanceof CommonException) {
+            log.info("CommonException");
             // 自定义异常
             return new Result(((CommonException)e).getCode(),((CommonException) e).getMsg(),null);
-        } else if(e instanceof BindException){
+        } else if(e instanceof ParamException){
+            log.info("ParamException");
             // 参数异常
-            String message = ((BindException)e).getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining());
-            return new Result(CodeMsg.CODE_FAIL,message,null);
+            return new Result(CodeMsg.CODE_FAIL,e.getMessage(),null);
         } else {
+            log.info("OtherException");
             // 其他异常
             return new Result(CodeMsg.CODE_FAIL,e.getMessage(),null);
         }

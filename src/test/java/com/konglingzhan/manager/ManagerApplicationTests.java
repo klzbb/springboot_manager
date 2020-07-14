@@ -45,6 +45,20 @@ class ManagerApplicationTests {
             System.out.print(value+" ");
         }
     }
+
+    @Test
+    public void test2(){
+        HashMultimap<Integer, Integer> map = HashMultimap.create();
+        map.put(1, 2);
+        map.put(1, 3);
+        map.put(1, 2);
+        map.put(2, 3);
+        map.put(4, 2);
+        map.put(4, 3);
+        map.put(4, 2);
+        map.put(4, 3);
+        System.out.println(map.toString());
+    }
 }
 class Dog{
 
