@@ -1,9 +1,11 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.Dept;
+import com.konglingzhan.manager.dto.DeptLevelDto;
 import com.konglingzhan.manager.exception.ParamException;
 import com.konglingzhan.manager.param.DeptParam;
 import com.konglingzhan.manager.service.DeptService;
+import com.konglingzhan.manager.service.SysTreeService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,9 @@ import java.util.List;
 public class DeptController {
     @Resource
     private DeptService deptService;
+
+    @Resource
+    private SysTreeService sysTreeService;
 
     @PostMapping("/dept/add")
     public Result deptAdd(DeptParam param){
@@ -41,5 +46,12 @@ public class DeptController {
         List<Dept> list = deptService.selectByName(name);
         return Result.success(list);
     }
+
+    @PostMapping("/dept/tree")
+    public Result getDeptTree(){
+        List<DeptLevelDto> list = sysTreeService.deptTree();
+        return Result.success(list);
+    }
+
 
 }

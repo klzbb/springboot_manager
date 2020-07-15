@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -48,16 +49,15 @@ class ManagerApplicationTests {
 
     @Test
     public void test2(){
-        HashMultimap<Integer, Integer> map = HashMultimap.create();
-        map.put(1, 2);
-        map.put(1, 3);
-        map.put(1, 2);
-        map.put(2, 3);
-        map.put(4, 2);
-        map.put(4, 3);
-        map.put(4, 2);
-        map.put(4, 3);
-        System.out.println(map.toString());
+        // 创建 HashMap 对象 Sites
+        HashMap<Integer, String> Sites = new HashMap<Integer, String>();
+        // 添加键值对
+        Sites.put(1, "Google");
+        Sites.put(2, "Runoob");
+        Sites.put(3, "Taobao");
+        Sites.put(4, "Zhihu");
+        Sites.put(4, "konglll");
+        System.out.println(Sites.get(4));
     }
 }
 class Dog{

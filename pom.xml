@@ -93,13 +93,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.collections</groupId>
-            <artifactId>google-collections</artifactId>
-            <version>19.0</version>
-            <scope>test</scope>
-        </dependency>
 
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-multimap</artifactId>
+            <version>11.0.1.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
