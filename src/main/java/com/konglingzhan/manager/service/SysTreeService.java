@@ -57,6 +57,7 @@ public class SysTreeService {
 
         // 递归生成树
         transformDeptTree(deptLevelList,LevelUtil.ROOT, levelDeptMap);
+        System.out.println("levelDeptMap=" + levelDeptMap);
         return rootList;
     }
 
@@ -66,6 +67,7 @@ public class SysTreeService {
             DeptLevelDto deptLevelDto = deptLevelList.get(i);
             // 处理当前层级的数据
             String nextLevel = LevelUtil.calculateLevel(level,deptLevelDto.getId());
+            System.out.println("nextLevel=" + nextLevel);
             // 处理下一层
             List<DeptLevelDto> tempDeptList = (List<DeptLevelDto>) levelDeptMap.get(nextLevel);
             if(!CollectionUtils.isEmpty(tempDeptList)){
