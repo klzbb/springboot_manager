@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,14 @@ public class UserController {
 
     @PostMapping("/test1")
     public Result validate(TestVo vo) throws ParamException {
-        log.info("validate");
+        ArrayList list = new ArrayList();
+        list.add("stu1");
+        list.add("stu2");
+        list.add("stu3");
+        list.add("stu4");
+        list.add("stu1");
+        System.out.println(list.size());
+        System.out.println(list.get(5));
         BeanValidator.check(vo);
         return Result.success();
     }

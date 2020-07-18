@@ -53,5 +53,15 @@ public class DeptController {
         return Result.success(list);
     }
 
+    @PostMapping("/dept/update")
+    public Result update(DeptParam param){
+        deptService.updateDept(param);
+        return Result.success("更新部门成功");
+    }
 
+    @PostMapping("/dept/delById")
+    public Result delById(int id){
+        deptService.delById(id);
+        return Result.success();
+    }
 }

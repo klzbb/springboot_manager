@@ -6,9 +6,15 @@ import com.konglingzhan.manager.exception.ParamException;
 import com.konglingzhan.manager.param.DeptParam;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.util.LevelUtil;
+import com.konglingzhan.manager.vo.Result;
+import org.apache.commons.collections.CollectionUtils;
+import org.assertj.core.util.Preconditions;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -18,25 +24,20 @@ public class DeptServiceImpl implements DeptService{
 
     @Override
     public boolean checkExist(Integer parentId, String deptName, Integer deptId) {
-        List<Dept> list = deptMapper.selectByName(deptName);
-        if(list.size() == 0){
-            return false;
-        } else {
-            return true;
-        }
+       return deptMapper.countByNameAndParentId(parentId,deptName,deptId) > 0;
     }
 
     @Override
-    public List<Dept> selectByPrimaryKey(Integer deptId) {
+    public Dept selectByPrimaryKey(Integer deptId) {
         return null;
     }
 
     private String getLevel(Integer deptId) {
-        List<Dept> list = deptMapper.selectByPrimaryKey(deptId);
-        if(list.size() == 0){
+        Dept dept = deptMapper.selectByPrimaryKey(deptId);
+        if(dept == null){
             return null;
         }
-        return list.get(0).getLevel();
+        return dept.getLevel();
     }
 
     @Override
@@ -69,5 +70,46 @@ public class DeptServiceImpl implements DeptService{
         return deptMapper.selectByName(name);
     }
 
+    @Override
+    public void updateDept(DeptParam param) {
+        BeanValidator.check(param);
+        Dept before = deptMapper.selectByPrimaryKey(param.getId());
+        Preconditions.checkNotNull(before,"待更新的部门不存在");
+        if(checkExist(param.getParentId(),param.getName(),param.getId())){
+            throw new ParamException("同一层级下存在相同名称的部门");
+        }
 
+        Dept after = Dept.builder().id(param.getId()).name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).remark(param.getRemark()).build();
+        after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId()));
+        after.setOperator("system-update"); // todo
+        after.setOperate_ip("127.0.0.1"); // todo
+        after.setOperateTime(new Date());
+        updateWithChild(before,after);
+//        return deptMapper.updateDeptById(after);
+    }
+
+    @Transactional
+    public void updateWithChild(Dept before, Dept after){
+        String newLevelPrefix = after.getLevel();
+        String oldLevelPrefix = before.getLevel();
+        if(!after.getLevel().equals(before.getLevel())){
+            List<Dept> deptList = deptMapper.getChildDeptListByLevel(before.getLevel());
+            if(CollectionUtils.isNotEmpty(deptList)){
+                for (Dept dept: deptList){
+                    String level = dept.getLevel();
+                    if(level.indexOf(oldLevelPrefix) == 0){
+                        level = newLevelPrefix + level.substring(oldLevelPrefix.length());
+                        dept.setLevel(level);
+                    }
+                }
+                deptMapper.batchUpdateLevel(deptList);
+            }
+        }
+        deptMapper.updateDeptById(after);
+    }
+
+    @Override
+    public void delById(int id) {
+        deptMapper.delByid(id);
+    }
 }

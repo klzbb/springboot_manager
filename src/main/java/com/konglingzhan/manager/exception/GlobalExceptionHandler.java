@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)// 拦截所有异常
-    public Result exceptionHandler(Exception e) {
+    public Result exceptionHandler(HttpServletRequest request , HttpServletResponse response, Exception e) {
 
         if (e instanceof CommonException) {
             log.info("CommonException");

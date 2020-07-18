@@ -2,9 +2,7 @@ package com.konglingzhan.manager.dao;
 
 import com.konglingzhan.manager.bean.Dept;
 import com.konglingzhan.manager.param.DeptParam;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -32,5 +30,50 @@ public interface DeptMapper {
     List<Dept> selectByName(String name);
 
     @Select("select * from sys_dept where id = #{deptId}")
-    List<Dept> selectByPrimaryKey(Integer deptId);
+    Dept selectByPrimaryKey(Integer deptId);
+
+    @Update({
+            "<script>",
+                "update sys_dept set",
+                    "name = #{name}, ",
+                    "parent_id = #{parent_id}, ",
+                    "level = #{level}, ",
+                    "seq = #{seq}, ",
+                    "remark = #{remark}, ",
+                    "operator = #{operator}, ",
+                    "operate_time = #{operateTime}, ",
+                    "operate_ip = #{operate_ip} ",
+                "where id = #{id}",
+            "</script>"
+    })
+    void updateDeptById(Dept dept);
+
+    @Select("select * from sys_dept where level like #{level} || '0.%' ")
+    List<Dept> getChildDeptListByLevel(String level);
+
+    @Update({
+            "<script>",
+                "<foreach collection='deptList' item='item' separator=';'>",
+                    "update sys_dept",
+                        "set level = #{item.level}",
+                    "where id = #{item.id}",
+                "</foreach>",
+            "</script>"
+    })
+    void batchUpdateLevel(@Param("deptList") List<Dept> deptList);
+
+
+    @Select({
+            "<script>",
+                "select count(1)",
+                    "from sys_dept",
+                "where parent_id = #{parentId}",
+                "and name = #{name}",
+                "<if test='id != null'> and id != #{id} </if>",
+            "</script>"
+    })
+    int countByNameAndParentId(int parentId, String name, Integer id);
+
+    @Select("delete from sys_dept where id = #{id}")
+    void delByid(int id);
 }

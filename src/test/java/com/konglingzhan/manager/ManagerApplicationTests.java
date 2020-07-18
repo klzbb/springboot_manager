@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @SpringBootTest
 class ManagerApplicationTests {
@@ -59,6 +57,8 @@ class ManagerApplicationTests {
         Sites.put(4, "konglll");
         System.out.println(Sites.get(4));
     }
+
+
 }
 class Dog{
 

@@ -16,5 +16,9 @@ public interface DeptService {
 
     boolean checkExist(Integer parentId,String deptName,Integer deptId);
 
-    List<Dept> selectByPrimaryKey(Integer deptId);
+    Dept selectByPrimaryKey(Integer deptId);
+
+    void updateDept(DeptParam param);
+
+    void delById(int id);
 }
