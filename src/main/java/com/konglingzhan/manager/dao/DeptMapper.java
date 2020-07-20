@@ -53,10 +53,8 @@ public interface DeptMapper {
 
     @Update({
             "<script>",
-                "<foreach collection='deptList' item='item' separator=';'>",
-                    "update sys_dept",
-                        "set level = #{item.level}",
-                    "where id = #{item.id}",
+                "<foreach collection='deptList' item='item' open='' close='' separator=';'>",
+                    "update sys_dept set level = #{item.level} where id = #{item.id}",
                 "</foreach>",
             "</script>"
     })
@@ -76,4 +74,6 @@ public interface DeptMapper {
 
     @Select("delete from sys_dept where id = #{id}")
     void delByid(int id);
+
+
 }

@@ -10,4 +10,6 @@ public interface UserService {
     List<User> selectAllUser();
 
     List<User> selectUserByUsername(String username);
+
+    void updateById(User user);
 }

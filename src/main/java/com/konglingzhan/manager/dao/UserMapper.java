@@ -1,10 +1,7 @@
 package com.konglingzhan.manager.dao;
 
 import com.konglingzhan.manager.bean.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -18,4 +15,14 @@ public interface UserMapper {
 
     @Select("select * from sys_user where username = #{username}")
     List<User> selectUserByUsername(@Param("username") String username);
+
+    @Update({
+            "<script>",
+                "update sys_user set",
+                    "username = #{username},",
+                    "password = #{password}",
+                "where id = #{id}",
+            "</script>"
+    })
+    void updateById(User user);
 }

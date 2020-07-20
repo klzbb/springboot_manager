@@ -65,4 +65,10 @@ public class UserController {
         BeanValidator.check(vo);
         return Result.success();
     }
+
+    @PostMapping("/user/updateById")
+    public Result updateById(User user){
+        userService.updateById(user);
+        return Result.success();
+    }
 }
