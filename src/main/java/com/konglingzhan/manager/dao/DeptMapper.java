@@ -74,6 +74,4 @@ public interface DeptMapper {
 
     @Select("delete from sys_dept where id = #{id}")
     void delByid(int id);
-
-
 }
