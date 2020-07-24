@@ -3,6 +3,7 @@ package com.konglingzhan.manager.controller;
 import com.konglingzhan.manager.bean.User;
 import com.konglingzhan.manager.exception.ParamException;
 import com.konglingzhan.manager.param.TestVo;
+import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.CodeMsg;
@@ -28,22 +29,9 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/register")
-    public Result register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
-        List<User> person = userService.selectUserByUsername(username);
-
-        if (person.size() == 0) {
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            int result = userService.insertUser(user);
-            if (result == 1) {
-                return Result.success("注册用户成功");
-            } else {
-                return Result.error();
-            }
-        } else {
-            return Result.error("用户名重复");
-        }
+    public Result register(UserParam param) {
+        userService.insertUser(param);
+        return Result.success("注册用户成功");
     }
 
     @PostMapping("/userAll")
@@ -67,8 +55,8 @@ public class UserController {
     }
 
     @PostMapping("/user/updateById")
-    public Result updateById(User user){
-        userService.updateById(user);
+    public Result updateById(UserParam param){
+        userService.updateById(param);
         return Result.success();
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Insert("insert into sys_user(username,password) values(#{username},#{password})")
+    @Insert("insert into sys_user (username,telephone,mail,dept_id,status,remark,operator,operate_ip,operate_time) values(#{username},#{telephone},#{mail},#{deptId},#{status},#{remark},#{operator},#{operateIp},#{operateTime})")
     int insert(User user);
 
     @Select("select * from sys_user")
@@ -20,9 +20,20 @@ public interface UserMapper {
             "<script>",
                 "update sys_user set",
                     "username = #{username},",
-                    "password = #{password}",
+                    "telephone = #{telephone},",
+                    "mail = #{mail},",
+                    "password = #{password},",
+                    "dept_id = #{deptId},",
+                    "status = #{status},",
+                    "remark = #{remark},",
+                    "operator = #{operator},",
+                    "operate_ip = #{operateIp},",
+                    "operate_time = #{operateTime}",
                 "where id = #{id}",
             "</script>"
     })
     void updateById(User user);
+
+    @Select("select * from sys_user where id = #{id}")
+    User selectByPrimaryKey(int id);
 }
