@@ -10,13 +10,17 @@ import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +33,7 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/register")
-    public Result register(UserParam param) {
+    public Result register(@RequestBody UserParam param) {
         userService.insertUser(param);
         return Result.success("注册用户成功");
     }
@@ -61,7 +65,36 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public Result login (@RequestParam(value = "username") String username,@RequestParam(value = "password") String password){
+    public Result login (HttpServletRequest request, HttpServletResponse response){
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        User user = userService.findByKeyWord(username);
+        String ret = request.getParameter("ret");
+        String errorMsg = "";
+        if(StringUtils.isBlank(username)){
+            errorMsg = "用户名不能为空";
+        } else if (StringUtils.isBlank(password)){
+            errorMsg = "密码不能为空";
+
+        } else if(user == null){
+            errorMsg = "查询不到指定用户";
+
+        } else if (!user.getPassword().equals(password)){
+            errorMsg = "用户名或密码错误";
+
+        } else if(user.getStatus() != 1){
+            errorMsg = "用户已被冻结，请联系管理员";
+
+        } else {
+            System.out.println("login success");
+//            request.getSession().setAttribute("user",user);
+//            if(StringUtils.isNotBlank(ret)){
+//                response.sendRedirect(ret);
+//            } else {
+//                response.sendRedirect();
+//            }
+
+        }
         return Result.success();
     }
 }

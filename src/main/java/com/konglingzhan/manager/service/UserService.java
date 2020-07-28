@@ -15,4 +15,5 @@ public interface UserService {
 
     void updateById(UserParam param);
 
+    User findByKeyWord (String keyWord);
 }

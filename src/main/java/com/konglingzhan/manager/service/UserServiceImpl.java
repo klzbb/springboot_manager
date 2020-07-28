@@ -7,6 +7,7 @@ import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.util.BeanValidator;
 import org.assertj.core.util.Preconditions;
 import org.springframework.stereotype.Service;
+import sun.security.provider.MD5;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String password = "123456";
+
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator("system");
         user.setOperateIp("127.0.0.1");
@@ -76,6 +78,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> selectUserByUsername(String username) {
         return userMapper.selectUserByUsername(username);
+    }
+
+    @Override
+    public User findByKeyWord (String keyWord){
+        return userMapper.findByKeyWord(keyWord);
     }
 
 }

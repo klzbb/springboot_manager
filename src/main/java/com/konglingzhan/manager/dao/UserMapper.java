@@ -36,4 +36,7 @@ public interface UserMapper {
 
     @Select("select * from sys_user where id = #{id}")
     User selectByPrimaryKey(int id);
+
+    @Select("select * from sys_user where telephone = #{keyWord} or mail = #{keyWord}")
+    User findByKeyWord(@Param("keyWord") String keyWord);
 }
