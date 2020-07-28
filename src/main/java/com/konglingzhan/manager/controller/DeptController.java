@@ -9,6 +9,8 @@ import com.konglingzhan.manager.service.SysTreeService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -23,7 +25,7 @@ public class DeptController {
     private SysTreeService sysTreeService;
 
     @PostMapping("/dept/add")
-    public Result deptAdd(DeptParam param){
+    public Result deptAdd(@RequestBody DeptParam param){
         deptService.insert(param);
         return Result.success();
     }
@@ -54,13 +56,13 @@ public class DeptController {
     }
 
     @PostMapping("/dept/update")
-    public Result update(DeptParam param){
+    public Result update(@RequestBody DeptParam param){
         deptService.updateDept(param);
         return Result.success("更新部门成功");
     }
 
     @PostMapping("/dept/delById")
-    public Result delById(int id){
+    public Result delById(@RequestParam(value = "id") int id){
         deptService.delById(id);
         return Result.success();
     }

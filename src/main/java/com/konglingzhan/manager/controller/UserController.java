@@ -59,4 +59,9 @@ public class UserController {
         userService.updateById(param);
         return Result.success();
     }
+
+    @PostMapping("/user/login")
+    public Result login (@RequestParam(value = "username") String username,@RequestParam(value = "password") String password){
+        return Result.success();
+    }
 }
