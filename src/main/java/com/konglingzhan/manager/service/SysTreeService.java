@@ -45,6 +45,7 @@ public class SysTreeService {
             if(LevelUtil.ROOT.equals(dto.getLevel())){
                 rootList.add(dto);
             }
+            System.out.println(rootList);
         }
 
         // 按照seq从小到大排序
