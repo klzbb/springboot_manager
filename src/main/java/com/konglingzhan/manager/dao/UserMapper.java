@@ -39,4 +39,26 @@ public interface UserMapper {
 
     @Select("select * from sys_user where telephone = #{keyWord} or mail = #{keyWord}")
     User findByKeyWord(@Param("keyWord") String keyWord);
+
+    @Select({
+            "<script>",
+                "select count(1) ",
+                    "from ",
+                "sys_user",
+                    "where mail = #{mail}",
+                    "<if test='id != null'> and id != #{id} </if>",
+            "</script>"
+    })
+    int countByMail(@Param("mail") String mail, @Param("id") Integer id);
+
+    @Select({
+            "<script>",
+                "select count(1) ",
+                    "from ",
+                "sys_user",
+                    "where telephone = #{telephone}",
+                    "<if test='id != null'> and id != #{id} </if>",
+            "</script>"
+    })
+    int countByTelephone(@Param("telephone") String telephone, @Param("id") Integer id);
 }

@@ -63,12 +63,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public boolean checkEmailExist(String email, Integer userId){
-        return false;
+    public boolean checkEmailExist(String mail, Integer userId){
+        return userMapper.countByMail(mail,userId) > 0;
     }
 
-    public boolean checkTelephoneExist(String tel,Integer userId){
-        return false;
+    public boolean checkTelephoneExist(String telephone,Integer userId){
+        return userMapper.countByTelephone(telephone,userId) > 0;
     }
     @Override
     public List<User> selectAllUser() {
