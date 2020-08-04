@@ -1,23 +1,42 @@
 package com.konglingzhan.manager.service;
 
+import com.konglingzhan.manager.bean.Role;
 import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.dao.UserMapper;
 import com.konglingzhan.manager.exception.ParamException;
 import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.util.BeanValidator;
 import org.assertj.core.util.Preconditions;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import sun.security.provider.MD5;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-
+//
 @Service
 public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private RoleMapper roleMapper;
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userMapper.selectUserByUsername(s);
+        if (user == null) {
+            //避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
+            return (UserDetails) new User();
+        }
+        //查询用户的角色信息，并返回存入user中
+        List<Role> roles = roleMapper.getRolesByUid(user.getId());
+//        user.setRole(roles);
+        return (UserDetails) user;
+    }
 
     @Override
     public int insertUser(UserParam param) {
@@ -76,7 +95,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectUserByUsername(String username) {
+    public User selectUserByUsername(String username) {
         return userMapper.selectUserByUsername(username);
     }
 

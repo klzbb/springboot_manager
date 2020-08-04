@@ -18,4 +18,7 @@ public interface RoleMapper {
 
     @Select("select * from sys_role where name = #{name}")
     List<Role> selectRoleByname(@Param("name") String name);
+
+    @Select("SELECT r.* FROM roles r,roles_user ru WHERE r.`id`=ru.`rid` AND ru.`uid`=#{uid}")
+    List<Role> getRolesByUid(@Param("uid") Integer uid);
 }

@@ -14,7 +14,7 @@ public interface UserMapper {
     List<User> selectAllUser();
 
     @Select("select * from sys_user where username = #{username}")
-    List<User> selectUserByUsername(@Param("username") String username);
+    User selectUserByUsername(@Param("username") String username);
 
     @Update({
             "<script>",
