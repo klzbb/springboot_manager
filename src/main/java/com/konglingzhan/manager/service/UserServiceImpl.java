@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         }
         //查询用户的角色信息，并返回存入user中
         List<Role> roles = roleMapper.getRolesByUid(user.getId());
-//        user.setRole(roles);
+//        user.setRole(roles);ssssss
         return (UserDetails) user;
     }
 
