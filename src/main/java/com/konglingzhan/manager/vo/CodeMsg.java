@@ -9,6 +9,8 @@ public class CodeMsg {
     public static final int CODE_SUCCESS=0;
     //失败
     public static final int CODE_FAIL=-1;
+    // 未登录
+    public static final int CODE_NO_LOGIN=-1;
     // 角色已存在
     public static final int CODE_ROLE_EXIST = 1001;
     //非法的请求参数

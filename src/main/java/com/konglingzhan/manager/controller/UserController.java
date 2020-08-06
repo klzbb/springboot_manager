@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,32 +65,41 @@ public class UserController {
         return Result.success();
     }
 
-//    @PostMapping("/user/login")
-//    public Result login (HttpServletRequest request, HttpServletResponse response){
-//        String username = request.getParameter("username");
-//        String password = request.getParameter("password");
-//        User user = userService.findByKeyWord(username);
-//        String ret = request.getParameter("ret");
-//        String errorMsg = "";
-//        if(StringUtils.isBlank(username)){
-//            errorMsg = "用户名不能为空";
-//        } else if (StringUtils.isBlank(password)){
-//            errorMsg = "密码不能为空";
-//
-//        } else if(user == null){
-//            errorMsg = "查询不到指定用户";
-//
-//        } else if (!user.getPassword().equals(password)){
-//            errorMsg = "用户名或密码错误";
-//
-//        } else if(user.getStatus() != 1){
-//            errorMsg = "用户已被冻结，请联系管理员";
-//
-//        } else {
-//            System.out.println("login success");
-//
-//
-//        }
-//        return Result.success();
-//    }
+    @PostMapping("/user/login")
+    public Result login (HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession();
+        session.setAttribute("userInfo","konglingzhan");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        User user = userService.findByKeyWord(username);
+        String ret = request.getParameter("ret");
+        String errorMsg = "";
+        if(StringUtils.isBlank(username)){
+            errorMsg = "用户名不能为空";
+        } else if (StringUtils.isBlank(password)){
+            errorMsg = "密码不能为空";
+
+        } else if(user == null){
+            errorMsg = "查询不到指定用户";
+
+        } else if (!user.getPassword().equals(password)){
+            errorMsg = "用户名或密码错误";
+
+        } else if(user.getStatus() != 1){
+            errorMsg = "用户已被冻结，请联系管理员";
+
+        } else {
+            System.out.println("login success");
+
+
+        }
+        return Result.success();
+    }
+
+    @PostMapping("/user/session")
+    public Result session(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        Object name =  session.getAttribute("userInfo");
+        return Result.success(name);
+    }
 }

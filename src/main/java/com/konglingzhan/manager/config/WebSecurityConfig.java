@@ -14,9 +14,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -31,48 +38,62 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     UserService userService;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println("111111");
 
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(userService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+
+                .exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint())
+                .and()
                 .authorizeRequests()
                     .antMatchers("/user/login").permitAll()
                     .anyRequest().authenticated()
                     .and()
+                .formLogin()
+                    .loginProcessingUrl("/login")
+                    .successHandler(new AuthenticationSuccessHandler() {
+                        @Override
+                        public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                            System.out.println("登录成功");
+                        }
+                    })
+                    .failureHandler(new AuthenticationFailureHandler() {
+                        @Override
+                        public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+                            System.out.println("登录失败");
+                            System.out.println(e.getMessage());
+                        }
+                    })
+                    .permitAll()
+                    .and()
                 .logout()
-                .permitAll();
+                .logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .addLogoutHandler(new LogoutHandler() {
+                    @Override
+                    public void logout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
+
+                    }
+                })
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+
+                    }
+                })
+                    .and()
+                .csrf().disable();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
-    }
-
-    @Bean
-    public UserService userDetailsService() {
-        //获取用户账号密码及权限信息
-        return new UserServiceImpl();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        //配置认证方式
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        //对默认的UserDetailsService进行覆盖
-        authenticationProvider.setUserDetailsService(userService);
-        return authenticationProvider;
-    }
 }

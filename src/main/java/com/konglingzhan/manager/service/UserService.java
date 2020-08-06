@@ -20,6 +20,6 @@ public interface UserService extends UserDetailsService {
 
     User findByKeyWord (String keyWord);
 
-    @Override
-    UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
+//    @Override
+//    UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
 }
