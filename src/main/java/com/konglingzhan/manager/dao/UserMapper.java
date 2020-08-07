@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Insert("insert into sys_user (username,telephone,mail,dept_id,status,remark,operator,operate_ip,operate_time) values(#{username},#{telephone},#{mail},#{deptId},#{status},#{remark},#{operator},#{operateIp},#{operateTime})")
+    @Insert("insert into sys_user (username,telephone,password,mail,dept_id,status,remark,operator,operate_ip,operate_time) values(#{username},#{telephone},#{password},#{mail},#{deptId},#{status},#{remark},#{operator},#{operateIp},#{operateTime})")
     int insert(User user);
 
     @Select("select * from sys_user")

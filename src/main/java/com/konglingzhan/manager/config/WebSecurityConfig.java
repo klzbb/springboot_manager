@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint())
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/user/login").permitAll()
+                    .antMatchers("/register").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .failureHandler(new AuthenticationFailureHandler() {
                         @Override
                         public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-                            System.out.println("登录失败");
+                            System.out.println("登录失败111");
                             System.out.println(e.getMessage());
                         }
                     })

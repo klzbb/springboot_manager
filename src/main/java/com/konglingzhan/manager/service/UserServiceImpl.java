@@ -10,6 +10,7 @@ import com.konglingzhan.manager.util.BeanValidator;
 import org.assertj.core.util.Preconditions;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,17 +26,20 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RoleMapper roleMapper;
 
+    @Resource
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userMapper.selectUserByUsername(s);
         if (user == null) {
             //避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
-            return (UserDetails) new User();
+            return new User();
         }
         //查询用户的角色信息，并返回存入user中
-        List<Role> roles = roleMapper.getRolesByUid(user.getId());
-//        user.setRole(roles);ssssss
-        return (UserDetails) user;
+//        List<Role> roles = roleMapper.getRolesByUid(user.getId());
+//        user.setRole(roles);
+        return  user;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class UserServiceImpl implements UserService {
             throw new ParamException("邮箱已经被占用");
         }
 
-        String password = "123456";
+        String password = passwordEncoder.encode(param.getPassword());
 
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator("system");

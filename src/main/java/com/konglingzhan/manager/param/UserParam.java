@@ -19,6 +19,9 @@ public class UserParam {
     @Length(min = 1,max=20,message = "用户名长度需在20个字以内")
     private String username;
 
+    @NotBlank(message = "密码不能为空")
+    private String password;
+
     @NotBlank(message = "电话不能为空")
     @Length(min = 1 ,max = 13, message = "电话长度需在13个字以内")
     private String telephone;
