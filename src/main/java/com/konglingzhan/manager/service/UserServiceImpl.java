@@ -33,12 +33,8 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userMapper.selectUserByUsername(s);
         if (user == null) {
-            //避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
-            return new User();
+            throw new UsernameNotFoundException("不存在该用户");
         }
-        //查询用户的角色信息，并返回存入user中
-//        List<Role> roles = roleMapper.getRolesByUid(user.getId());
-//        user.setRole(roles);
         return  user;
     }
 
