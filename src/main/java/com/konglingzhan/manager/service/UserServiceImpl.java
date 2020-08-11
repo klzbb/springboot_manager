@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("不存在该用户");
         }
+
         return  user;
     }
 

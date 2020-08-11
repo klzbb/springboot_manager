@@ -12,11 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -98,8 +96,21 @@ public class UserController {
 
     @PostMapping("/user/session")
     public Result session(HttpServletRequest request){
+        System.out.println(request.getClass());
+
         HttpSession session = request.getSession();
         Object name =  session.getAttribute("userInfo");
         return Result.success(name);
+    }
+
+    @GetMapping("/user/admin")
+    @PreAuthorize("hasRole('admin')")
+    public Result userAdmin(){
+        return Result.success("admin access");
+    }
+    @GetMapping("/user/user")
+    @PreAuthorize("hasRole('admin,normal')")
+    public Result userUser(){
+        return Result.success("access admin user");
     }
 }

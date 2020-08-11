@@ -47,8 +47,9 @@ public class LoginValidateAuthenticationProvider implements AuthenticationProvid
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
             throw new BadCredentialsException("输入密码错误!");
         }
-         List list = user.getAuthorities();
-        return new UsernamePasswordAuthenticationToken(user, rawPassword,list);
+
+
+        return new UsernamePasswordAuthenticationToken(user, rawPassword,user.getAuthorities());
     }
 
     @Override

@@ -62,6 +62,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 //        auth.userDetailsService(userService);
         auth.authenticationProvider(loginValidateAuthenticationProvider);
+//        auth.inMemoryAuthentication()
+//                .passwordEncoder(new BCryptPasswordEncoder())
+//                .withUser("admin")
+//                .password(passwordEncoder().encode("123456"))
+//                .roles("admin");
+//
+//        auth.inMemoryAuthentication()
+//                .passwordEncoder(new BCryptPasswordEncoder())
+//                .withUser("user")
+//                .password(passwordEncoder().encode("123456"))
+//                .roles("normal");
     }
 
 
@@ -73,11 +84,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(new UnauthorizedEntryPoint())
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/register").permitAll()
+                    .antMatchers("/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
-//                    .loginProcessingUrl("/login")
+                    .loginProcessingUrl("/login")
                     .successHandler(new AuthenticationSuccessHandler() {
                         @Override
                         public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
@@ -98,6 +109,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         }
                     })
                     .permitAll()
+                .and()
+                    .rememberMe().rememberMeParameter("remember")
                 .and()
                     .logout()
                     .logoutUrl("/logout")

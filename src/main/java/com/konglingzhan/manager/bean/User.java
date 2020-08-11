@@ -31,6 +31,8 @@ public class User implements UserDetails {
     private Date operateTime;
     private List<Role> roles;
 
+    private Boolean isEnabled = true;
+
     @Override
     @JsonIgnore
     public boolean isAccountNonExpired() {
