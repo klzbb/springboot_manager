@@ -22,4 +22,6 @@ public interface UserService extends UserDetailsService {
 
     @Override
     UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
+
+    List<User> selectByDeptId(String deptId);
 }

@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface RoleUserMapper {
-    @Insert("insert into sys_role_user (role_id,user_id,operator,operate_time,operate_ip) values (#{roleId},#{userId},#{roleId},#{operator},#{operateTime},#{operateIp})")
+    @Insert("insert into sys_role_user (role_id,user_id,operator,operate_time,operate_ip) values (#{roleId},#{userId},#{operator},#{operateTime},#{operateIp})")
     int insert(RoleUser roleUser);
 }

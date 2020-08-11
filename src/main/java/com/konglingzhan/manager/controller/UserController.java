@@ -113,4 +113,10 @@ public class UserController {
     public Result userUser(){
         return Result.success("access admin user");
     }
+
+    @PostMapping("/user/byDeptId")
+    public Result userByDeptId(@RequestParam(value = "deptId") String deptId){
+        List<User> userList = userService.selectByDeptId(deptId);
+        return Result.success(userList);
+    }
 }

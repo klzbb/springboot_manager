@@ -23,12 +23,12 @@ public class User implements UserDetails {
     private String telephone;
     private String mail;
     private String password;
-    private Integer deptId;
+    private Integer dept_id;
     private Integer status;
     private String remark;
     private String operator;
-    private String operateIp;
-    private Date operateTime;
+    private String operate_ip;
+    private Date operate_time;
     private List<Role> roles;
 
     private Boolean isEnabled = true;

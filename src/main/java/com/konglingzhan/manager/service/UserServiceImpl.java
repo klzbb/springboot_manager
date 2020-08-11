@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
 
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator("system");
-        user.setOperateIp("127.0.0.1");
-        user.setOperateTime(new Date());
+        user.setOperate_ip("127.0.0.1");
+        user.setOperate_time(new Date());
 
         return userMapper.insert(user);
     }
@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
 
         User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         after.setOperator("system");
-        after.setOperateIp("127.0.0.1");
-        after.setOperateTime(new Date());
+        after.setOperate_ip("127.0.0.1");
+        after.setOperate_time(new Date());
         userMapper.updateById(after);
     }
 
@@ -105,4 +105,8 @@ public class UserServiceImpl implements UserService {
         return userMapper.findByKeyWord(keyWord);
     }
 
+    @Override
+    public List<User> selectByDeptId(String deptId) {
+        return userMapper.selectByDeptId(deptId);
+    }
 }

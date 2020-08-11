@@ -61,4 +61,8 @@ public interface UserMapper {
             "</script>"
     })
     int countByTelephone(@Param("telephone") String telephone, @Param("id") Integer id);
+
+
+    @Select("select * from sys_user where dept_id = #{deptId}")
+    List<User> selectByDeptId(@Param("deptId") String deptId);
 }
