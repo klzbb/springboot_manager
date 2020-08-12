@@ -1,24 +1,24 @@
 package com.konglingzhan.manager.service;
 
-import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.bean.PageResult;
 import com.konglingzhan.manager.bean.User;
 import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.dao.UserMapper;
 import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.util.BeanValidator;
 import org.assertj.core.util.Preconditions;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-//
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
 
     @Resource
     private UserMapper userMapper;
@@ -26,18 +26,18 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RoleMapper roleMapper;
 
-    @Resource
-    private PasswordEncoder passwordEncoder;
+//    @Resource
+//    private PasswordEncoder passwordEncoder;
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userMapper.selectUserByUsername(s);
-        if (user == null) {
-            throw new UsernameNotFoundException("不存在该用户");
-        }
-
-        return  user;
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+//        User user = userMapper.selectUserByUsername(s);
+//        if (user == null) {
+//            throw new UsernameNotFoundException("不存在该用户");
+//        }
+////        user.setRoles();
+//        return  user;
+//    }
 
     @Override
     public int insertUser(UserParam param) {
@@ -50,9 +50,10 @@ public class UserServiceImpl implements UserService {
             throw new ParamException("邮箱已经被占用");
         }
 
-        String password = passwordEncoder.encode(param.getPassword());
+        String password = param.getPassword();
+//        String password = passwordEncoder.encode(param.getPassword());
 
-        User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
+        User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).dept_id(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator("system");
         user.setOperate_ip("127.0.0.1");
         user.setOperate_time(new Date());
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
         User before = userMapper.selectByPrimaryKey(param.getId());
         Preconditions.checkNotNull(before,"待更新的用户不存在");
 
-        User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
+        User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).dept_id(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         after.setOperator("system");
         after.setOperate_ip("127.0.0.1");
         after.setOperate_time(new Date());
@@ -108,5 +109,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> selectByDeptId(String deptId) {
         return userMapper.selectByDeptId(deptId);
+    }
+
+    @Override
+    public PageResult<User> userList(int deptId, PageQuery pageQuery) {
+        BeanValidator.check(pageQuery);
+        int num = userMapper.countByDeptId(deptId);
+
+        if(num > 0){
+            List list = userMapper.userList(deptId,pageQuery);
+            return PageResult.<User>builder().total(num).data(list).build();
+        }
+
+        return PageResult.<User>builder().build();
+
+    }
+
+    @Override
+    public void delUserById(int id) {
+        userMapper.delUserById(id);
     }
 }

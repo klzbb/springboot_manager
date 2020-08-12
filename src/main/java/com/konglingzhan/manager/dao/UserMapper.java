@@ -1,13 +1,14 @@
 package com.konglingzhan.manager.dao;
 
 import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.param.PageQuery;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    @Insert("insert into sys_user (username,telephone,password,mail,dept_id,status,remark,operator,operate_ip,operate_time) values(#{username},#{telephone},#{password},#{mail},#{deptId},#{status},#{remark},#{operator},#{operateIp},#{operateTime})")
+    @Insert("insert into sys_user (username,telephone,password,mail,dept_id,status,remark,operator,operate_ip,operate_time) values(#{username},#{telephone},#{password},#{mail},#{dept_id},#{status},#{remark},#{operator},#{operate_ip},#{operate_time})")
     int insert(User user);
 
     @Select("select * from sys_user")
@@ -65,4 +66,13 @@ public interface UserMapper {
 
     @Select("select * from sys_user where dept_id = #{deptId}")
     List<User> selectByDeptId(@Param("deptId") String deptId);
+
+    @Select("select count(1) from sys_user where dept_id = #{deptId}")
+    int countByDeptId(@Param("deptId") int deptId);
+
+    @Select("select * from sys_user where dept_id = #{deptId} order by username ASC limit  #{page.offset}, #{page.pageSize}")
+    List<User> userList(@Param("deptId") int deptId, @Param("page") PageQuery page);
+
+    @Delete("delete from sys_user where id = #{id}")
+    void delUserById(@Param("id") int id);
 }

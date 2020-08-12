@@ -1,19 +1,17 @@
 package com.konglingzhan.manager.controller;
 
+import com.konglingzhan.manager.bean.PageResult;
 import com.konglingzhan.manager.bean.User;
 import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.TestVo;
 import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.util.BeanValidator;
-import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,9 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -32,7 +28,7 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/register")
-    public Result register(UserParam param) {
+    public Result register(@RequestBody UserParam param) {
         userService.insertUser(param);
         return Result.success("注册用户成功");
     }
@@ -87,11 +83,15 @@ public class UserController {
             errorMsg = "用户已被冻结，请联系管理员";
 
         } else {
-            System.out.println("login success");
-
-
+            request.getSession().setAttribute("user",user);
+            return Result.success("登录成功");
         }
-        return Result.success();
+        return Result.error(errorMsg);
+    }
+    @PostMapping("/user/logout")
+    public Result userLogout(HttpServletRequest request){
+        request.getSession().invalidate();
+        return Result.success("登出成功");
     }
 
     @PostMapping("/user/session")
@@ -99,24 +99,36 @@ public class UserController {
         System.out.println(request.getClass());
 
         HttpSession session = request.getSession();
-        Object name =  session.getAttribute("userInfo");
+        Object name =  session.getAttribute("user");
         return Result.success(name);
     }
 
-    @GetMapping("/user/admin")
-    @PreAuthorize("hasRole('admin')")
-    public Result userAdmin(){
-        return Result.success("admin access");
-    }
-    @GetMapping("/user/user")
-    @PreAuthorize("hasRole('admin,normal')")
-    public Result userUser(){
-        return Result.success("access admin user");
-    }
+//    @GetMapping("/user/admin")
+//    @PreAuthorize("hasRole('admin')")
+//    public Result userAdmin(){
+//        return Result.success("admin access");
+//    }
+//    @GetMapping("/user/user")
+//    @PreAuthorize("hasRole('admin,normal')")
+//    public Result userUser(){
+//        return Result.success("access admin user");
+//    }
 
     @PostMapping("/user/byDeptId")
     public Result userByDeptId(@RequestParam(value = "deptId") String deptId){
         List<User> userList = userService.selectByDeptId(deptId);
         return Result.success(userList);
+    }
+
+    @PostMapping("/user/list")
+    public Result userList(@RequestParam("deptId") int deptId, PageQuery pageQuery){
+        PageResult<User> result = userService.userList(deptId,pageQuery);
+        return Result.success(result);
+    }
+
+    @PostMapping("/user/delById")
+    public Result delUserById(@RequestParam("id") int id){
+        userService.delUserById(id);
+        return Result.success();
     }
 }
