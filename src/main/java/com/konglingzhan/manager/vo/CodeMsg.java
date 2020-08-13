@@ -10,7 +10,7 @@ public class CodeMsg {
     //失败
     public static final int CODE_FAIL=-1;
     // 未登录
-    public static final int CODE_NO_LOGIN=-1;
+    public static final int CODE_NO_LOGIN=401;
     // 角色已存在
     public static final int CODE_ROLE_EXIST = 1001;
     //非法的请求参数
@@ -101,6 +101,7 @@ public class CodeMsg {
         map.put(CODE_SUCCESS,"成功");
         map.put(CODE_FAIL,"失败");
         map.put(CODE_ROLE_EXIST,"角色已存在");
+        map.put(CODE_NO_LOGIN,"未登录");
         map.put(WRONGFUL_ARG,"非法的请求参数");
         map.put(SERVICE_CALL_FAILED,"调用服务失败");
         map.put(NO_DATA,"暂无数据");

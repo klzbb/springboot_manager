@@ -28,7 +28,7 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/register")
-    public Result register(@RequestBody UserParam param) {
+    public Result register(UserParam param) {
         userService.insertUser(param);
         return Result.success("注册用户成功");
     }

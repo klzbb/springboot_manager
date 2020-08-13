@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.bean.Dept;
+import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.DeptMapper;
 import com.konglingzhan.manager.exception.ParamException;
 import com.konglingzhan.manager.param.DeptParam;
@@ -49,7 +50,7 @@ public class DeptServiceImpl implements DeptService{
         Dept dept = Dept.builder().name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).remark(param.getRemark()).build();
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId());
         dept.setLevel(level);
-        dept.setOperator("system"); // todo
+        dept.setOperator(RequestHolder.getCurrentUser().getUsername()); // todo
         dept.setOperate_ip("127.0.0.1"); // todo
         dept.setOperateTime(new Date());
         return deptMapper.insert(dept);
@@ -81,7 +82,7 @@ public class DeptServiceImpl implements DeptService{
 
         Dept after = Dept.builder().id(param.getId()).name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).remark(param.getRemark()).build();
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()),param.getParentId()));
-        after.setOperator("system-update"); // todo
+        after.setOperator(RequestHolder.getCurrentUser().getUsername()); // todo
         after.setOperate_ip("127.0.0.1"); // todo
         after.setOperateTime(new Date());
         updateWithChild(before,after);

@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.common;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -14,24 +15,30 @@ import java.util.Map;
 @Component
 @Slf4j
 public class HttpInterceptor extends HandlerInterceptorAdapter {
+    private static final String START_TIME = "requestStartTime";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String url = request.getRequestURI();
-        Map param = request.getParameterMap();
-        log.info("request start,url:{},params:{}" + url + "===" + param);
-
+        log.info("preHandle");
         return true;
     }
 
     // 正常处理请求之后调用
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        super.postHandle(request, response, handler, modelAndView);
+        log.info("postHandle");
+        removeThreadLocalInfo();
     }
 
-    //
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        super.afterCompletion(request, response, handler, ex);
+        log.info("afterCompletion");
+        removeThreadLocalInfo();
     }
+
+    public void removeThreadLocalInfo(){
+        RequestHolder.remove();
+    }
+
+
 }

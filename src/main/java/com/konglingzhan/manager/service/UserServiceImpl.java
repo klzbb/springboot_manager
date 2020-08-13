@@ -2,6 +2,7 @@ package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.bean.PageResult;
 import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.dao.UserMapper;
 import com.konglingzhan.manager.exception.ParamException;
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService{
 //        String password = passwordEncoder.encode(param.getPassword());
 
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).dept_id(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-        user.setOperator("system");
+        user.setOperator(RequestHolder.getCurrentUser().getUsername());
         user.setOperate_ip("127.0.0.1");
         user.setOperate_time(new Date());
 
@@ -77,7 +78,7 @@ public class UserServiceImpl implements UserService{
         Preconditions.checkNotNull(before,"待更新的用户不存在");
 
         User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).dept_id(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-        after.setOperator("system");
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperate_ip("127.0.0.1");
         after.setOperate_time(new Date());
         userMapper.updateById(after);
