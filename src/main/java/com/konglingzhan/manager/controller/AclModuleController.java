@@ -1,7 +1,9 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.AclModule;
+import com.konglingzhan.manager.param.AclModuleParam;
 import com.konglingzhan.manager.service.AclModuleService;
+import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.stereotype.Controller;
@@ -21,19 +23,14 @@ public class AclModuleController {
     private AclModuleService aclModuleService;
 
     @PostMapping("/aclmodule/add")
-    public Result insert(@Validated @ModelAttribute AclModule aclModule){
-        String name = aclModule.getName();
-        List<AclModule> list = aclModuleService.selectByName(name);
-        if(list.size() == 0){
-            int result = aclModuleService.insert(aclModule);
-            if(result == 1){
-                return Result.success();
-            } else {
-                return Result.error();
-            }
-        } else {
-            return Result.error("权限模块名称重复");
-        }
+    public Result insert(AclModuleParam param){
+        aclModuleService.insert(param);
+        return Result.success();
+    }
+
+    @PostMapping("/aclmodule/update")
+    public Result update(AclModule aclModule){
+        return Result.success();
     }
 
     @PostMapping("/aclmodule/all")
