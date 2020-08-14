@@ -28,13 +28,14 @@ public class LoginFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         String url = req.getRequestURI();
-        if(url.equals("/app/user/login")){
+        if(url.equals("/app/user/login") || url.equals("/app/user/logout")){
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
         User user = (User) req.getSession().getAttribute("user");
         if (user == null) {
             log.info("未登录");
+            res.setContentType("charset=UTF-8");
             PrintWriter out = res.getWriter();
             Map result = new HashMap();
             result.put("code", CodeMsg.CODE_NO_LOGIN);

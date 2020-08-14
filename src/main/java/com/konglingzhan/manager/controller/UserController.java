@@ -88,7 +88,7 @@ public class UserController {
         }
         return Result.error(errorMsg);
     }
-    @PostMapping("/user/logout")
+    @GetMapping("/user/logout")
     public Result userLogout(HttpServletRequest request){
         request.getSession().invalidate();
         return Result.success("登出成功");

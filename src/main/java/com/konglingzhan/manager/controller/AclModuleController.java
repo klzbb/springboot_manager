@@ -1,8 +1,10 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.AclModule;
+import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.param.AclModuleParam;
 import com.konglingzhan.manager.service.AclModuleService;
+import com.konglingzhan.manager.service.SysTreeService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
@@ -18,6 +20,9 @@ import java.util.Map;
 public class AclModuleController {
     @Resource
     private AclModuleService aclModuleService;
+
+    @Resource
+    private SysTreeService sysTreeService;
 
     @PostMapping("/aclmodule/add")
     public Result insert(AclModuleParam param){
@@ -41,5 +46,11 @@ public class AclModuleController {
     public Result aclmoduleDel(@RequestParam("id") int id){
         aclModuleService.delById(id);
         return Result.success();
+    }
+
+    @PostMapping("/aclmodule/tree")
+    public Result aclModuleTree(){
+        List<AclModuleLevelDto> list = sysTreeService.aclModuleTree();
+        return Result.success(list);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface AclMapper {
 
     @Insert("insert into sys_acl(code,name,acl_module_id,url,type,status,seq,remark) values(#{code},#{name},#{acl_module_id},#{url},#{type},#{status},#{seq},#{remark})")
-    int insert(Acl acl);
+    void insert(Acl acl);
 
     @Select("select * from sys_acl")
     List<Acl> selectAll();

@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.Acl;
+import com.konglingzhan.manager.param.AclParam;
 import com.konglingzhan.manager.service.AclService;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +17,9 @@ public class AclController {
     private AclService aclService;
 
     @PostMapping("/acl/add")
-    public Result aclAdd(Acl acl){
-        int result = aclService.insert(acl);
-        if(result == 1){
-            return Result.success();
-        } else {
-            return Result.error("插入权限失败");
-        }
+    public Result aclAdd(AclParam param){
+        aclService.insert(param);
+        return Result.success("权限点插入成功");
     }
 
     @PostMapping("/acl/all")

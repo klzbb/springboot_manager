@@ -1,10 +1,14 @@
 package com.konglingzhan.manager.bean;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Date;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Acl {
     private int id;
     private String code;
@@ -15,4 +19,7 @@ public class Acl {
     private Integer status;
     private Integer seq;
     private String remark;
+    private String operator;
+    private Date operate_time;
+    private String operate_ip;
 }
