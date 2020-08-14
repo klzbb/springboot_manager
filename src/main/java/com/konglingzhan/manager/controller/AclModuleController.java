@@ -8,10 +8,7 @@ import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -29,7 +26,8 @@ public class AclModuleController {
     }
 
     @PostMapping("/aclmodule/update")
-    public Result update(AclModule aclModule){
+    public Result update(AclModuleParam param){
+        aclModuleService.update(param);
         return Result.success();
     }
 
@@ -37,5 +35,11 @@ public class AclModuleController {
     public Result queryAll(){
         List<AclModule> list = aclModuleService.selectAll();
         return Result.success(list);
+    }
+
+    @PostMapping("/aclmodule/del")
+    public Result aclmoduleDel(@RequestParam("id") int id){
+        aclModuleService.delById(id);
+        return Result.success();
     }
 }

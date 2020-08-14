@@ -13,4 +13,7 @@ public interface AclModuleService {
 
     List<AclModule> selectByName(String name);
 
+    void delById(int id);
+
+    void update(AclModuleParam param);
 }

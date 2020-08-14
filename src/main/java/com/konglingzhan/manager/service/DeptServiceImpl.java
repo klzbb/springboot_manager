@@ -86,7 +86,6 @@ public class DeptServiceImpl implements DeptService{
         after.setOperate_ip("127.0.0.1"); // todo
         after.setOperateTime(new Date());
         updateWithChild(before,after);
-//        return deptMapper.updateDeptById(after);
     }
 
     @Transactional

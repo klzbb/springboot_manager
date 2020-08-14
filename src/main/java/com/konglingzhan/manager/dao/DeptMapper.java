@@ -72,6 +72,6 @@ public interface DeptMapper {
     })
     int countByNameAndParentId(int parentId, String name, Integer id);
 
-    @Select("delete from sys_dept where id = #{id}")
+    @Delete("delete from sys_dept where id = #{id}")
     void delByid(@Param("id") int id);
 }
