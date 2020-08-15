@@ -29,4 +29,6 @@ public interface UserService  {
     PageResult<User> userList(int deptId, PageQuery pageQuery);
 
     void delUserById(int id);
+
+    User getUserInfo();
 }

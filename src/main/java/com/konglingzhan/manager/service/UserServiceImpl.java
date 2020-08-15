@@ -130,4 +130,10 @@ public class UserServiceImpl implements UserService{
     public void delUserById(int id) {
         userMapper.delUserById(id);
     }
+
+    @Override
+    public User getUserInfo() {
+        int id = RequestHolder.getCurrentUser().getId();
+        return userMapper.getUserInfo(id);
+    }
 }

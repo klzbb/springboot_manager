@@ -131,4 +131,10 @@ public class UserController {
         userService.delUserById(id);
         return Result.success();
     }
+
+    @PostMapping("/user/getUserInfo")
+    public Result getUserInfo(){
+        User userInfo = userService.getUserInfo();
+        return Result.success(userInfo);
+    }
 }

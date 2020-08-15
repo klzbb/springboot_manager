@@ -75,4 +75,7 @@ public interface UserMapper {
 
     @Delete("delete from sys_user where id = #{id}")
     void delUserById(@Param("id") int id);
+
+    @Select("select * from sys_user where id = #{id}")
+    User getUserInfo(@Param("id") int id);
 }

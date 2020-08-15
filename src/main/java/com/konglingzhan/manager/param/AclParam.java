@@ -22,7 +22,7 @@ public class AclParam {
     @NotNull(message = "必须指定权限模块")
     private Integer aclModuleId;
 
-    @Length(min = 6,max = 256,message = "权限点url长度需在6-256个字符之间")
+    @Length(min = 6,max = 100,message = "权限点url长度需在6-100个字符之间")
     private String url;
 
     @NotNull(message = "必须指定权限点的类型")
