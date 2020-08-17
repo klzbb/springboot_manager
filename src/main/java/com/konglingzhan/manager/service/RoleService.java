@@ -1,15 +1,18 @@
 package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.param.RoleParam;
 
 import java.util.List;
 
 public interface RoleService {
-    int insertRole(Role role);
+    void insertRole(RoleParam param);
+
+    void update(RoleParam param);
 
     List<Role> selectAllRole();
 
-    List<Role> selectRoleByname(String name);
+    List<Role> selectRoleByName(String name);
 
 
 }

@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
@@ -19,22 +20,15 @@ public class RoleController {
     private RoleService roleService;
 
     @PostMapping("/role/add")
-    public Result roleAdd(@RequestParam(value = "name") String name,@RequestParam(value = "type") Integer type){
-        List<Role> roleList = roleService.selectRoleByname(name);
-        if(roleList.size() == 0){
-            Role role = new Role();
-            role.setName(name);
-            role.setType(type);
-            int result = roleService.insertRole(role);
-            if(result == 1){
-                return Result.success("新建角色成功");
-            } else {
-                return Result.error();
-            }
-        } else {
-            int code = CodeMsg.CODE_ROLE_EXIST;
-            return new Result(code,CodeMsg.getMessage(code));
-        }
+    public Result roleAdd(RoleParam param){
+      roleService.insertRole(param);
+      return Result.success();
+    }
+
+    @PostMapping("/role/update")
+    public Result roleUpdate(RoleParam param){
+        roleService.update(param);
+        return Result.success();
     }
 
     @PostMapping("/role/all")
