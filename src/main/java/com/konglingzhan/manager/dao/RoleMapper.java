@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.dao;
 
+import com.konglingzhan.manager.bean.Dept;
 import com.konglingzhan.manager.bean.Role;
 import org.apache.ibatis.annotations.*;
 
@@ -42,4 +43,7 @@ public interface RoleMapper {
 
     @Select("SELECT r.* FROM roles r,roles_user ru WHERE r.`id`=ru.`rid` AND ru.`uid`=#{uid}")
     List<Role> getRolesByUid(@Param("uid") Integer uid);
+
+    @Select("select * from sys_role where id = #{id}")
+    Role selectByPrimaryKey(Integer id);
 }

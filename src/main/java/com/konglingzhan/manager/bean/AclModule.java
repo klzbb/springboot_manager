@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.bean;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.validation.constraints.AssertTrue;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)	//注解控制null不序列化
 public class AclModule {
 
     private Integer id;

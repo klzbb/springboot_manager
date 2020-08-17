@@ -16,4 +16,6 @@ public interface AclModuleService {
     void delById(int id);
 
     void update(AclModuleParam param);
+
+    AclModule findLevelById(int aclModuleId);
 }

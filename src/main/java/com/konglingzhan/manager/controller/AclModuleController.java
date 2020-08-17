@@ -53,4 +53,10 @@ public class AclModuleController {
         List<AclModuleLevelDto> list = sysTreeService.aclModuleTree();
         return Result.success(list);
     }
+
+    @PostMapping("/aclmodule/findLevelById")
+    public Result findLevelById(@RequestParam("aclModuleId") int aclModuleId){
+        AclModule aclModule = aclModuleService.findLevelById(aclModuleId);
+        return Result.success(aclModule);
+    }
 }

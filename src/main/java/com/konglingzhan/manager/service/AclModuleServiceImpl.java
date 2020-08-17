@@ -101,4 +101,9 @@ public class AclModuleServiceImpl implements AclModuleService{
         after.setOperate_time(new Date());
         updateWithChild(before,after);
     }
+
+    @Override
+    public AclModule findLevelById(int aclModuleId) {
+        return aclModuleMapper.findLevelById(aclModuleId);
+    }
 }

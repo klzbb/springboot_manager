@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.dao;
 
+import com.konglingzhan.manager.bean.Acl;
 import com.konglingzhan.manager.bean.AclModule;
 import com.konglingzhan.manager.bean.Dept;
 import org.apache.ibatis.annotations.*;
@@ -61,4 +62,7 @@ public interface AclModuleMapper {
             "</script>"
     })
     void updateByPrimaryKeySelective(AclModule aclModule);
+
+    @Select("select level from sys_acl_module where id = #{id}")
+    AclModule findLevelById(int aclModuleId);
 }
