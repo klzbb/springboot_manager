@@ -79,4 +79,8 @@ public class AclServiceImpl implements AclService{
         return PageResult.<Acl>builder().build();
     }
 
+    @Override
+    public void del(int id) {
+        aclMapper.del(id);
+    }
 }

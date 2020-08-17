@@ -20,13 +20,13 @@ public interface AclMapper {
     @Select({
             "<script>",
             "select count(1)",
-            "from sys_acl_module",
-            "where parent_id = #{parentId}",
+            "from sys_acl",
+            "where acl_module_id = #{aclModuleId}",
             "and name = #{name}",
             "<if test='id != null'> and id != #{id} </if>",
             "</script>"
     })
-    int countByNameAndParentId(int parentId, String name, Integer id);
+    int countByNameAndParentId(int aclModuleId, String name, Integer id);
 
     @Select("select * from sys_acl where id = #{id}")
     Acl selectByPrimaryKey(Integer id);
@@ -55,4 +55,7 @@ public interface AclMapper {
 
     @Select("select * from sys_acl where acl_module_id = #{aclModuleId} order by seq ASC, name ASC limit  #{page.offset}, #{page.pageSize}")
     List<Acl> pageList(@Param("aclModuleId") int aclModuleId, @Param("page") PageQuery page);
+
+    @Delete("delete from sys_acl where id = #{id}")
+    void del(@Param("id") int id);
 }

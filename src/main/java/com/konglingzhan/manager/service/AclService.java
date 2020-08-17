@@ -17,5 +17,5 @@ public interface AclService {
 
     PageResult<Acl> pageList(int aclModuleId, PageQuery pageQuery);
 
-
+    void del(int id);
 }

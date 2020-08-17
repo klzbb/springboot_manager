@@ -35,4 +35,10 @@ public class AclController {
         PageResult<Acl> result = aclService.pageList(aclModuleId,pageQuery);
         return Result.success(result);
     }
+
+    @PostMapping("/acl/del")
+    public Result del(@RequestParam("id") int id){
+        aclService.del(id);
+        return Result.success();
+    }
 }
