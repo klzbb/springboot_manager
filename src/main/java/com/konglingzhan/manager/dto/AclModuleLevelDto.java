@@ -12,7 +12,10 @@ import java.util.List;
 @Setter
 @Getter
 public class AclModuleLevelDto extends AclModule {
-    private List<AclModuleLevelDto> deptList = new ArrayList<>();
+
+    private List<AclModuleLevelDto> aclModuleList = new ArrayList<>();
+
+    private List<AclDto> aclList = new ArrayList<>();
 
     // 深拷贝
     public static AclModuleLevelDto adapt(AclModule aclModule){

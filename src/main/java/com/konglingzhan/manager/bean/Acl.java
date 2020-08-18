@@ -9,6 +9,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 public class Acl {
     private int id;
     private String code;

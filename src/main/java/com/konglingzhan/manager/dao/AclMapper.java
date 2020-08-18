@@ -58,4 +58,16 @@ public interface AclMapper {
 
     @Delete("delete from sys_acl where id = #{id}")
     void del(@Param("id") int id);
+
+
+    @Select({
+            "<script>",
+                "select *",
+                    "from",
+                "sys_acl",
+                    "where in ",
+                "<foreach collection='idList' item='id' open='(' close=')' separator=';' > #{id} </foreach>",
+            "</script>"
+    })
+    List<Acl> getByIdList(@Param("idList") List<Integer> idList);
 }

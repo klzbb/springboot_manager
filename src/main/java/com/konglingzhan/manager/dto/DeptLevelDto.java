@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @ToString
 public class DeptLevelDto extends Dept {
+
     private List<DeptLevelDto> deptList = new ArrayList<>();
 
     // 深拷贝

@@ -41,7 +41,7 @@ public class RoleServiceImpl implements RoleService{
         Role before = roleMapper.selectByPrimaryKey(param.getId());
         Preconditions.checkNotNull(before,"待更新的角色不存在");
 
-        Role role = Role.builder().name(param.getName()).type(param.getType()).status(param.getStatus()).remark(param.getRemark()).build();
+        Role role = Role.builder().id(param.getId()).name(param.getName()).type(param.getType()).status(param.getStatus()).remark(param.getRemark()).build();
         role.setOperator(RequestHolder.getCurrentUser().getUsername());
         role.setOperate_ip("127.0.0.1");
         role.setOperate_time(new Date());
@@ -59,5 +59,10 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public List<Role> selectRoleByName(String name) {
         return roleMapper.selectRoleByName(name);
+    }
+
+    @Override
+    public void del(int id) {
+        roleMapper.del(id);
     }
 }

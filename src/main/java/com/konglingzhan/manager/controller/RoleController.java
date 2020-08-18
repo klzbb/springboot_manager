@@ -3,6 +3,7 @@ package com.konglingzhan.manager.controller;
 import com.konglingzhan.manager.bean.Role;
 import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleService;
+import com.konglingzhan.manager.service.SysTreeService;
 import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class RoleController {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private SysTreeService sysTreeService;
+
     @PostMapping("/role/add")
     public Result roleAdd(RoleParam param){
       roleService.insertRole(param);
@@ -31,9 +35,20 @@ public class RoleController {
         return Result.success();
     }
 
-    @PostMapping("/role/all")
+    @PostMapping("/role/list")
     public Result roleAll(){
         List<Role> roleList = roleService.selectAllRole();
         return Result.success(roleList);
+    }
+
+    @PostMapping("/role/tree")
+    public Result roleTree(@RequestParam("roleId") int roleId){
+        return Result.success(sysTreeService.roleTree(roleId));
+    }
+
+    @PostMapping("/role/del")
+    public Result roleDel(@RequestParam("roleId") int roleId){
+        roleService.del(roleId);
+        return Result.success();
     }
 }

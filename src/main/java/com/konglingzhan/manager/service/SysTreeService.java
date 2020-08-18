@@ -1,9 +1,12 @@
 package com.konglingzhan.manager.service;
 
+import com.konglingzhan.manager.bean.Acl;
 import com.konglingzhan.manager.bean.AclModule;
 import com.konglingzhan.manager.bean.Dept;
+import com.konglingzhan.manager.dao.AclMapper;
 import com.konglingzhan.manager.dao.AclModuleMapper;
 import com.konglingzhan.manager.dao.DeptMapper;
+import com.konglingzhan.manager.dto.AclDto;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.dto.DeptLevelDto;
 
@@ -16,10 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SysTreeService {
@@ -28,6 +29,70 @@ public class SysTreeService {
 
     @Resource
     private AclModuleMapper aclModuleMapper;
+
+    @Resource
+    private SysCoreService sysCoreService;
+
+    @Resource
+    private AclMapper aclMapper;
+
+    /**
+     * 角色权限树
+     */
+    public List<AclModuleLevelDto> roleTree(int roleId){
+        // 当前用户分配的权限点
+        List<Acl> userAclList = sysCoreService.getCurrentUserAclList();
+        // 当前角色分配的权限点
+        List<Acl> roleAclList = sysCoreService.getRoleAclList(roleId);
+        // 当前系统所有权限点
+        List<AclDto> aclDtoList = new ArrayList<>();
+
+        Set<Integer> userAclIdSet = userAclList.stream().map(acl -> acl.getId()).collect(Collectors.toSet());
+        Set<Integer> roleAclIdSet = roleAclList.stream().map(acl -> acl.getId()).collect(Collectors.toSet());
+
+        List<Acl> allAclList = aclMapper.selectAll();
+        for(Acl acl : allAclList){
+            AclDto dto = AclDto.adapt(acl);
+            if(userAclIdSet.contains(acl.getId())){
+                dto.setHasAcl(true);
+            }
+            if(roleAclIdSet.contains(acl.getId())){
+                dto.setChecked(true);
+            }
+            aclDtoList.add(dto);
+        }
+        return aclListToTreeList(aclDtoList);
+    }
+
+    public List<AclModuleLevelDto> aclListToTreeList(List<AclDto> aclDtoList){
+        if(CollectionUtils.isEmpty(aclDtoList)){
+            return new ArrayList<>();
+        }
+
+        List<AclModuleLevelDto> aclModuleLevelList = aclModuleTree();
+        MultiMap moduleIdAclMap = new MultiValueMap();
+        for(Acl acl : aclDtoList){
+            if(acl.getStatus() == 1){
+                moduleIdAclMap.put(acl.getAcl_module_id(),acl);
+            }
+        }
+        bindAclsWithOrder(aclModuleLevelList,moduleIdAclMap);
+        return aclModuleLevelList;
+    }
+
+    public void bindAclsWithOrder( List<AclModuleLevelDto> aclModuleLevelList,MultiMap moduleIdAclMap){
+        if(CollectionUtils.isEmpty(aclModuleLevelList)){
+            return;
+        }
+        for(AclModuleLevelDto dto: aclModuleLevelList){
+            List<AclDto> aclDtoList = (List<AclDto>) moduleIdAclMap.get(dto.getId());
+            if(!CollectionUtils.isEmpty(aclDtoList)){
+                Collections.sort(aclDtoList,aclSeqComparator);
+                dto.setAclList(aclDtoList);
+            }
+            bindAclsWithOrder(dto.getAclModuleList(),moduleIdAclMap);
+        }
+    }
 
     public List<AclModuleLevelDto> aclModuleTree(){
         List<AclModule> list = aclModuleMapper.selectAll();
@@ -38,6 +103,7 @@ public class SysTreeService {
         }
         return aclModuleListToTree(dtoList);
     }
+
     public List<AclModuleLevelDto> aclModuleListToTree(List<AclModuleLevelDto> dtoList){
         if(CollectionUtils.isEmpty(dtoList)){
             return new ArrayList<>();
@@ -59,6 +125,7 @@ public class SysTreeService {
         System.out.println("levelDeptMap=" + levelAclModuleMap);
         return rootList;
     }
+
     public void transformAclModuleTree(List<AclModuleLevelDto> dtoList,String level, MultiMap levelAclModuleMap){
         for(int i = 0;i<dtoList.size(); i++){
             // 遍历该层的每个元素
@@ -72,7 +139,7 @@ public class SysTreeService {
                 // 排序
                 Collections.sort(tempList,aclModuleSeqComparator);
                 // 设置下一层部门
-                dto.setDeptList(tempList);
+                dto.setAclModuleList(tempList);
                 // 进入到下一层处理
                 transformAclModuleTree(tempList,nextLevel,levelAclModuleMap);
             }
@@ -149,6 +216,13 @@ public class SysTreeService {
     public Comparator<AclModuleLevelDto> aclModuleSeqComparator = new Comparator<AclModuleLevelDto>() {
         @Override
         public int compare(AclModuleLevelDto o1, AclModuleLevelDto o2) {
+            return o1.getSeq() - o2.getSeq();
+        }
+    };
+
+    public Comparator<AclDto> aclSeqComparator = new Comparator<AclDto>() {
+        @Override
+        public int compare(AclDto o1, AclDto o2) {
             return o1.getSeq() - o2.getSeq();
         }
     };

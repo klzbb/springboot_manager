@@ -29,7 +29,7 @@ public class RoleParam {
     private Integer type = 1;
 
     @NotNull(message = "角色展示顺序不能为空")
-    private Integer seq;
+    private Integer seq = 1;
 
     @Length(min=0,max = 200,message = "角色备注需在200个字符串以内")
     private String remark;
