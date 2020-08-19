@@ -11,9 +11,8 @@ public interface RoleAclMapper {
 
     @Select({
             "<script>",
-                "<foreach collection='roleIdList' item='roleId' open='' close='' separator=';'>",
-                   "select acl_id from sys_role_acl where role_id in #{roleId}",
-                "</foreach>",
+                "select acl_id from sys_role_acl where role_id in ",
+                "<foreach collection='roleIdList' item='roleId' open='(' separator=',' close=')'> #{roleId} </foreach>",
             "</script>"
     })
     List<Integer> getAclIdListByRoleIdList(@Param("roleIdList") List<Integer> roleIdList);

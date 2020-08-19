@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,7 +32,9 @@ public class SysCoreService {
     }
 
     public List<Acl> getRoleAclList(int roleId){
-        List<Integer> aclIdList = roleAclMapper.getAclIdListByRoleIdList(new ArrayList<>(roleId));
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(roleId);
+        List<Integer> aclIdList = roleAclMapper.getAclIdListByRoleIdList(list);
         if(CollectionUtils.isEmpty(aclIdList)){
             return new ArrayList<>();
         }

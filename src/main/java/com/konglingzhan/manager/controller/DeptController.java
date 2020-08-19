@@ -56,7 +56,7 @@ public class DeptController {
     }
 
     @PostMapping("/dept/update")
-    public Result update(@RequestBody DeptParam param){
+    public Result update(DeptParam param){
         deptService.updateDept(param);
         return Result.success("更新部门成功");
     }
