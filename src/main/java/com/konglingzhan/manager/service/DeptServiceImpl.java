@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class DeptServiceImpl implements DeptService{
     @Resource
@@ -75,7 +77,7 @@ public class DeptServiceImpl implements DeptService{
     public void updateDept(DeptParam param) {
         BeanValidator.check(param);
         Dept before = deptMapper.selectByPrimaryKey(param.getId());
-        Preconditions.checkNotNull(before,"待更新的部门不存在");
+        Objects.requireNonNull(before,"待更新的部门不存在");
         if(checkExist(param.getParentId(),param.getName(),param.getId())){
             throw new ParamException("同一层级下存在相同名称的部门");
         }

@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AclModuleServiceImpl implements AclModuleService{
@@ -92,7 +93,7 @@ public class AclModuleServiceImpl implements AclModuleService{
             throw new ParamException("同一层级下存在相同名称的权限模块");
         }
         AclModule before = aclModuleMapper.selectByPrimaryKey(param.getId());
-        Preconditions.checkNotNull(before,"待更新权限模块不存在");
+        Objects.requireNonNull(before,"待更新权限模块不存在");
         AclModule after = AclModule.builder().id(param.getId()).name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId());
         after.setLevel(level);

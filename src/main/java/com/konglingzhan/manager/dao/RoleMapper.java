@@ -48,5 +48,5 @@ public interface RoleMapper {
     Role selectByPrimaryKey(Integer id);
 
     @Delete("delete from sys_role where id = #{id}")
-    void del(@Param("id") int id);
+    int del(@Param("id") int id);
 }

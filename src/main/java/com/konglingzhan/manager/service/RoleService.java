@@ -14,5 +14,5 @@ public interface RoleService {
 
     List<Role> selectRoleByName(String name);
 
-    void del(int id);
+    int del(int id);
 }

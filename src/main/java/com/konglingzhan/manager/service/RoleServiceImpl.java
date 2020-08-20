@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RoleServiceImpl implements RoleService{
@@ -39,7 +40,7 @@ public class RoleServiceImpl implements RoleService{
             throw new ParamException("角色名称已存在");
         }
         Role before = roleMapper.selectByPrimaryKey(param.getId());
-        Preconditions.checkNotNull(before,"待更新的角色不存在");
+        Objects.requireNonNull(before, "待更新的角色不存在");
 
         Role role = Role.builder().id(param.getId()).name(param.getName()).type(param.getType()).status(param.getStatus()).remark(param.getRemark()).build();
         role.setOperator(RequestHolder.getCurrentUser().getUsername());
@@ -62,7 +63,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public void del(int id) {
-        roleMapper.del(id);
+    public int del(int id) {
+        return roleMapper.del(id);
     }
 }

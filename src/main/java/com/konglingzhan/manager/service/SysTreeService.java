@@ -46,12 +46,11 @@ public class SysTreeService {
         List<Acl> roleAclList = sysCoreService.getRoleAclList(roleId);
         // 当前系统所有权限点
         List<AclDto> aclDtoList = new ArrayList<>();
-
         Set<Integer> userAclIdSet = userAclList.stream().map(acl -> acl.getId()).collect(Collectors.toSet());
         Set<Integer> roleAclIdSet = roleAclList.stream().map(acl -> acl.getId()).collect(Collectors.toSet());
 
         List<Acl> allAclList = aclMapper.selectAll();
-        for(Acl acl : allAclList){
+        allAclList.stream().forEach(acl -> {
             AclDto dto = AclDto.adapt(acl);
             if(userAclIdSet.contains(acl.getId())){
                 dto.setHasAcl(true);
@@ -60,7 +59,7 @@ public class SysTreeService {
                 dto.setChecked(true);
             }
             aclDtoList.add(dto);
-        }
+        });
         return aclListToTreeList(aclDtoList);
     }
 

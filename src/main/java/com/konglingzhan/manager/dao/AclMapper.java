@@ -66,7 +66,7 @@ public interface AclMapper {
                     "from",
                 "sys_acl",
                     "where in ",
-                "<foreach collection='idList' item='id' open='(' close=')' separator=';' > #{id} </foreach>",
+                "<foreach collection='idList' item='id' open='(' close=')' separator=',' > #{id} </foreach>",
             "</script>"
     })
     List<Acl> getByIdList(@Param("idList") List<Integer> idList);

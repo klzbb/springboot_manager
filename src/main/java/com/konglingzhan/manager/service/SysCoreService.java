@@ -25,12 +25,17 @@ public class SysCoreService {
     @Resource
     private RoleAclMapper roleAclMapper;
 
-
+    /**
+     * 当前用户分配的权限点集合
+     */
     public List<Acl> getCurrentUserAclList(){
         int userId = RequestHolder.getCurrentUser().getId();
         return getUserAclList(userId);
     }
 
+    /**
+     * 当前角色分配的权限点集合
+     */
     public List<Acl> getRoleAclList(int roleId){
         ArrayList<Integer> list = new ArrayList<>();
         list.add(roleId);
@@ -47,11 +52,16 @@ public class SysCoreService {
             return  aclMapper.selectAll();
         }
 
+        /**
+         * 用户角色Ids
+         */
         List<Integer> userRoleIdList = roleUserMapper.getRoleIdListByUserId(userId);
         if(CollectionUtils.isEmpty(userRoleIdList)){
             return new ArrayList<>();
         }
-
+        /**
+         * 根据用户角色ids获取用户权限点ids
+         */
         List<Integer> userAclIdList = roleAclMapper.getAclIdListByRoleIdList(userRoleIdList);
         if(CollectionUtils.isEmpty(userAclIdList)){
             return new ArrayList<>();

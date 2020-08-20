@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.SimpleFormatter;
 
 @Service
@@ -44,7 +45,7 @@ public class AclServiceImpl implements AclService{
             throw new ParamException("当前权限模块下存在相同名称的权限点");
         }
         Acl before = aclMapper.selectByPrimaryKey(param.getId());
-        Preconditions.checkNotNull(before,"待更新权限点不存在");
+        Objects.requireNonNull(before,"待更新权限点不存在");
         Acl after = Acl.builder().id(param.getId()).name(param.getName()).acl_module_id(param.getAclModuleId()).url(param.getUrl()).type(param.getType()).status(param.getStatus()).seq(param.getSeq()).remark(param.getRemark()).build();
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperate_time(new Date());

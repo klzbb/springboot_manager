@@ -1,6 +1,8 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.exception.CommonException;
+import com.konglingzhan.manager.exception.ParamException;
 import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.service.SysTreeService;
@@ -47,8 +49,12 @@ public class RoleController {
     }
 
     @PostMapping("/role/del")
-    public Result roleDel(@RequestParam("roleId") int roleId){
-        roleService.del(roleId);
-        return Result.success();
+    public Result roleDel(int roleId){
+        int num = roleService.del(roleId);
+        if(num == 1){
+            return Result.success();
+        } else {
+            throw new ParamException("删除角色Id不存在");
+        }
     }
 }

@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -75,8 +77,7 @@ public class UserServiceImpl implements UserService{
         }
 
         User before = userMapper.selectByPrimaryKey(param.getId());
-        Preconditions.checkNotNull(before,"待更新的用户不存在");
-
+        Objects.requireNonNull(before,"待更新的用户不存在");
         User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).dept_id(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperate_ip("127.0.0.1");
