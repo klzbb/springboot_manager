@@ -64,9 +64,9 @@ public class RoleController {
     }
 
     @PostMapping("/role/changeAcl")
-    public Result roleChangeAcl(@RequestParam("roleId") int roleId, @RequestParam("aclIds") String aclIds){
+    public Result roleChangeAcl(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds",required = false,defaultValue = "") String aclIds){
         List<Integer> aclList = StringUtil.splitToListInt(aclIds);
-
+        roleAclService.changeRoleAcls(roleId,aclList);
         return Result.success();
     }
 }
