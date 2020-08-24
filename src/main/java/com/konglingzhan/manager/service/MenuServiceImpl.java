@@ -3,7 +3,7 @@ package com.konglingzhan.manager.service;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.MenuMapper;
 import com.konglingzhan.manager.exception.ParamException;
-import com.konglingzhan.manager.param.AclModuleParam;
+import com.konglingzhan.manager.param.MenuParam;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -21,7 +21,7 @@ public class MenuServiceImpl implements MenuService {
     private MenuMapper menuMapper;
 
     @Override
-    public void insert(AclModuleParam param) {
+    public void insert(MenuParam param) {
         BeanValidator.check(param);
         if(checkExist(param.getParentId(),param.getName(),param.getId())){
             throw new ParamException("同一层级下存在相同的权限名称");
@@ -83,7 +83,7 @@ public class MenuServiceImpl implements MenuService {
 
 
     @Override
-    public void update(AclModuleParam param) {
+    public void update(MenuParam param) {
         BeanValidator.check(param);
         if(checkExist(param.getParentId(),param.getName(),param.getId())){
             throw new ParamException("同一层级下存在相同名称的权限模块");

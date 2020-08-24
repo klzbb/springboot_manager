@@ -16,6 +16,12 @@ public class Menu {
 
     private String name;
 
+    private String url;
+
+    private String code;
+
+    private Integer type;
+
     private Integer parent_id;
 
     private String level;

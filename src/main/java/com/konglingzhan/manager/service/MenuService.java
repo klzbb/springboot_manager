@@ -1,13 +1,13 @@
 package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.bean.Menu;
-import com.konglingzhan.manager.param.AclModuleParam;
+import com.konglingzhan.manager.param.MenuParam;
 
 import java.util.List;
 
 public interface MenuService {
 
-    void insert(AclModuleParam param);
+    void insert(MenuParam param);
 
     List<Menu> selectAll();
 
@@ -15,7 +15,7 @@ public interface MenuService {
 
     void delById(int id);
 
-    void update(AclModuleParam param);
+    void update(MenuParam param);
 
     Menu findLevelById(int aclModuleId);
 }

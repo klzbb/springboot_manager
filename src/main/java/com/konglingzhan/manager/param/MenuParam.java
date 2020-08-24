@@ -14,12 +14,20 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ToString
-public class AclModuleParam {
+public class MenuParam {
     private Integer id;
 
     @NotBlank(message = "权限模块不能为空")
     @Length(min=2,max = 20,message = "权限模块名称长度为2-20个字段")
     private String name;
+
+    @Length(min = 6,max = 100,message = "权限点url长度需在6-100个字符之间")
+    private String url;
+
+    @NotNull(message = "必须指定权限点的类型")
+    @Min(value = 1, message = "权限点类型不合法")
+    @Max(value = 3, message = "权限点类型不合法")
+    private Integer type;
 
     private Integer parentId = 0;
 

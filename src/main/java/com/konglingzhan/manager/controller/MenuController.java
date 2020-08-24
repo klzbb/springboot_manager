@@ -2,7 +2,7 @@ package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.Menu;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
-import com.konglingzhan.manager.param.AclModuleParam;
+import com.konglingzhan.manager.param.MenuParam;
 import com.konglingzhan.manager.service.MenuService;
 import com.konglingzhan.manager.service.SysTreeService;
 import com.konglingzhan.manager.vo.Result;
@@ -20,13 +20,13 @@ public class MenuController {
     private SysTreeService sysTreeService;
 
     @PostMapping("/aclmodule/add")
-    public Result insert(AclModuleParam param){
+    public Result insert(MenuParam param){
         menuService.insert(param);
         return Result.success();
     }
 
     @PostMapping("/aclmodule/update")
-    public Result update(AclModuleParam param){
+    public Result update(MenuParam param){
         menuService.update(param);
         return Result.success();
     }
