@@ -1,10 +1,9 @@
 package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.bean.Acl;
-import com.konglingzhan.manager.bean.AclModule;
 import com.konglingzhan.manager.bean.Dept;
 import com.konglingzhan.manager.dao.AclMapper;
-import com.konglingzhan.manager.dao.AclModuleMapper;
+import com.konglingzhan.manager.dao.MenuMapper;
 import com.konglingzhan.manager.dao.DeptMapper;
 import com.konglingzhan.manager.dto.AclDto;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
@@ -28,7 +27,7 @@ public class SysTreeService {
     private DeptMapper deptMapper;
 
     @Resource
-    private AclModuleMapper aclModuleMapper;
+    private MenuMapper menuMapper;
 
     @Resource
     private SysCoreService sysCoreService;
@@ -94,10 +93,10 @@ public class SysTreeService {
     }
 
     public List<AclModuleLevelDto> aclModuleTree(){
-        List<AclModule> list = aclModuleMapper.selectAll();
+        List<com.konglingzhan.manager.bean.Menu> list = menuMapper.selectAll();
         List<AclModuleLevelDto> dtoList = new ArrayList<>();
-        for(AclModule aclModule: list){
-            AclModuleLevelDto dto = AclModuleLevelDto.adapt(aclModule);
+        for(com.konglingzhan.manager.bean.Menu menu : list){
+            AclModuleLevelDto dto = AclModuleLevelDto.adapt(menu);
             dtoList.add(dto);
         }
         return aclModuleListToTree(dtoList);

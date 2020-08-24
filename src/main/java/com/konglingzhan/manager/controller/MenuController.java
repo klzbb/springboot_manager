@@ -1,50 +1,45 @@
 package com.konglingzhan.manager.controller;
 
-import com.konglingzhan.manager.bean.AclModule;
+import com.konglingzhan.manager.bean.Menu;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.param.AclModuleParam;
-import com.konglingzhan.manager.service.AclModuleService;
+import com.konglingzhan.manager.service.MenuService;
 import com.konglingzhan.manager.service.SysTreeService;
-import com.konglingzhan.manager.util.BeanValidator;
-import com.konglingzhan.manager.vo.CodeMsg;
 import com.konglingzhan.manager.vo.Result;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @RestController
-public class AclModuleController {
+public class MenuController {
     @Resource
-    private AclModuleService aclModuleService;
+    private MenuService menuService;
 
     @Resource
     private SysTreeService sysTreeService;
 
     @PostMapping("/aclmodule/add")
     public Result insert(AclModuleParam param){
-        aclModuleService.insert(param);
+        menuService.insert(param);
         return Result.success();
     }
 
     @PostMapping("/aclmodule/update")
     public Result update(AclModuleParam param){
-        aclModuleService.update(param);
+        menuService.update(param);
         return Result.success();
     }
 
     @PostMapping("/aclmodule/all")
     public Result queryAll(){
-        List<AclModule> list = aclModuleService.selectAll();
+        List<Menu> list = menuService.selectAll();
         return Result.success(list);
     }
 
     @PostMapping("/aclmodule/del")
     public Result aclmoduleDel(@RequestParam("id") int id){
-        aclModuleService.delById(id);
+        menuService.delById(id);
         return Result.success();
     }
 
@@ -56,7 +51,7 @@ public class AclModuleController {
 
     @PostMapping("/aclmodule/findLevelById")
     public Result findLevelById(@RequestParam("aclModuleId") int aclModuleId){
-        AclModule aclModule = aclModuleService.findLevelById(aclModuleId);
-        return Result.success(aclModule);
+        Menu menu = menuService.findLevelById(aclModuleId);
+        return Result.success(menu);
     }
 }

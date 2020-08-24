@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.dao;
 
-import com.konglingzhan.manager.bean.RoleUser;
+import com.konglingzhan.manager.bean.UserRole;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -8,15 +8,15 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface RoleUserMapper {
-    @Insert("insert into sys_role_user (role_id,user_id,operator,operate_time,operate_ip) values (#{roleId},#{userId},#{operator},#{operateTime},#{operateIp})")
-    int insert(RoleUser roleUser);
+public interface UserRoleMapper {
+    @Insert("insert into sys_user_role (role_id,user_id,operator,operate_time,operate_ip) values (#{roleId},#{userId},#{operator},#{operateTime},#{operateIp})")
+    int insert(UserRole userRole);
 
     @Select({
             "<script>",
                 "select role_id",
                     "from",
-                "sys_role_user",
+                "sys_user_role",
                 "where user_id = #{userId}",
             "</script>"
     })

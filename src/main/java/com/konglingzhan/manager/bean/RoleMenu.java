@@ -9,12 +9,12 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-public class RoleAcl {
+public class RoleMenu {
     private Integer id;
 
     private Integer role_id;
 
-    private Integer acl_id;
+    private Integer menu_id;
 
     private String operator;
 

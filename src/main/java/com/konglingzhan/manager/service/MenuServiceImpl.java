@@ -1,16 +1,12 @@
 package com.konglingzhan.manager.service;
 
-import com.konglingzhan.manager.bean.Acl;
-import com.konglingzhan.manager.bean.AclModule;
-import com.konglingzhan.manager.bean.Dept;
 import com.konglingzhan.manager.common.RequestHolder;
-import com.konglingzhan.manager.dao.AclModuleMapper;
+import com.konglingzhan.manager.dao.MenuMapper;
 import com.konglingzhan.manager.exception.ParamException;
 import com.konglingzhan.manager.param.AclModuleParam;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
-import org.assertj.core.util.Preconditions;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,9 +16,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class AclModuleServiceImpl implements AclModuleService{
+public class MenuServiceImpl implements MenuService {
     @Resource
-    private AclModuleMapper aclModuleMapper;
+    private MenuMapper menuMapper;
 
     @Override
     public void insert(AclModuleParam param) {
@@ -30,59 +26,59 @@ public class AclModuleServiceImpl implements AclModuleService{
         if(checkExist(param.getParentId(),param.getName(),param.getId())){
             throw new ParamException("同一层级下存在相同的权限名称");
         }
-        AclModule aclModule = AclModule.builder().name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
+        com.konglingzhan.manager.bean.Menu menu = com.konglingzhan.manager.bean.Menu.builder().name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId());
-        aclModule.setLevel(level);
-        aclModule.setOperator(RequestHolder.getCurrentUser().getUsername());
-        aclModule.setOperate_ip("127.0.0.1");
-        aclModule.setOperate_time(new Date());
-        aclModuleMapper.insert(aclModule);
+        menu.setLevel(level);
+        menu.setOperator(RequestHolder.getCurrentUser().getUsername());
+        menu.setOperate_ip("127.0.0.1");
+        menu.setOperate_time(new Date());
+        this.menuMapper.insert(menu);
     }
 
     @Transactional
-    public void updateWithChild(AclModule before,AclModule after){
+    public void updateWithChild(com.konglingzhan.manager.bean.Menu before, com.konglingzhan.manager.bean.Menu after){
         String newLevelPrefix = after.getLevel();
         String oldLevelPrefix = before.getLevel();
         if(!after.getLevel().equals(before.getLevel())){
-            List<AclModule> list = aclModuleMapper.getChildDeptListByLevel(before.getLevel());
+            List<com.konglingzhan.manager.bean.Menu> list = menuMapper.getChildDeptListByLevel(before.getLevel());
             if(CollectionUtils.isNotEmpty(list)){
-                for (AclModule aclModule: list){
-                    String level = aclModule.getLevel();
+                for (com.konglingzhan.manager.bean.Menu menu : list){
+                    String level = menu.getLevel();
                     if(level.indexOf(oldLevelPrefix) == 0){
                         level = newLevelPrefix + level.substring(oldLevelPrefix.length());
-                        aclModule.setLevel(level);
+                        menu.setLevel(level);
                     }
                 }
-                aclModuleMapper.batchUpdateLevel(list);
+                menuMapper.batchUpdateLevel(list);
             }
         }
-        aclModuleMapper.updateByPrimaryKeySelective(after);
+        menuMapper.updateByPrimaryKeySelective(after);
     }
 
     private boolean checkExist(Integer parentId,String aclModuleName,Integer id){
-        return aclModuleMapper.countByNameAndParentId(parentId,aclModuleName,id) > 0;
+        return menuMapper.countByNameAndParentId(parentId,aclModuleName,id) > 0;
     }
 
     private String getLevel(Integer aclModuleId) {
-        AclModule aclModule = aclModuleMapper.selectByPrimaryKey(aclModuleId);
-        if(aclModule == null){
+        com.konglingzhan.manager.bean.Menu menu = this.menuMapper.selectByPrimaryKey(aclModuleId);
+        if(menu == null){
             return null;
         }
-        return aclModule.getLevel();
+        return menu.getLevel();
     }
     @Override
-    public List<AclModule> selectAll() {
-        return aclModuleMapper.selectAll();
+    public List<com.konglingzhan.manager.bean.Menu> selectAll() {
+        return menuMapper.selectAll();
     }
 
     @Override
-    public List<AclModule> selectByName(String name) {
-        return aclModuleMapper.selectByName(name);
+    public List<com.konglingzhan.manager.bean.Menu> selectByName(String name) {
+        return menuMapper.selectByName(name);
     }
 
     @Override
     public void delById(int id) {
-        aclModuleMapper.delById(id);
+        menuMapper.delById(id);
     }
 
 
@@ -92,9 +88,9 @@ public class AclModuleServiceImpl implements AclModuleService{
         if(checkExist(param.getParentId(),param.getName(),param.getId())){
             throw new ParamException("同一层级下存在相同名称的权限模块");
         }
-        AclModule before = aclModuleMapper.selectByPrimaryKey(param.getId());
+        com.konglingzhan.manager.bean.Menu before = menuMapper.selectByPrimaryKey(param.getId());
         Objects.requireNonNull(before,"待更新权限模块不存在");
-        AclModule after = AclModule.builder().id(param.getId()).name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
+        com.konglingzhan.manager.bean.Menu after = com.konglingzhan.manager.bean.Menu.builder().id(param.getId()).name(param.getName()).parent_id(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId());
         after.setLevel(level);
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
@@ -104,7 +100,7 @@ public class AclModuleServiceImpl implements AclModuleService{
     }
 
     @Override
-    public AclModule findLevelById(int aclModuleId) {
-        return aclModuleMapper.findLevelById(aclModuleId);
+    public com.konglingzhan.manager.bean.Menu findLevelById(int aclModuleId) {
+        return menuMapper.findLevelById(aclModuleId);
     }
 }

@@ -1,8 +1,6 @@
 package com.konglingzhan.manager.dao;
 
 import com.konglingzhan.manager.bean.Acl;
-import com.konglingzhan.manager.bean.AclModule;
-import com.konglingzhan.manager.bean.User;
 import com.konglingzhan.manager.param.PageQuery;
 import org.apache.ibatis.annotations.*;
 

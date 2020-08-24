@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Builder
-public class RoleUser {
+public class UserRole {
     private Integer id;
     private Integer roleId;
     private Integer userId;

@@ -2,10 +2,6 @@ package com.konglingzhan.manager.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Builder
@@ -14,7 +10,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)	//注解控制null不序列化
-public class AclModule {
+public class Menu {
 
     private Integer id;
 

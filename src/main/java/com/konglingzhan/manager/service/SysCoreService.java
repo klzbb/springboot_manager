@@ -3,15 +3,13 @@ package com.konglingzhan.manager.service;
 import com.konglingzhan.manager.bean.Acl;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.AclMapper;
-import com.konglingzhan.manager.dao.RoleAclMapper;
-import com.konglingzhan.manager.dao.RoleUserMapper;
-import org.assertj.core.internal.Lists;
+import com.konglingzhan.manager.dao.RoleMenuMapper;
+import com.konglingzhan.manager.dao.UserRoleMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,10 +18,10 @@ public class SysCoreService {
     private AclMapper aclMapper;
 
     @Resource
-    private RoleUserMapper roleUserMapper;
+    private UserRoleMapper userRoleMapper;
 
     @Resource
-    private RoleAclMapper roleAclMapper;
+    private RoleMenuMapper roleMenuMapper;
 
     /**
      * 当前用户分配的权限点集合
@@ -39,7 +37,7 @@ public class SysCoreService {
     public List<Acl> getRoleAclList(int roleId){
         ArrayList<Integer> list = new ArrayList<>();
         list.add(roleId);
-        List<Integer> aclIdList = roleAclMapper.getAclIdListByRoleIdList(list);
+        List<Integer> aclIdList = roleMenuMapper.getAclIdListByRoleIdList(list);
         if(CollectionUtils.isEmpty(aclIdList)){
             return new ArrayList<>();
         }
@@ -55,14 +53,14 @@ public class SysCoreService {
         /**
          * 用户角色Ids
          */
-        List<Integer> userRoleIdList = roleUserMapper.getRoleIdListByUserId(userId);
+        List<Integer> userRoleIdList = userRoleMapper.getRoleIdListByUserId(userId);
         if(CollectionUtils.isEmpty(userRoleIdList)){
             return new ArrayList<>();
         }
         /**
          * 根据用户角色ids获取用户权限点ids
          */
-        List<Integer> userAclIdList = roleAclMapper.getAclIdListByRoleIdList(userRoleIdList);
+        List<Integer> userAclIdList = roleMenuMapper.getAclIdListByRoleIdList(userRoleIdList);
         if(CollectionUtils.isEmpty(userAclIdList)){
             return new ArrayList<>();
         }
