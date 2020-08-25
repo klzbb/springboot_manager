@@ -1,4 +1,4 @@
-package com.konglingzhan.manager.exception;
+package com.konglingzhan.manager.common.exception;
 
 import com.konglingzhan.manager.vo.CodeMsg;
 

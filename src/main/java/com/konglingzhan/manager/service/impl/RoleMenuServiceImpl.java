@@ -1,10 +1,11 @@
-package com.konglingzhan.manager.service;
+package com.konglingzhan.manager.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.konglingzhan.manager.bean.RoleMenu;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMenuMapper;
+import com.konglingzhan.manager.service.RoleMenuService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 

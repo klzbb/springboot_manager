@@ -1,11 +1,11 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.Role;
-import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleMenuService;
 import com.konglingzhan.manager.service.RoleService;
-import com.konglingzhan.manager.service.SysTreeService;
+import com.konglingzhan.manager.service.impl.SysTreeService;
 import com.konglingzhan.manager.util.StringUtil;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +46,6 @@ public class RoleController {
 
     @PostMapping("/role/tree")
     public Result roleTree(@RequestParam("roleId") int roleId){
-
         return Result.success(sysTreeService.aclModuleTree());
 //        return Result.success(sysTreeService.roleTree(roleId));
     }

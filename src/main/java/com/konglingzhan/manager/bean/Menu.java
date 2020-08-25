@@ -2,16 +2,23 @@ package com.konglingzhan.manager.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+
+import javax.persistence.*;
 import java.util.Date;
 
+
+@Entity
+@Table(name="sys_menu")
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)	//注解控制null不序列化
+@JsonInclude(JsonInclude.Include.NON_NULL)    //注解控制null不序列化
 public class Menu {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String name;
@@ -22,7 +29,8 @@ public class Menu {
 
     private Integer type;
 
-    private Integer parent_id;
+    @Column(name = "parent_id")
+    private Integer parentId;
 
     private String level;
 
@@ -34,7 +42,9 @@ public class Menu {
 
     private String operator;
 
-    private Date operate_time;
+    @Column(name = "operate_time")
+    private Date operateTime;
 
-    private String operate_ip;
+    @Column(name = "operate_ip")
+    private String operateIp;
 }

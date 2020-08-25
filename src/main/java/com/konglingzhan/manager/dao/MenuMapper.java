@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 @Mapper
 public interface MenuMapper {
-    @Insert("insert into sys_menu(name,parent_id,level,status,seq,remark,operator,operate_time,operate_ip) values(#{name},#{parent_id},#{level},#{status},#{seq},#{remark},#{operator},#{operate_time},#{operate_ip})")
+    @Insert("insert into sys_menu(name,parent_id,level,status,seq,remark,operator,operate_time,operate_ip) values(#{name},#{parentId},#{level},#{status},#{seq},#{remark},#{operator},#{operateTime},#{operateIp})")
     void insert(Menu menu);
 
     @Select("select * from sys_menu")

@@ -2,7 +2,7 @@ package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.PageResult;
 import com.konglingzhan.manager.bean.User;
-import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.TestVo;
 import com.konglingzhan.manager.param.UserParam;
@@ -12,15 +12,18 @@ import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@Validated
 @RestController
 @Slf4j
 public class UserController {
@@ -28,7 +31,7 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/register")
-    public Result register(UserParam param) {
+    public Result register(@Valid UserParam param) {
         userService.insertUser(param);
         return Result.success("注册用户成功");
     }
@@ -37,20 +40,6 @@ public class UserController {
     public Result userAll(){
         List<User> userList = userService.selectAllUser();
         return Result.success(userList);
-    }
-
-    @PostMapping("/test1")
-    public Result validate(TestVo vo) throws ParamException {
-        ArrayList list = new ArrayList();
-        list.add("stu1");
-        list.add("stu2");
-        list.add("stu3");
-        list.add("stu4");
-        list.add("stu1");
-        System.out.println(list.size());
-        System.out.println(list.get(5));
-        BeanValidator.check(vo);
-        return Result.success();
     }
 
     @PostMapping("/user/updateById")

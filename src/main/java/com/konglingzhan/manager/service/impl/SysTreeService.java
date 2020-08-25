@@ -1,4 +1,4 @@
-package com.konglingzhan.manager.service;
+package com.konglingzhan.manager.service.impl;
 
 import com.konglingzhan.manager.bean.Acl;
 import com.konglingzhan.manager.bean.Dept;
@@ -9,6 +9,7 @@ import com.konglingzhan.manager.dto.AclDto;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.dto.DeptLevelDto;
 
+import com.konglingzhan.manager.service.impl.SysCoreService;
 import com.konglingzhan.manager.util.LevelUtil;
 
 

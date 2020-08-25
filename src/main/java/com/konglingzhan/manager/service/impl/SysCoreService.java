@@ -1,4 +1,4 @@
-package com.konglingzhan.manager.service;
+package com.konglingzhan.manager.service.impl;
 
 import com.konglingzhan.manager.bean.Acl;
 import com.konglingzhan.manager.common.RequestHolder;

@@ -1,13 +1,12 @@
-package com.konglingzhan.manager.service;
+package com.konglingzhan.manager.service.impl;
 
-import com.konglingzhan.manager.bean.Dept;
 import com.konglingzhan.manager.bean.Role;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
-import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.RoleParam;
+import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.util.BeanValidator;
-import org.assertj.core.util.Preconditions;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     @Resource
     private RoleMapper roleMapper;
 

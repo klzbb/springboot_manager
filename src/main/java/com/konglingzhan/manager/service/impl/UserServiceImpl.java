@@ -1,15 +1,14 @@
-package com.konglingzhan.manager.service;
-
+package com.konglingzhan.manager.service.impl;
 import com.konglingzhan.manager.bean.PageResult;
 import com.konglingzhan.manager.bean.User;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.dao.UserMapper;
-import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.UserParam;
+import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.util.BeanValidator;
-import org.assertj.core.util.Preconditions;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Resource
     private UserMapper userMapper;
@@ -44,22 +43,20 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int insertUser(UserParam param) {
-        BeanValidator.check(param);
+        // 业务校验
         if(checkTelephoneExist(param.getTelephone(),param.getId())){
             throw new ParamException("电话已经被占用");
         }
-
         if(checkEmailExist(param.getMail(),param.getId())){
             throw new ParamException("邮箱已经被占用");
         }
 
         String password = param.getPassword();
 //        String password = passwordEncoder.encode(param.getPassword());
-
-        User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).dept_id(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
+        User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator(RequestHolder.getCurrentUser().getUsername());
-        user.setOperate_ip("127.0.0.1");
-        user.setOperate_time(new Date());
+        user.setOperateIp("127.0.0.1");
+        user.setOperateTime(new Date());
 
         return userMapper.insert(user);
     }
@@ -78,10 +75,10 @@ public class UserServiceImpl implements UserService{
 
         User before = userMapper.selectByPrimaryKey(param.getId());
         Objects.requireNonNull(before,"待更新的用户不存在");
-        User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).dept_id(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
+        User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
-        after.setOperate_ip("127.0.0.1");
-        after.setOperate_time(new Date());
+        after.setOperateIp("127.0.0.1");
+        after.setOperateTime(new Date());
         userMapper.updateById(after);
     }
 

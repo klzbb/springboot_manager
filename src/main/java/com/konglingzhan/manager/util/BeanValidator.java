@@ -1,11 +1,8 @@
 package com.konglingzhan.manager.util;
 
-import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.common.exception.ParamException;
 import org.apache.commons.collections.MapUtils;
 import org.assertj.core.util.Lists;
-import org.assertj.core.util.Maps;
-import org.assertj.core.util.Preconditions;
-import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

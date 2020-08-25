@@ -2,10 +2,10 @@ package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.bean.Dept;
 import com.konglingzhan.manager.dto.DeptLevelDto;
-import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.DeptParam;
 import com.konglingzhan.manager.service.DeptService;
-import com.konglingzhan.manager.service.SysTreeService;
+import com.konglingzhan.manager.service.impl.SysTreeService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.web.bind.annotation.PostMapping;

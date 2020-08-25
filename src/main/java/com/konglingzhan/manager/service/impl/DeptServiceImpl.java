@@ -1,27 +1,24 @@
-package com.konglingzhan.manager.service;
+package com.konglingzhan.manager.service.impl;
 
 import com.konglingzhan.manager.bean.Dept;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.DeptMapper;
-import com.konglingzhan.manager.exception.ParamException;
+import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.DeptParam;
+import com.konglingzhan.manager.service.DeptService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.util.LevelUtil;
-import com.konglingzhan.manager.vo.Result;
 import org.apache.commons.collections.CollectionUtils;
-import org.assertj.core.util.Preconditions;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Service
-public class DeptServiceImpl implements DeptService{
+public class DeptServiceImpl implements DeptService {
     @Resource
     private DeptMapper deptMapper;
 

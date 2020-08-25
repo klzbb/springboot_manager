@@ -1,9 +1,10 @@
-package com.konglingzhan.manager.service;
+package com.konglingzhan.manager.service.impl;
 
 import com.konglingzhan.manager.bean.UserRole;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.UserRoleMapper;
 import com.konglingzhan.manager.param.RoleUserParam;
+import com.konglingzhan.manager.service.UserRoleService;
 import com.konglingzhan.manager.util.BeanValidator;
 import org.springframework.stereotype.Service;
 
