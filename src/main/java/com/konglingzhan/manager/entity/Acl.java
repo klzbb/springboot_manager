@@ -1,9 +1,12 @@
-package com.konglingzhan.manager.bean;
+package com.konglingzhan.manager.entity;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name = "sys_acl")
 @Getter
 @Setter
 @Builder
@@ -11,7 +14,10 @@ import java.util.Date;
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id"})
 public class Acl {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String code;
     private String name;
     private Integer acl_module_id;

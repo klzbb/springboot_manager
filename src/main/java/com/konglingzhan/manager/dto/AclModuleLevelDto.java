@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.dto;
 
-import com.konglingzhan.manager.bean.Menu;
+import com.konglingzhan.manager.entity.Menu;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;

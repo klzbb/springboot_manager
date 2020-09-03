@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.service.impl;
-import com.konglingzhan.manager.bean.PageResult;
-import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.common.authentication.SecurityUser;
+import com.konglingzhan.manager.dto.PageResult;
+import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.dao.UserMapper;
@@ -12,6 +13,8 @@ import com.konglingzhan.manager.util.BeanValidator;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,15 +34,14 @@ public class UserServiceImpl implements UserService {
 //    @Resource
 //    private PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        User user = userMapper.selectUserByUsername(s);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("不存在该用户");
-//        }
-////        user.setRoles();
-//        return  user;
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = userMapper.findByKeyWord(s);
+        if (user == null) {
+            throw new UsernameNotFoundException("不存在该用户");
+        }
+        return (UserDetails) new SecurityUser(user);
+    }
 
     @Override
     public int insertUser(UserParam param) {
@@ -54,7 +56,8 @@ public class UserServiceImpl implements UserService {
         String password = param.getPassword();
 //        String password = passwordEncoder.encode(param.getPassword());
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-        user.setOperator(RequestHolder.getCurrentUser().getUsername());
+//        user.setOperator(RequestHolder.getCurrentUser().getUsername());
+        user.setOperator("admin");
         user.setOperateIp("127.0.0.1");
         user.setOperateTime(new Date());
 

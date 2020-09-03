@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.service.impl;
 
-import com.konglingzhan.manager.bean.Menu;
+import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.MenuMapper;
 import com.konglingzhan.manager.common.exception.ParamException;

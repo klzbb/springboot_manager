@@ -10,12 +10,11 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  jackson:
-#    default-property-inclusion: non_null
-
-jpa:
-  hibernate:
-    ddl-auto: update
+  jpa:
+    hibernate:
+      ddl-auto: update
+    dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
 
 
 logging:

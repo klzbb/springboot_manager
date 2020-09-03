@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.common;
 
-import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 

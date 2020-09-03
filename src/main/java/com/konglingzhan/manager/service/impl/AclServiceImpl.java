@@ -1,7 +1,7 @@
 package com.konglingzhan.manager.service.impl;
 
-import com.konglingzhan.manager.bean.Acl;
-import com.konglingzhan.manager.bean.PageResult;
+import com.konglingzhan.manager.entity.Acl;
+import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.AclMapper;
 import com.konglingzhan.manager.common.exception.ParamException;

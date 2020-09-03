@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.service.impl;
 
-import com.konglingzhan.manager.bean.Dept;
+import com.konglingzhan.manager.entity.Dept;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.DeptMapper;
 import com.konglingzhan.manager.common.exception.ParamException;

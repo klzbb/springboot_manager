@@ -1,15 +1,16 @@
 package com.konglingzhan.manager.service;
 
-import com.konglingzhan.manager.bean.PageResult;
-import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.dto.PageResult;
+import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.UserParam;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
-//UserDetailsService
-public interface UserService  {
+public interface UserService extends UserDetailsService {
 
     int insertUser(UserParam param);
 
@@ -21,8 +22,8 @@ public interface UserService  {
 
     User findByKeyWord (String keyWord);
 
-//    @Override
-//    UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
+    @Override
+    UserDetails loadUserByUsername(String s);
 
     List<User> selectByDeptId(String deptId);
 

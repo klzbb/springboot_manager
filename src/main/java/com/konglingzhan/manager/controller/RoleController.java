@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.controller;
 
-import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.entity.Role;
 import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleMenuService;

@@ -1,13 +1,10 @@
 package com.konglingzhan.manager.controller;
 
-import com.konglingzhan.manager.bean.PageResult;
-import com.konglingzhan.manager.bean.User;
-import com.konglingzhan.manager.common.exception.ParamException;
+import com.konglingzhan.manager.dto.PageResult;
+import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
-import com.konglingzhan.manager.param.TestVo;
 import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.service.UserService;
-import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Validated

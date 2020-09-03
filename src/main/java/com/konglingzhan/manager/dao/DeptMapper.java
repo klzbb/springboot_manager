@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.dao;
 
-import com.konglingzhan.manager.bean.Dept;
+import com.konglingzhan.manager.entity.Dept;
 import com.konglingzhan.manager.param.DeptParam;
 import org.apache.ibatis.annotations.*;
 

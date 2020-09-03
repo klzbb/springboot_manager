@@ -1,4 +1,4 @@
-package com.konglingzhan.manager.bean;
+package com.konglingzhan.manager.dto;
 
 import lombok.Builder;
 import lombok.Getter;

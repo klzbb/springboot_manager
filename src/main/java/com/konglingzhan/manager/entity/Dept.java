@@ -1,7 +1,8 @@
-package com.konglingzhan.manager.bean;
+package com.konglingzhan.manager.entity;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /*
@@ -13,8 +14,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Entity
+@Table(name = "sys_dept")
 public class Dept {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;

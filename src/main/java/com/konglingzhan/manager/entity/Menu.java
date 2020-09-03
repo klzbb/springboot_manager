@@ -1,4 +1,4 @@
-package com.konglingzhan.manager.bean;
+package com.konglingzhan.manager.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -18,7 +18,7 @@ import java.util.Date;
 public class Menu {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;

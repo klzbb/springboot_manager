@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.service;
 
-import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.entity.Role;
 import com.konglingzhan.manager.param.RoleParam;
 
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.konglingzhan.manager.bean;
+package com.konglingzhan.manager.entity;
 
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ import java.util.List;
 public class User {//UserDetails
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String username;
@@ -42,8 +42,6 @@ public class User {//UserDetails
 
     @Column(name = "operate_time")
     private Date operateTime;
-
-    private List<Role> roles;
 
     private Boolean isEnabled = true;
 

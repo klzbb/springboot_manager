@@ -1,7 +1,6 @@
 package com.konglingzhan.manager.dao;
 
-import com.konglingzhan.manager.bean.Dept;
-import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.entity.Role;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.controller;
 
-import com.konglingzhan.manager.bean.Dept;
+import com.konglingzhan.manager.entity.Dept;
 import com.konglingzhan.manager.dto.DeptLevelDto;
 import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.DeptParam;

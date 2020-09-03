@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.dto;
 
-import com.konglingzhan.manager.bean.Dept;
+import com.konglingzhan.manager.entity.Dept;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.dao;
 
-import com.konglingzhan.manager.bean.Menu;
+import com.konglingzhan.manager.entity.Menu;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

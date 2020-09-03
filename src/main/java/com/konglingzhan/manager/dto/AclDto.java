@@ -1,7 +1,7 @@
 package com.konglingzhan.manager.dto;
 
 
-import com.konglingzhan.manager.bean.Acl;
+import com.konglingzhan.manager.entity.Acl;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

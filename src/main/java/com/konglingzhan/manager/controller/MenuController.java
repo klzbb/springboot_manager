@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.controller;
 
-import com.konglingzhan.manager.bean.Menu;
+import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.param.MenuParam;
 import com.konglingzhan.manager.service.MenuService;

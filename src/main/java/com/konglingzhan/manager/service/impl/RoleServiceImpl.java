@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.service.impl;
 
-import com.konglingzhan.manager.bean.Role;
+import com.konglingzhan.manager.entity.Role;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.common.exception.ParamException;

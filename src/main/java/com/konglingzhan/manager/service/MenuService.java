@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.service;
 
-import com.konglingzhan.manager.bean.Menu;
+import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.param.MenuParam;
 
 import java.util.List;

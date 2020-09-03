@@ -1,8 +1,7 @@
 package com.konglingzhan.manager.service;
 
-import com.konglingzhan.manager.bean.Acl;
-import com.konglingzhan.manager.bean.PageResult;
-import com.konglingzhan.manager.bean.User;
+import com.konglingzhan.manager.entity.Acl;
+import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.param.AclParam;
 import com.konglingzhan.manager.param.PageQuery;
 

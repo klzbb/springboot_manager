@@ -1,6 +1,6 @@
 package com.konglingzhan.manager.service.impl;
 
-import com.konglingzhan.manager.bean.UserRole;
+import com.konglingzhan.manager.entity.UserRole;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.UserRoleMapper;
 import com.konglingzhan.manager.param.RoleUserParam;
