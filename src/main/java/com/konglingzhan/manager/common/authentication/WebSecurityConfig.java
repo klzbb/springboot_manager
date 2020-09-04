@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.common.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.konglingzhan.manager.common.filter.JwtAuthenticationFilter;
 import com.konglingzhan.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
@@ -44,8 +48,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService);
     }
+    /**
+     * BCrypt加密
+     */
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
-
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+        return new JwtAuthenticationFilter();
+    }
     /**
      * http相关的配置，包括登入登出、异常处理、会话管理等
      *
@@ -57,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and().csrf().disable();
         httpSecurity
                 .authorizeRequests()
+                .antMatchers("/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -82,8 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         out.flush();
                         out.close();
                     });
-
-
+        // Add our custom JWT security filter
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
 }

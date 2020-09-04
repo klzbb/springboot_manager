@@ -12,7 +12,7 @@ import java.util.Collection;
 @Component
 public class SecurityUser implements UserDetails {
 
-    private transient com.konglingzhan.manager.entity.User currentUserInfo;
+    private transient User currentUserInfo;
 
     public SecurityUser() {
     }

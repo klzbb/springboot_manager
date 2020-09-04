@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Slf4j
 @Component
@@ -48,6 +49,10 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             // 其他错误
             log.error("[登录失败] - [%s]其他错误");
         }
-
+        response.setContentType("application/json;charset=utf-8");
+        PrintWriter out = response.getWriter();
+        out.write("{\"status\":\"success\",\"msg\":\"登录失败\"}");
+        out.flush();
+        out.close();
     }
 }

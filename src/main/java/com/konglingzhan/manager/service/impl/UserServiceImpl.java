@@ -13,11 +13,14 @@ import com.konglingzhan.manager.util.BeanValidator;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -31,8 +34,8 @@ public class UserServiceImpl implements UserService {
     @Resource
     private RoleMapper roleMapper;
 
-//    @Resource
-//    private PasswordEncoder passwordEncoder;
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -40,7 +43,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("不存在该用户");
         }
-        return (UserDetails) new SecurityUser(user);
+        return  new org.springframework.security.core.userdetails.User(s,user.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_admin")));
     }
 
     @Override
@@ -53,8 +56,7 @@ public class UserServiceImpl implements UserService {
             throw new ParamException("邮箱已经被占用");
         }
 
-        String password = param.getPassword();
-//        String password = passwordEncoder.encode(param.getPassword());
+        String password = passwordEncoder.encode(param.getPassword());
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
 //        user.setOperator(RequestHolder.getCurrentUser().getUsername());
         user.setOperator("admin");
@@ -79,7 +81,7 @@ public class UserServiceImpl implements UserService {
         User before = userMapper.selectByPrimaryKey(param.getId());
         Objects.requireNonNull(before,"待更新的用户不存在");
         User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-        after.setOperator(RequestHolder.getCurrentUser().getUsername());
+        after.setOperator("admin");
         after.setOperateIp("127.0.0.1");
         after.setOperateTime(new Date());
         userMapper.updateById(after);

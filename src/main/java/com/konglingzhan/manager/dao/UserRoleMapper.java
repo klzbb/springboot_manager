@@ -12,6 +12,7 @@ public interface UserRoleMapper {
     @Insert("insert into sys_user_role (role_id,user_id,operator,operate_time,operate_ip) values (#{roleId},#{userId},#{operator},#{operateTime},#{operateIp})")
     int insert(UserRole userRole);
 
+
     @Select({
             "<script>",
                 "select role_id",

@@ -19,4 +19,10 @@ public class UserRoleController {
         userRoleService.insert(param);
         return Result.success();
     }
+
+//    @PostMapping("/roleuser/all")
+//    public Result roleUserAdd (RoleUserParam param) {
+//        userRoleService.all(param);
+//        return Result.success();
+//    }
 }

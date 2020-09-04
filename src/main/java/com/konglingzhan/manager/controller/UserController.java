@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Enumeration;
 import java.util.List;
 
 @Validated
@@ -118,7 +119,11 @@ public class UserController {
     }
 
     @PostMapping("/user/getUserInfo")
-    public Result getUserInfo(){
+    public Result getUserInfo(HttpServletRequest request){
+        //获得session对象
+        HttpSession session = request.getSession();
+        //取出session域中所有属性名
+        Enumeration attributeNames = session.getAttributeNames();
         User userInfo = userService.getUserInfo();
         return Result.success(userInfo);
     }

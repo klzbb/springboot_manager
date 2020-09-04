@@ -20,7 +20,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     public void insert(RoleUserParam param) {
         BeanValidator.check(param);
         UserRole userRole = UserRole.builder().roleId(param.getRoleId()).userId(param.getUserId()).build();
-        userRole.setOperator(RequestHolder.getCurrentUser().getUsername());
+        userRole.setOperator("admin");
         userRole.setOperateIp("127.0.0.1");
         userRole.setOperateTime(new Date());
         userRoleMapper.insert(userRole);

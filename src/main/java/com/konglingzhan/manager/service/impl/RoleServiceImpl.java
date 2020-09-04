@@ -7,6 +7,8 @@ import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.util.BeanValidator;
+import com.konglingzhan.manager.util.UserUtil;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -26,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
             throw new ParamException("角色名称已存在");
         }
         Role role = Role.builder().name(param.getName()).type(param.getType()).status(param.getStatus()).remark(param.getRemark()).build();
-        role.setOperator(RequestHolder.getCurrentUser().getUsername());
+        role.setOperator("admin");
         role.setOperate_ip("127.0.0.1");
         role.setOperate_time(new Date());
         roleMapper.insert(role);
