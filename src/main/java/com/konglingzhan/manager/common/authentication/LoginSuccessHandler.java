@@ -1,15 +1,22 @@
 package com.konglingzhan.manager.common.authentication;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /*
@@ -21,9 +28,18 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("登录成功");
+        String token = JWT.create()
+                .withExpiresAt(new Date(System.currentTimeMillis()))  //设置过期时间
+                .withAudience("user1") //设置接受方信息，一般时登录用户
+                .sign(Algorithm.HMAC256("111111"));  //使用HMAC算法，111111作为密钥加密
+        Map map = new HashMap();
+        map.put("code",0);
+        map.put("data",token);
+        map.put("msg","登录成功");
+        ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
-        out.write("{\"status\":\"success\",\"msg\":\"登录成功\",\"code\":0}");
+        out.write(objectMapper.writeValueAsString(map));
         out.flush();
         out.close();
     }

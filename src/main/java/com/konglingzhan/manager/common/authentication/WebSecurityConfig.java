@@ -20,6 +20,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Configuration
@@ -93,7 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessHandler((req,res,authentition) -> {
                         res.setContentType("application/json;charset=utf-8");
                         PrintWriter out = res.getWriter();
-                        out.write(new ObjectMapper().writeValueAsString("注销登录"));
+                        out.write("{\"data\":\"success\",\"msg\":\"注销登录\",\"code\":0}");
                         out.flush();
                         out.close();
                     });
