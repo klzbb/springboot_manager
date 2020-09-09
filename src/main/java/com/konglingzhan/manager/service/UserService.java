@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.service;
 
+import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
@@ -31,5 +32,5 @@ public interface UserService extends UserDetailsService {
 
     void delUserById(int id);
 
-    User getUserInfo();
+    LoginUserInfo getUserInfo(int id);
 }

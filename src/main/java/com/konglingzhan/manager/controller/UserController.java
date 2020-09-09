@@ -1,5 +1,7 @@
 package com.konglingzhan.manager.controller;
 
+import com.konglingzhan.manager.common.authentication.SecurityUser;
+import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
@@ -9,6 +11,10 @@ import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -119,12 +126,10 @@ public class UserController {
     }
 
     @PostMapping("/user/getUserInfo")
-    public Result getUserInfo(HttpServletRequest request){
-        //获得session对象
-        HttpSession session = request.getSession();
-        //取出session域中所有属性名
-        Enumeration attributeNames = session.getAttributeNames();
-        User userInfo = userService.getUserInfo();
+    public Result getUserInfo(){
+        SecurityUser user = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Integer userId = user.getId();
+        LoginUserInfo userInfo = userService.getUserInfo(userId);
         return Result.success(userInfo);
     }
 }

@@ -1,8 +1,11 @@
 package com.konglingzhan.manager.common.authentication;
 
+import com.konglingzhan.manager.entity.User;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +13,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
+@Getter
+@Setter
 public class SecurityUser implements UserDetails {
 
-    private transient User currentUserInfo;
+    private User currentUserInfo;
 
     public SecurityUser() {
     }
@@ -23,6 +28,9 @@ public class SecurityUser implements UserDetails {
         }
     }
 
+    public Integer getId(){
+        return currentUserInfo.getId();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

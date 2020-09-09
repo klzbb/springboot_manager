@@ -30,7 +30,7 @@ public class MenuServiceImpl implements MenuService {
         Menu menu = Menu.builder().url(param.getUrl()).type(param.getType()).name(param.getName()).parentId(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId());
         menu.setLevel(level);
-        menu.setOperator(RequestHolder.getCurrentUser().getUsername());
+        menu.setOperator("admin");
         menu.setOperateIp("127.0.0.1");
         menu.setOperateTime(new Date());
         this.menuMapper.insert(menu);

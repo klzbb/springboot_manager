@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.dao;
 
+import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
 import org.apache.ibatis.annotations.*;
@@ -77,5 +78,5 @@ public interface UserMapper {
     void delUserById(@Param("id") int id);
 
     @Select("select * from sys_user where id = #{id}")
-    User getUserInfo(@Param("id") int id);
+    LoginUserInfo getUserInfo(@Param("id") int id);
 }

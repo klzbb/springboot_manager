@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.service.impl;
 import com.konglingzhan.manager.common.authentication.SecurityUser;
+import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.common.RequestHolder;
@@ -38,12 +39,13 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userMapper.findByKeyWord(s);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userMapper.findByKeyWord(username);
         if (user == null) {
             throw new UsernameNotFoundException("不存在该用户");
         }
-        return  new org.springframework.security.core.userdetails.User(s,user.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_admin")));
+        return new SecurityUser(user);
+//        return  new org.springframework.security.core.userdetails.User(username,user.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_admin")));
     }
 
     @Override
@@ -135,8 +137,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserInfo() {
-        int id = RequestHolder.getCurrentUser().getId();
+    public LoginUserInfo getUserInfo(int id) {
         return userMapper.getUserInfo(id);
     }
 }
