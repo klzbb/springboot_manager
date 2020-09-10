@@ -46,8 +46,8 @@ public class RoleController {
 
     @PostMapping("/role/tree")
     public Result roleTree(@RequestParam("roleId") int roleId){
-        return Result.success(sysTreeService.aclModuleTree());
-//        return Result.success(sysTreeService.roleTree(roleId));
+//        return Result.success(sysTreeService.aclModuleTree());
+        return Result.success(sysTreeService.roleTree(roleId));
     }
 
     @PostMapping("/role/del")
@@ -60,10 +60,10 @@ public class RoleController {
         }
     }
 
-    @PostMapping("/role/changeAcl")
-    public Result roleChangeAcl(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds",required = false,defaultValue = "") String aclIds){
-        List<Integer> aclList = StringUtil.splitToListInt(aclIds);
-        roleMenuService.changeRoleAcls(roleId,aclList);
-        return Result.success();
-    }
+//    @PostMapping("/role/changeAcl")
+//    public Result roleChangeAcl(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds",required = false,defaultValue = "") String aclIds){
+//        List<Integer> aclList = StringUtil.splitToListInt(aclIds);
+//        roleMenuService.changeRoleAcls(roleId,aclList);
+//        return Result.success();
+//    }
 }

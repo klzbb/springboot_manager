@@ -5,6 +5,7 @@ import com.konglingzhan.manager.entity.UserRole;
 import com.konglingzhan.manager.param.RoleUserParam;
 import com.konglingzhan.manager.service.UserRoleService;
 import com.konglingzhan.manager.vo.Result;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
+@Validated
 public class UserRoleController {
 
     @Resource

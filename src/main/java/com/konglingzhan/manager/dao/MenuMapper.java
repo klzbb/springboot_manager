@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.dao;
 
+import com.konglingzhan.manager.entity.Acl;
 import com.konglingzhan.manager.entity.Menu;
 import org.apache.ibatis.annotations.*;
 
@@ -63,4 +64,15 @@ public interface MenuMapper {
 
     @Select("select level from sys_menu where id = #{id}")
     Menu findLevelById(int aclModuleId);
+
+    @Select({
+            "<script>",
+                "select *",
+                    "from",
+                "sys_menu",
+                "where in ",
+                 "<foreach collection='idList' item='id' open='(' close=')' separator=',' > #{id} </foreach>",
+            "</script>"
+    })
+    List<Menu> getByIdList(@Param("idList") List<Integer> idList);
 }

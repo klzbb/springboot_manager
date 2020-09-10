@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.service.impl;
 
+import com.konglingzhan.manager.dto.MenuDto;
 import com.konglingzhan.manager.entity.Acl;
 import com.konglingzhan.manager.entity.Dept;
 import com.konglingzhan.manager.dao.AclMapper;
@@ -9,6 +10,7 @@ import com.konglingzhan.manager.dto.AclDto;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.dto.DeptLevelDto;
 
+import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.util.LevelUtil;
 
 
@@ -36,46 +38,47 @@ public class SysTreeService {
     private AclMapper aclMapper;
 
     /**
-     * 角色权限树
+     * 查询当前角色权限树
      */
     public List<AclModuleLevelDto> roleTree(int roleId){
         // 当前用户分配的权限点
-        List<Acl> userAclList = sysCoreService.getCurrentUserAclList();
+        List<Menu> userAclList = sysCoreService.getCurrentUserAclList();
         // 当前角色分配的权限点
-        List<Acl> roleAclList = sysCoreService.getRoleAclList(roleId);
+        List<Menu> roleAclList = sysCoreService.getRoleAclList(roleId);
         // 当前系统所有权限点
-        List<AclDto> aclDtoList = new ArrayList<>();
+        List<MenuDto> menuDtoList = new ArrayList<>();
         Set<Integer> userAclIdSet = userAclList.stream().map(acl -> acl.getId()).collect(Collectors.toSet());
         Set<Integer> roleAclIdSet = roleAclList.stream().map(acl -> acl.getId()).collect(Collectors.toSet());
 
-        List<Acl> allAclList = aclMapper.selectAll();
-        allAclList.stream().forEach(acl -> {
-            AclDto dto = AclDto.adapt(acl);
-            if(userAclIdSet.contains(acl.getId())){
+        List<Menu> allMenuList = menuMapper.selectAll();
+        allMenuList.stream().forEach(menu -> {
+            MenuDto dto = MenuDto.adapt(menu);
+            if(userAclIdSet.contains(menu.getId())){
                 dto.setHasAcl(true);
             }
-            if(roleAclIdSet.contains(acl.getId())){
+            if(roleAclIdSet.contains(menu.getId())){
                 dto.setChecked(true);
             }
-            aclDtoList.add(dto);
+            menuDtoList.add(dto);
         });
-        return aclListToTreeList(aclDtoList);
+        return aclListToTreeList(menuDtoList);
     }
 
-    public List<AclModuleLevelDto> aclListToTreeList(List<AclDto> aclDtoList){
-        if(CollectionUtils.isEmpty(aclDtoList)){
+    public List<AclModuleLevelDto> aclListToTreeList(List<MenuDto> menuDtoList){
+        if(CollectionUtils.isEmpty(menuDtoList)){
             return new ArrayList<>();
         }
 
         List<AclModuleLevelDto> aclModuleLevelList = aclModuleTree();
-        MultiMap moduleIdAclMap = new MultiValueMap();
-        for(Acl acl : aclDtoList){
-            if(acl.getStatus() == 1){
-                moduleIdAclMap.put(acl.getAcl_module_id(),acl);
-            }
-        }
-        bindAclsWithOrder(aclModuleLevelList,moduleIdAclMap);
         return aclModuleLevelList;
+//        MultiMap moduleIdAclMap = new MultiValueMap();
+//        for(Menu acl : menuDtoList){
+//            if(acl.getStatus() == 1){
+//                moduleIdAclMap.put(acl.getAcl_module_id(),acl);
+//            }
+//        }
+//        bindAclsWithOrder(aclModuleLevelList,moduleIdAclMap);
+//        return aclModuleLevelList;
     }
 
     public void bindAclsWithOrder( List<AclModuleLevelDto> aclModuleLevelList,MultiMap moduleIdAclMap){
@@ -92,10 +95,13 @@ public class SysTreeService {
         }
     }
 
+    /**
+     * 菜单树状结构
+     **/
     public List<AclModuleLevelDto> aclModuleTree(){
-        List<com.konglingzhan.manager.entity.Menu> list = menuMapper.selectAll();
+        List<Menu> list = menuMapper.selectAll();
         List<AclModuleLevelDto> dtoList = new ArrayList<>();
-        for(com.konglingzhan.manager.entity.Menu menu : list){
+        for(Menu menu : list){
             AclModuleLevelDto dto = AclModuleLevelDto.adapt(menu);
             dtoList.add(dto);
         }
@@ -128,7 +134,7 @@ public class SysTreeService {
         for(int i = 0;i<dtoList.size(); i++){
             // 遍历该层的每个元素
             AclModuleLevelDto dto = dtoList.get(i);
-            // 处理当前层级的数据
+            // 处理当前层级的数据（level算法）
             String nextLevel = LevelUtil.calculateLevel(level,dto.getId());
             System.out.println("nextLevel=" + nextLevel);
             // 处理下一层

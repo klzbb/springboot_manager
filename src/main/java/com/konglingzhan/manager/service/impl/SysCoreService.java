@@ -1,10 +1,13 @@
 package com.konglingzhan.manager.service.impl;
 
+import com.konglingzhan.manager.dao.MenuMapper;
 import com.konglingzhan.manager.entity.Acl;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.AclMapper;
 import com.konglingzhan.manager.dao.RoleMenuMapper;
 import com.konglingzhan.manager.dao.UserRoleMapper;
+import com.konglingzhan.manager.entity.Menu;
+import com.konglingzhan.manager.util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -18,6 +21,9 @@ public class SysCoreService {
     private AclMapper aclMapper;
 
     @Resource
+    private MenuMapper menuMapper;
+
+    @Resource
     private UserRoleMapper userRoleMapper;
 
     @Resource
@@ -26,28 +32,28 @@ public class SysCoreService {
     /**
      * 当前用户分配的权限点集合
      */
-    public List<Acl> getCurrentUserAclList(){
-        int userId = RequestHolder.getCurrentUser().getId();
+    public List<Menu> getCurrentUserAclList(){
+        int userId = UserUtil.getLoginUser().getId();
         return getUserAclList(userId);
     }
 
     /**
      * 当前角色分配的权限点集合
      */
-    public List<Acl> getRoleAclList(int roleId){
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(roleId);
-        List<Integer> aclIdList = roleMenuMapper.getAclIdListByRoleIdList(list);
-        if(CollectionUtils.isEmpty(aclIdList)){
+    public List<Menu> getRoleAclList(int roleId){
+        ArrayList<Integer> roleList = new ArrayList<>();
+        roleList.add(roleId);
+        List<Integer> menuIdList = roleMenuMapper.getMenuIdListByRoleIdList(roleList);
+        if(CollectionUtils.isEmpty(menuIdList)){
             return new ArrayList<>();
         }
-        return aclMapper.getByIdList(aclIdList);
+        return menuMapper.getByIdList(menuIdList);
     }
 
-    public List<Acl> getUserAclList(int userId){
+    public List<Menu> getUserAclList(int userId){
 
         if(isSuperAdmin()){
-            return  aclMapper.selectAll();
+            return  menuMapper.selectAll();
         }
 
         /**
@@ -60,12 +66,12 @@ public class SysCoreService {
         /**
          * 根据用户角色ids获取用户权限点ids
          */
-        List<Integer> userAclIdList = roleMenuMapper.getAclIdListByRoleIdList(userRoleIdList);
-        if(CollectionUtils.isEmpty(userAclIdList)){
+        List<Integer> userMenuIdList = roleMenuMapper.getMenuIdListByRoleIdList(userRoleIdList);
+        if(CollectionUtils.isEmpty(userMenuIdList)){
             return new ArrayList<>();
         }
 
-        return aclMapper.getByIdList(userAclIdList);
+        return menuMapper.getByIdList(userMenuIdList);
     }
 
     public boolean isSuperAdmin(){
