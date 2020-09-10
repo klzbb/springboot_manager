@@ -44,7 +44,7 @@ public class RoleServiceImpl implements RoleService {
         Objects.requireNonNull(before, "待更新的角色不存在");
 
         Role role = Role.builder().id(param.getId()).name(param.getName()).type(param.getType()).status(param.getStatus()).remark(param.getRemark()).build();
-        role.setOperator(RequestHolder.getCurrentUser().getUsername());
+        role.setOperator(UserUtil.getLoginUser().getUsername());
         role.setOperate_ip("127.0.0.1");
         role.setOperate_time(new Date());
         roleMapper.update(role);

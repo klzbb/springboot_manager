@@ -70,7 +70,7 @@ public interface MenuMapper {
                 "select *",
                     "from",
                 "sys_menu",
-                "where in ",
+                "where id in ",
                  "<foreach collection='idList' item='id' open='(' close=')' separator=',' > #{id} </foreach>",
             "</script>"
     })
