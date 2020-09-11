@@ -40,7 +40,7 @@ public class SysTreeService {
     /**
      * 查询当前角色权限树
      */
-    public List<AclModuleLevelDto> roleTree(int roleId){
+    public List<MenuDto> roleTree(int roleId){
         // 当前用户分配的权限点
         List<Menu> userAclList = sysCoreService.getCurrentUserAclList();
         // 当前角色分配的权限点
@@ -63,35 +63,49 @@ public class SysTreeService {
         });
         return aclListToTreeList(menuDtoList);
     }
+    public List<MenuDto> aclListToTreeList(List<MenuDto> menuDtoList){
 
-    public List<AclModuleLevelDto> aclListToTreeList(List<MenuDto> menuDtoList){
         if(CollectionUtils.isEmpty(menuDtoList)){
             return new ArrayList<>();
         }
 
+        List<MenuDto> rootList = new ArrayList<>();
         List<AclModuleLevelDto> aclModuleLevelList = aclModuleTree();
-        return aclModuleLevelList;
-//        MultiMap moduleIdAclMap = new MultiValueMap();
-//        for(Menu acl : menuDtoList){
-//            if(acl.getStatus() == 1){
-//                moduleIdAclMap.put(acl.getAcl_module_id(),acl);
-//            }
-//        }
-//        bindAclsWithOrder(aclModuleLevelList,moduleIdAclMap);
-//        return aclModuleLevelList;
-    }
+        MultiMap moduleIdAclMap = new MultiValueMap();
+        for(MenuDto dto : menuDtoList){
+            if(dto.getStatus() == 1){
+                moduleIdAclMap.put(dto.getLevel(),dto);
+            }
+            if(LevelUtil.ROOT.equals(dto.getLevel())){
+                rootList.add(dto);
+            }
+        }
 
-    public void bindAclsWithOrder( List<AclModuleLevelDto> aclModuleLevelList,MultiMap moduleIdAclMap){
+        // 按照seq从小到大排序
+        Collections.sort(rootList, aclSeqComparator);
+
+        // 递归生成树
+        bindAclsWithOrder(rootList,LevelUtil.ROOT,moduleIdAclMap);
+        return rootList;
+    }
+    public void bindAclsWithOrder( List<MenuDto> aclModuleLevelList,String level,MultiMap moduleIdAclMap){
         if(CollectionUtils.isEmpty(aclModuleLevelList)){
             return;
         }
-        for(AclModuleLevelDto dto: aclModuleLevelList){
-            List<AclDto> aclDtoList = (List<AclDto>) moduleIdAclMap.get(dto.getId());
-            if(!CollectionUtils.isEmpty(aclDtoList)){
-                Collections.sort(aclDtoList,aclSeqComparator);
-                dto.setAclList(aclDtoList);
+        for(MenuDto dto: aclModuleLevelList){
+            // 处理当前层级的数据（level算法）
+            String nextLevel = LevelUtil.calculateLevel(level,dto.getId());
+            System.out.println("nextLevel=" + nextLevel);
+            // 处理下一层
+            List<MenuDto> tempList = (List<MenuDto>) moduleIdAclMap.get(nextLevel);
+            if(!CollectionUtils.isEmpty(tempList)){
+                // 排序
+                Collections.sort(tempList,aclSeqComparator);
+                // 设置下一层部门
+                dto.setChildren(tempList);
+                // 进入到下一层处理
+                bindAclsWithOrder(tempList,nextLevel,moduleIdAclMap);
             }
-            bindAclsWithOrder(dto.getAclModuleList(),moduleIdAclMap);
         }
     }
 
@@ -143,7 +157,7 @@ public class SysTreeService {
                 // 排序
                 Collections.sort(tempList,aclModuleSeqComparator);
                 // 设置下一层部门
-                dto.setAclModuleList(tempList);
+                dto.setChildren(tempList);
                 // 进入到下一层处理
                 transformAclModuleTree(tempList,nextLevel,levelAclModuleMap);
             }
@@ -224,9 +238,9 @@ public class SysTreeService {
         }
     };
 
-    public Comparator<AclDto> aclSeqComparator = new Comparator<AclDto>() {
+    public Comparator<MenuDto> aclSeqComparator = new Comparator<MenuDto>() {
         @Override
-        public int compare(AclDto o1, AclDto o2) {
+        public int compare(MenuDto o1, MenuDto o2) {
             return o1.getSeq() - o2.getSeq();
         }
     };

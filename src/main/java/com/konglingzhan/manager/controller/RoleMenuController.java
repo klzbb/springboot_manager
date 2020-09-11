@@ -22,7 +22,7 @@ public class RoleMenuController {
     private RoleMenuService roleMenuService;
 
     @PostMapping("/roleMenu/save")
-    public Result save(@NotBlank String menuIds, int roleId){
+    public Result save(String menuIds, int roleId){
         List<Integer> menuIdList = StringUtil.splitToListInt(menuIds);
         roleMenuService.save(menuIdList,roleId);
         return Result.success();

@@ -12,15 +12,13 @@ import java.util.List;
 @Getter
 public class AclModuleLevelDto extends Menu {
 
-    // 是否默认选中
-    private boolean checked = false;
+//    // 是否默认选中
+//    private boolean checked = false;
+//
+//    // 是否有权限操作
+//    private boolean hasAcl = false;
 
-    // 是否有权限操作
-    private boolean hasAcl = false;
-
-    private List<AclModuleLevelDto> aclModuleList = new ArrayList<>();
-
-    private List<AclDto> aclList = new ArrayList<>();
+    private List<AclModuleLevelDto> children = new ArrayList<>();
 
     // 深拷贝
     public static AclModuleLevelDto adapt(Menu menu){
