@@ -18,4 +18,8 @@ public interface MenuService {
     void update(MenuParam param);
 
     Menu findLevelById(int aclModuleId);
+
+    List<Menu> getMenuListByLevel(String level);
+
+    void delByIds(List<Integer> ids);
 }

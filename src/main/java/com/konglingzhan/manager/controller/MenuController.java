@@ -58,4 +58,23 @@ public class MenuController {
         Menu menu = menuService.findLevelById(aclModuleId);
         return Result.success(menu);
     }
+
+    /**
+     * 根据level模糊查询
+     **/
+    @PostMapping("/findListByLevel")
+    public Result findListByLevel(@RequestParam("level") String level){
+        List<Menu> menuList = menuService.getMenuListByLevel(level);
+        return Result.success(menuList);
+    }
+
+    /**
+     * 删除菜单
+     * @param {String}
+     **/
+    @PostMapping("/delByIds")
+    public Result delByIds(String ids){
+        menuService.getMenuListByLevel(ids);
+        return Result.success();
+    }
 }

@@ -33,6 +33,16 @@ public interface MenuMapper {
     @Delete("delete from sys_menu where id = #{id}")
     void delById(int id);
 
+    @Delete({
+            "<script>",
+                "delete from sys_menu where in",
+                "<foreach collection='ids' item='id' open='(' close=')' separator=','>",
+                    "#{id}",
+                "</foreach>",
+            "</script>"
+    })
+    void delByIds(List<Integer> ids);
+
     @Update({
             "<script>",
                 "<foreach collection='list' item='item' open='' close='' separator=';'>",
@@ -42,21 +52,22 @@ public interface MenuMapper {
     })
     void batchUpdateLevel(@Param("list") List<Menu> list);
 
-    @Select("select * from sys_menu where level like #{level} || '0.%' ")
+    @Select("select * from sys_menu where level like concat('%',#{level},'%')")
     List<Menu> getChildDeptListByLevel(String level);
+
 
     @Update({
             "<script>",
                 "update sys_menu set",
                     "name = #{name},",
-                    "parent_id = #{parent_id},",
+                    "parent_id = #{parentId},",
                     "level = #{level},",
                     "status = #{status},",
                     "seq = #{seq},",
                     "remark = #{remark},",
                     "operator = #{operator},",
-                    "operate_time = #{operate_time},",
-                    "operate_ip = #{operate_ip}",
+                    "operate_time = #{operateTime},",
+                    "operate_ip = #{operateIp}",
                 "where id = #{id}",
             "</script>"
     })
