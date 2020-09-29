@@ -3,6 +3,7 @@ package com.konglingzhan.manager.controller;
 import com.konglingzhan.manager.common.authentication.SecurityUser;
 import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
+import com.konglingzhan.manager.dto.UserDto;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.UserParam;
@@ -42,7 +43,7 @@ public class UserController {
 
     @PostMapping("/userAll")
     public Result userAll(){
-        List<User> userList = userService.selectAllUser();
+        List<UserDto> userList = userService.selectAllUser();
         return Result.success(userList);
     }
 
@@ -95,17 +96,6 @@ public class UserController {
         Object name =  session.getAttribute("user");
         return Result.success(name);
     }
-
-//    @GetMapping("/user/admin")
-//    @PreAuthorize("hasRole('admin')")
-//    public Result userAdmin(){
-//        return Result.success("admin access");
-//    }
-//    @GetMapping("/user/user")
-//    @PreAuthorize("hasRole('admin,normal')")
-//    public Result userUser(){
-//        return Result.success("access admin user");
-//    }
 
     @PostMapping("/user/byDeptId")
     public Result userByDeptId(@RequestParam(value = "deptId") String deptId){

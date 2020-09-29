@@ -40,13 +40,17 @@ public class MenuController {
         List<Menu> list = menuService.selectAll();
         return Result.success(list);
     }
-
+    /*
+    * 删除菜单
+    * */
     @PostMapping("/del")
     public Result del(@RequestParam("id") int id){
         menuService.delById(id);
         return Result.success();
     }
-
+    /*
+    * 树状结构
+    * */
     @PostMapping("/tree")
     public Result tree(){
         List<AclModuleLevelDto> list = sysTreeService.aclModuleTree();
@@ -59,7 +63,7 @@ public class MenuController {
         return Result.success(menu);
     }
 
-    /**
+    /*
      * 根据level模糊查询
      **/
     @PostMapping("/findListByLevel")
@@ -68,7 +72,7 @@ public class MenuController {
         return Result.success(menuList);
     }
 
-    /**
+    /*
      * 删除菜单
      * @param {String}
      **/

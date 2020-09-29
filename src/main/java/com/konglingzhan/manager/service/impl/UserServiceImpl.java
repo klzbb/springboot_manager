@@ -2,6 +2,7 @@ package com.konglingzhan.manager.service.impl;
 import com.konglingzhan.manager.common.authentication.SecurityUser;
 import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
+import com.konglingzhan.manager.dto.UserDto;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
@@ -14,6 +15,7 @@ import com.konglingzhan.manager.util.BeanValidator;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import com.konglingzhan.manager.util.UserUtil;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,8 +62,7 @@ public class UserServiceImpl implements UserService {
 
         String password = passwordEncoder.encode(param.getPassword());
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-//        user.setOperator(RequestHolder.getCurrentUser().getUsername());
-        user.setOperator("admin");
+        user.setOperator(UserUtil.getLoginUser().getUsername());
         user.setOperateIp("127.0.0.1");
         user.setOperateTime(new Date());
 
@@ -98,7 +99,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.countByTelephone(telephone,userId) > 0;
     }
     @Override
-    public List<User> selectAllUser() {
+    public List<UserDto> selectAllUser() {
         return userMapper.selectAllUser();
     }
 

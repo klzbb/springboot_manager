@@ -25,7 +25,7 @@ public class DeptController {
     private SysTreeService sysTreeService;
 
     @PostMapping("/dept/add")
-    public Result deptAdd(@RequestBody DeptParam param){
+    public Result deptAdd(DeptParam param){
         deptService.insert(param);
         return Result.success();
     }

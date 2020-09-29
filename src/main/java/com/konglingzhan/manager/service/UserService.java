@@ -2,6 +2,7 @@ package com.konglingzhan.manager.service;
 
 import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
+import com.konglingzhan.manager.dto.UserDto;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.UserParam;
@@ -15,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     int insertUser(UserParam param);
 
-    List<User> selectAllUser();
+    List<UserDto> selectAllUser();
 
     User selectUserByUsername(String username);
 
