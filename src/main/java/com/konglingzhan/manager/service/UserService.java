@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     int insertUser(UserParam param);
 
-    List<UserDto> selectAllUser();
+//    List<UserDto> selectAllUser(PageQuery pageQuery);
 
     User selectUserByUsername(String username);
 
@@ -34,4 +34,6 @@ public interface UserService extends UserDetailsService {
     void delUserById(int id);
 
     LoginUserInfo getUserInfo(int id);
+
+    PageResult<UserDto> userAll(PageQuery pageQuery);
 }

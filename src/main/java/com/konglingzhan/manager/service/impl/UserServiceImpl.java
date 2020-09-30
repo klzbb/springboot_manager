@@ -98,9 +98,12 @@ public class UserServiceImpl implements UserService {
     public boolean checkTelephoneExist(String telephone,Integer userId){
         return userMapper.countByTelephone(telephone,userId) > 0;
     }
+
     @Override
-    public List<UserDto> selectAllUser() {
-        return userMapper.selectAllUser();
+    public PageResult<UserDto> userAll(PageQuery pageQuery) {
+        int num = userMapper.countUser();
+        List list = userMapper.selectAllUser(pageQuery);
+        return PageResult.<UserDto>builder().total(num).data(list).build();
     }
 
     @Override

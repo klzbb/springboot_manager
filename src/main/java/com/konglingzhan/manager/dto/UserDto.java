@@ -21,7 +21,7 @@ public class UserDto {
 
     private String mail;
 
-    private Integer deptId;
+    private String deptName;
 
     private Integer status;
 

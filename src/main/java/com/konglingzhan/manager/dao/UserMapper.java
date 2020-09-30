@@ -16,17 +16,34 @@ public interface UserMapper {
     @Insert("insert into sys_user (username,telephone,password,mail,dept_id,status,remark,operator,operate_ip,operate_time) values(#{username},#{telephone},#{password},#{mail},#{deptId},#{status},#{remark},#{operator},#{operateIp},#{operateTime})")
     int insert(User user);
 
-    @Select("select * from sys_user")
+
+    /*
+    * 查询所有有用户
+    * */
     @Results(
-            value={
-                    @Result(property = "deptId",column = "dept_id")
+            value = {
+                    @Result(property = "deptId", column = "dept_id"),
+                    @Result(property = "deptName",column = "name")
             }
     )
-    List<UserDto> selectAllUser();
+    @Select({
+            "<script>",
+                "select a.id,a.username,a.telephone,a.mail,a.status,a.remark,b.name ",
+                    "from",
+                "sys_user a left join sys_dept b on a.dept_id = b.id",
+                "limit #{offset},#{pageSize}",
+            "</script>"
+    })
+    List<UserDto> selectAllUser(PageQuery pageQuery);
 
-    @Select("select * from sys_user where username = #{username}")
+    /*
+    * 查询用户by username
+    * */
     User selectUserByUsername(@Param("username") String username);
 
+    /*
+    * 更新用户by id
+    * */
     @Update({
             "<script>",
                 "update sys_user set",
@@ -79,6 +96,9 @@ public interface UserMapper {
 
     @Select("select count(1) from sys_user where dept_id = #{deptId}")
     int countByDeptId(@Param("deptId") int deptId);
+
+    @Select("select count(1) from sys_user")
+    int countUser();
 
     @Select("select * from sys_user where dept_id = #{deptId} order by username ASC limit  #{page.offset}, #{page.pageSize}")
     List<User> userList(@Param("deptId") int deptId, @Param("page") PageQuery page);

@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     public Result validExceptionHandler(Exception e) {
         StringBuilder message = new StringBuilder();
         if(e instanceof BindException|| e instanceof MethodArgumentNotValidException){
-            List<FieldError> fieldErrors = e instanceof BindException?((BindException)e).getBindingResult().getFieldErrors():((MethodArgumentNotValidException)e).getBindingResult().getFieldErrors();
+            List<FieldError>  fieldErrors = e instanceof BindException?((BindException)e).getBindingResult().getFieldErrors():((MethodArgumentNotValidException)e).getBindingResult().getFieldErrors();
             for (FieldError error : fieldErrors) {
                 message.append(error.getField()).append(error.getDefaultMessage()).append(StringPool.COMMA);
             }

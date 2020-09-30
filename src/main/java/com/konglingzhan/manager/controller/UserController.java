@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.Enumeration;
 import java.util.List;
@@ -42,8 +43,8 @@ public class UserController {
     }
 
     @PostMapping("/userAll")
-    public Result userAll(){
-        List<UserDto> userList = userService.selectAllUser();
+    public Result userAll(@Valid PageQuery pageQuery){
+        PageResult<UserDto> userList = userService.userAll(pageQuery);
         return Result.success(userList);
     }
 
