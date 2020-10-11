@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.service.impl;
 import com.konglingzhan.manager.common.authentication.SecurityUser;
+import com.konglingzhan.manager.dao.UserRoleMapper;
 import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.dto.UserDto;
@@ -15,12 +16,14 @@ import com.konglingzhan.manager.util.BeanValidator;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import com.konglingzhan.manager.util.StringUtil;
 import com.konglingzhan.manager.util.UserUtil;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -38,6 +41,9 @@ public class UserServiceImpl implements UserService {
     private RoleMapper roleMapper;
 
     @Resource
+    private UserRoleMapper userRoleMapper;
+
+    @Resource
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -47,11 +53,11 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("不存在该用户");
         }
         return new SecurityUser(user);
-//        return  new org.springframework.security.core.userdetails.User(username,user.getPassword(), Arrays.asList(new SimpleGrantedAuthority("ROLE_admin")));
     }
 
     @Override
-    public int insertUser(UserParam param) {
+    @Transactional
+    public void insertUser(UserParam param) {
         // 业务校验
         if(checkTelephoneExist(param.getTelephone(),param.getId())){
             throw new ParamException("电话已经被占用");
@@ -66,7 +72,9 @@ public class UserServiceImpl implements UserService {
         user.setOperateIp("127.0.0.1");
         user.setOperateTime(new Date());
 
-        return userMapper.insert(user);
+        int id = userMapper.insert(user);
+        List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
+        userRoleMapper.insertArr(id,roleList);
     }
 
 
@@ -136,8 +144,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void delUserById(int id) {
         userMapper.delUserById(id);
+//        userRoleMapper
     }
 
     @Override

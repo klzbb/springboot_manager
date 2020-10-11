@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 public interface UserService extends UserDetailsService {
 
-    int insertUser(UserParam param);
+    void insertUser(UserParam param);
 
 //    List<UserDto> selectAllUser(PageQuery pageQuery);
 

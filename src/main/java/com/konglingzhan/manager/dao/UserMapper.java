@@ -11,9 +11,10 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     /*
-    * 新增用户
-    * */
+     * 新增用户
+     * */
     @Insert("insert into sys_user (username,telephone,password,mail,dept_id,status,remark,operator,operate_ip,operate_time) values(#{username},#{telephone},#{password},#{mail},#{deptId},#{status},#{remark},#{operator},#{operateIp},#{operateTime})")
+    @Options(useGeneratedKeys = true,keyProperty = "id", keyColumn="id")
     int insert(User user);
 
 
