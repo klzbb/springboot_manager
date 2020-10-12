@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService {
         user.setOperateIp("127.0.0.1");
         user.setOperateTime(new Date());
 
-        int id = userMapper.insert(user);
+        userMapper.insert(user);
         List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
-        userRoleMapper.insertArr(id,roleList);
+        userRoleMapper.insertArr(user.getId(),roleList);
     }
 
 
