@@ -1,10 +1,12 @@
 package com.konglingzhan.manager.service.impl;
 
+import com.konglingzhan.manager.dao.MenuMapper;
 import com.konglingzhan.manager.entity.Role;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.RoleParam;
+import com.konglingzhan.manager.service.RoleMenuService;
 import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.util.UserUtil;
@@ -12,26 +14,40 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class RoleServiceImpl implements RoleService {
+
     @Resource
     private RoleMapper roleMapper;
 
+    @Resource
+    private MenuMapper menuMapper;
+
+    @Resource
+    private RoleMenuService roleMenuService;
+
     @Override
+    @Transactional
     public void insertRole(RoleParam param) {
-        BeanValidator.check(param);
+        // 业务校验
         if(checkExist(param.getName(),param.getId())){
             throw new ParamException("角色名称已存在");
         }
+        // 插入role
         Role role = Role.builder().name(param.getName()).type(param.getType()).status(param.getStatus()).remark(param.getRemark()).build();
         role.setOperator("admin");
         role.setOperate_ip("127.0.0.1");
         role.setOperate_time(new Date());
         roleMapper.insert(role);
+
+        // 角色、权限关联
+//        roleMenuService.save();
+
     }
 
     @Override

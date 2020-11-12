@@ -6,6 +6,7 @@ import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleMenuService;
 import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.service.impl.SysTreeService;
+import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.util.StringUtil;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,9 +27,15 @@ public class RoleController {
     @Resource
     private RoleMenuService roleMenuService;
 
+    /**
+     * 新增角色
+     * @param param
+     * @return
+     */
     @PostMapping("/role/add")
     public Result roleAdd(RoleParam param){
-      roleService.insertRole(param);
+        BeanValidator.check(param);
+        roleService.insertRole(param);
       return Result.success();
     }
 
@@ -46,7 +53,6 @@ public class RoleController {
 
     @PostMapping("/role/tree")
     public Result roleTree(@RequestParam("roleId") int roleId){
-//        return Result.success(sysTreeService.aclModuleTree());
         return Result.success(sysTreeService.roleTree(roleId));
     }
 
