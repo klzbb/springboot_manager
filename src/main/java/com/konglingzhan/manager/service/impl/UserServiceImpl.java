@@ -26,7 +26,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -63,14 +66,13 @@ public class UserServiceImpl implements UserService {
             throw new ParamException("邮箱已经被占用");
         }
 
-        // 新用户保存
         String password = passwordEncoder.encode(param.getPassword());
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator(UserUtil.getLoginUser().getUsername());
         user.setOperateIp("127.0.0.1");
         user.setOperateTime(new Date());
 
-        // 用户角色关联保存
+        userMapper.insert(user);
         List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
         userRoleMapper.insertArr(user.getId(),roleList);
     }
@@ -109,12 +111,7 @@ public class UserServiceImpl implements UserService {
     public PageResult<UserDto> userAll(PageQuery pageQuery) {
         int num = userMapper.countUser();
         List list = userMapper.selectAllUser(pageQuery);
-        HashMap result = new HashMap(){
-            {
-                put("list",list);
-            }
-        };
-        return PageResult.<UserDto>builder().total(num).data(list).result(result).build();
+        return PageResult.<UserDto>builder().total(num).data(list).build();
     }
 
     @Override

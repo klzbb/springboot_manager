@@ -7,7 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,6 +26,8 @@ public class UserDto {
     private String deptName;
 
     private Integer status;
+
+    private List<Integer> roleIds = new ArrayList<>();
 
     private String remark;
 

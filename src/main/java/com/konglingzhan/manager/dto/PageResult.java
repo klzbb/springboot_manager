@@ -19,6 +19,8 @@ import java.util.List;
 public class PageResult<T> {
     private List<T> data = Lists.newArrayList();
 
+    private HashMap<String,?> obj;
+
     private int total = 0;
 
     private HashMap<String,?> result;
@@ -26,4 +28,5 @@ public class PageResult<T> {
     public void setData(List<T> data) {
         this.data = data;
     }
+
 }

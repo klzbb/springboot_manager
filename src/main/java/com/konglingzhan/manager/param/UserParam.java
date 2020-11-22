@@ -42,5 +42,6 @@ public class UserParam {
     @Length(min = 0, max = 200, message = "(备注长度需在200个字以内)")
     private String remark = "";
 
+    @NotBlank(message = "角色Id不能为空")
     private String rolesStr;
 }
