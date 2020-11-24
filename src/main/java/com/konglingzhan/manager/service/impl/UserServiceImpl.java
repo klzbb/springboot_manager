@@ -82,16 +82,26 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void updateById(UserParam param) {
         BeanValidator.check(param);
-        if(checkTelephoneExist(param.getTelephone(),param.getId())){
-            throw new ParamException("电话已经被占用");
-        }
-
-        if(checkEmailExist(param.getMail(),param.getId())){
-            throw new ParamException("邮箱已经被占用");
-        }
 
         User before = userMapper.selectByPrimaryKey(param.getId());
         Objects.requireNonNull(before,"待更新的用户不存在");
+
+        // 修改号码后校验号码是否被占用
+        if(!param.getTelephone().equals(before.getTelephone())){
+            if(checkTelephoneExist(param.getTelephone(),param.getId())){
+                throw new ParamException("电话已经被占用");
+            }
+        }
+
+        // 修改邮箱后校验邮箱是否被占用
+        if(!param.getMail().equals(before.getMail())){
+            if(checkEmailExist(param.getMail(),param.getId())){
+                throw new ParamException("邮箱已经被占用");
+            }
+        }
+
+
+
         User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         after.setOperator(UserUtil.getLoginUser().getUsername());
         after.setOperateIp("127.0.0.1");
