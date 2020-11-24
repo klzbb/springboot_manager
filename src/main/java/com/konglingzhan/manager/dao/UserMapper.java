@@ -29,9 +29,25 @@ public interface UserMapper {
     )
     @Select({
             "<script>",
-                "select a.id,a.username,a.telephone,a.mail,a.status,a.remark,b.name ",
+                "select c.*,d.roleIds,d.roleNames",
                     "from",
-                "sys_user a left join sys_dept b on a.dept_id = b.id",
+                "(select a.id,a.dept_id,a.username,a.telephone,a.mail,a.status,a.remark,b.name",
+                    "from",
+                "sys_user a",
+                    "left join sys_dept b on a.dept_id = b.id",
+                ") c",
+                "left join",
+                "(select ur.user_id,group_concat(ur.role_id) roleIds,group_concat(ur.name) roleNames",
+                    "from",
+                    "(select ur.*,r.name",
+                        "from",
+                    "sys_user_role ur",
+                    "left join",
+                        "sys_role r on r.id = ur.role_id",
+                    ") ur",
+                "group by  ur.user_id",
+                ") d",
+                "on c.id = d.user_id",
                 "limit #{offset},#{pageSize}",
             "</script>"
     })

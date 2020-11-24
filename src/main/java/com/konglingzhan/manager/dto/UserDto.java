@@ -27,7 +27,11 @@ public class UserDto {
 
     private Integer status;
 
-    private List<Integer> roleIds = new ArrayList<>();
+    private String roleIds;
+
+    private Integer deptId;
+
+    private String roleNames;
 
     private String remark;
 

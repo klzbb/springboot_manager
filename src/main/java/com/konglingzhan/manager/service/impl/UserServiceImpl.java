@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public void updateById(UserParam param) {
         BeanValidator.check(param);
         if(checkTelephoneExist(param.getTelephone(),param.getId())){
@@ -92,10 +93,13 @@ public class UserServiceImpl implements UserService {
         User before = userMapper.selectByPrimaryKey(param.getId());
         Objects.requireNonNull(before,"待更新的用户不存在");
         User after = User.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(before.getPassword()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-        after.setOperator("admin");
+        after.setOperator(UserUtil.getLoginUser().getUsername());
         after.setOperateIp("127.0.0.1");
         after.setOperateTime(new Date());
+
         userMapper.updateById(after);
+        List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
+        userRoleMapper.insertArr(after.getId(),roleList);
     }
 
 
