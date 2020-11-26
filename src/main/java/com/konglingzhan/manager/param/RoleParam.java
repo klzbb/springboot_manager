@@ -19,6 +19,9 @@ public class RoleParam {
     @Length(min=2,max = 20,message = "角色名称需在2-20个字符串以内")
     private String name;
 
+    @NotBlank(message = "角色权限不能为空")
+    private String menuIds;
+
     @NotNull(message = "角色状态不能为空")
     @Min(value = 0,message = "角色状态不合法")
     @Max(value = 1,message = "角色状态不合法")

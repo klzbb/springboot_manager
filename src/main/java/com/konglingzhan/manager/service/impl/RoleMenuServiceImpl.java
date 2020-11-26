@@ -26,6 +26,7 @@ public class RoleMenuServiceImpl implements RoleMenuService {
     private RoleMapper roleMapper;
 
     @Override
+    @Transactional
     public void save(List<Integer> menuIds, int roleId) {
         Integer [] roleIds = {roleId};
         List<Integer> originAclIdList = roleMenuMapper.getMenuIdListByRoleIdList(Lists.newArrayList(roleIds));
@@ -54,17 +55,19 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 //        updateRoleAcls(roleId,aclIdList);
 //    }
 
-    @Transactional
     public void updateRoleAcls(int roleId,List<Integer> menuIds){
         roleMenuMapper.deleteByRoleId(roleId);
+
         if(CollectionUtils.isEmpty(menuIds)){
             return;
         }
+
         List<RoleMenu> roleMenuList = Lists.newArrayList();
         for(Integer menuId: menuIds){
             RoleMenu roleMenu = RoleMenu.builder().role_id(roleId).menu_id(menuId).operator(UserUtil.getLoginUser().getUsername()).operate_ip("127.0.0.1").operate_time(new Date()).build();
             roleMenuList.add(roleMenu);
         }
         roleMenuMapper.batchInsert(roleMenuList);
+//        throw new RuntimeException("函数执行有异常!");
     }
 }

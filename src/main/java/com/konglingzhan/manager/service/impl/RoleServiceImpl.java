@@ -9,6 +9,7 @@ import com.konglingzhan.manager.param.RoleParam;
 import com.konglingzhan.manager.service.RoleMenuService;
 import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.util.BeanValidator;
+import com.konglingzhan.manager.util.StringUtil;
 import com.konglingzhan.manager.util.UserUtil;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,8 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.insert(role);
 
         // 角色、权限关联
-//        roleMenuService.save();
+        List<Integer> menuIds = StringUtil.splitToListInt(param.getMenuIds());
+        roleMenuService.save(menuIds,role.getId());
 
     }
 

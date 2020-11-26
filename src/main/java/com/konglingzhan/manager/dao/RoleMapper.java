@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface RoleMapper {
     @Insert("insert into sys_role(name,type,status,remark,operator,operate_ip,operate_time) values(#{name},#{type},#{status},#{remark},#{operator},#{operate_ip},#{operate_time})")
+    @Options(useGeneratedKeys = true,keyProperty = "id", keyColumn="id")
     int insert(Role role);
 
     @Update({
