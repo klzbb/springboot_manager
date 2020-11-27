@@ -53,19 +53,27 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void update(RoleParam param) {
         BeanValidator.check(param);
-        if(checkExist(param.getName(),param.getId())){
-            throw new ParamException("角色名称已存在");
-        }
         Role before = roleMapper.selectByPrimaryKey(param.getId());
         Objects.requireNonNull(before, "待更新的角色不存在");
+
+        if(!param.getName().equals(before.getName())){
+            if(checkExist(param.getName(),param.getId())){
+                throw new ParamException("角色名称已存在");
+            }
+        }
 
         Role role = Role.builder().id(param.getId()).name(param.getName()).type(param.getType()).status(param.getStatus()).remark(param.getRemark()).build();
         role.setOperator(UserUtil.getLoginUser().getUsername());
         role.setOperate_ip("127.0.0.1");
         role.setOperate_time(new Date());
         roleMapper.update(role);
+
+        // 角色、权限关联
+        List<Integer> menuIds = StringUtil.splitToListInt(param.getMenuIds());
+        roleMenuService.save(menuIds,role.getId());
     }
 
     public boolean checkExist(String name , Integer id){
