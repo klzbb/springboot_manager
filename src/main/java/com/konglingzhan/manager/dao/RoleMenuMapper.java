@@ -33,4 +33,8 @@ public interface RoleMenuMapper {
             "</script>"
     })
     void batchInsert(@Param("roleMenuList") List<RoleMenu> roleMenuList);
+
+
+    @Delete("delete from sys_role_menu where #{roleId}")
+    void delByUserId(@Param("roleId") int roleId);
 }

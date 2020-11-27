@@ -58,12 +58,8 @@ public class RoleController {
 
     @PostMapping("/role/del")
     public Result roleDel(int roleId){
-        int num = roleService.del(roleId);
-        if(num == 1){
-            return Result.success();
-        } else {
-            throw new ParamException("删除角色Id不存在");
-        }
+        roleService.del(roleId);
+        return Result.success();
     }
 
 //    @PostMapping("/role/changeAcl")

@@ -26,6 +26,12 @@ public class RoleMenuServiceImpl implements RoleMenuService {
     private RoleMapper roleMapper;
 
     @Override
+    public void delByRoleId(int roleId) {
+        roleMenuMapper.delByUserId(roleId);
+    }
+
+
+    @Override
     @Transactional
     public void save(List<Integer> menuIds, int roleId) {
         Integer [] roleIds = {roleId};
@@ -41,20 +47,6 @@ public class RoleMenuServiceImpl implements RoleMenuService {
         updateRoleAcls(roleId,menuIds);
     }
 
-//    @Override
-//    public void changeRoleAcls(int roleId, List<Integer> aclIdList) {
-//        List<Integer> originAclIdList = roleMenuMapper.getAclIdListByRoleIdList(Lists.newArrayList(aclIdList));
-//        if(originAclIdList.size() == aclIdList.size()){
-//            Set<Integer> originAclIdSet = Sets.newHashSet(originAclIdList);
-//            Set<Integer> aclIdSet = Sets.newHashSet(aclIdList);
-//            originAclIdSet.removeAll(aclIdSet);
-//            if(CollectionUtils.isEmpty(originAclIdSet)){
-//                return;
-//            }
-//        }sys_dept
-//        updateRoleAcls(roleId,aclIdList);
-//    }
-
     public void updateRoleAcls(int roleId,List<Integer> menuIds){
         roleMenuMapper.deleteByRoleId(roleId);
 
@@ -68,6 +60,7 @@ public class RoleMenuServiceImpl implements RoleMenuService {
             roleMenuList.add(roleMenu);
         }
         roleMenuMapper.batchInsert(roleMenuList);
-//        throw new RuntimeException("函数执行有异常!");
+        // 测试事务
+        // throw new RuntimeException("函数执行有异常!");
     }
 }

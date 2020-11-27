@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.service.impl;
 
 import com.konglingzhan.manager.dao.MenuMapper;
+import com.konglingzhan.manager.dao.RoleMenuMapper;
 import com.konglingzhan.manager.entity.Role;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
@@ -27,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
     @Resource
-    private MenuMapper menuMapper;
+    private RoleMenuMapper roleMenuMapper;
 
     @Resource
     private RoleMenuService roleMenuService;
@@ -90,7 +91,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public int del(int id) {
-        return roleMapper.del(id);
+    public void del(int roleId) {
+        roleMapper.del(roleId);
+        roleMenuMapper.deleteByRoleId(roleId);
     }
 }
