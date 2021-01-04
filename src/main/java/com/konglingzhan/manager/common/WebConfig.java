@@ -1,4 +1,4 @@
-package com.konglingzhan.manager.config;
+package com.konglingzhan.manager.common;
 
 import com.konglingzhan.manager.common.HttpInterceptor;
 import org.springframework.context.annotation.Configuration;
