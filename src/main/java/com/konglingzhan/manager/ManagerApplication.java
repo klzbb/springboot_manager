@@ -7,16 +7,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 
-
+//extends SpringBootServletInitializer
 @EnableCaching
 @SpringBootApplication
-public class ManagerApplication extends SpringBootServletInitializer {
+public class ManagerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManagerApplication.class, args);
     }
 
-//    @Override
-//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//        return builder.sources(ManagerApplication.class);
-//    }
 }
