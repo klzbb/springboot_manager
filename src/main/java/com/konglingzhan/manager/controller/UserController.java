@@ -44,6 +44,7 @@ public class UserController {
 
     @PostMapping("/userAll")
     public Result userAll(@Valid PageQuery pageQuery){
+        log.info("test2");
         PageResult<UserDto> userList = userService.userAll(pageQuery);
         return Result.success(userList);
     }
