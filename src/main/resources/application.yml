@@ -33,7 +33,7 @@ spring:
 
 logging:
   file:
-    name: E:\java\springboot_manager\logs\logs.log
+    name: /home/springManager/logs/logs.log
   level:
     root: info
     com.konglingzhan.manager.controller: warn
