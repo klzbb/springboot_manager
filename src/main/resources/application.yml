@@ -32,8 +32,13 @@ spring:
 
 
 logging:
+  file:
+    name: E:\java\springboot_manager\logs\logs.log
   level:
-    com.konglingzhan.manager.dao: debug
+    root: info
+    com.konglingzhan.manager.controller: warn
+
+
 
 mbbatis:
   type-aliases-package: com.konglingzhan.manager.dao
