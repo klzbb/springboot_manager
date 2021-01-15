@@ -70,7 +70,7 @@ public class SysTreeService {
         }
 
         List<MenuDto> rootList = new ArrayList<>();
-        List<AclModuleLevelDto> aclModuleLevelList = aclModuleTree();
+        List<AclModuleLevelDto> aclModuleLevelList = menuTree();
         MultiMap moduleIdAclMap = new MultiValueMap();
         for(MenuDto dto : menuDtoList){
             if(dto.getStatus() == 1){
@@ -112,7 +112,7 @@ public class SysTreeService {
     /**
      * 菜单树状结构
      **/
-    public List<AclModuleLevelDto> aclModuleTree(){
+    public List<AclModuleLevelDto> menuTree(){
         List<Menu> list = menuMapper.selectAll();
         List<AclModuleLevelDto> dtoList = new ArrayList<>();
         for(Menu menu : list){
@@ -121,6 +121,18 @@ public class SysTreeService {
         }
         return aclModuleListToTree(dtoList);
     }
+    /**
+     * 用户权限菜单树状结构
+     * */
+    public List<AclModuleLevelDto> routesTree(List<Menu> menuList){
+        List<AclModuleLevelDto> dtoList = new ArrayList<>();
+        for(Menu menu : menuList){
+            AclModuleLevelDto dto = AclModuleLevelDto.adapt(menu);
+            dtoList.add(dto);
+        }
+        return aclModuleListToTree(dtoList);
+    }
+
 
     public List<AclModuleLevelDto> aclModuleListToTree(List<AclModuleLevelDto> dtoList){
         if(CollectionUtils.isEmpty(dtoList)){
@@ -140,7 +152,6 @@ public class SysTreeService {
 
         // 递归生成树
         transformAclModuleTree(rootList,LevelUtil.ROOT, levelAclModuleMap);
-        System.out.println("levelDeptMap=" + levelAclModuleMap);
         return rootList;
     }
 
@@ -150,7 +161,6 @@ public class SysTreeService {
             AclModuleLevelDto dto = dtoList.get(i);
             // 处理当前层级的数据（level算法）
             String nextLevel = LevelUtil.calculateLevel(level,dto.getId());
-            System.out.println("nextLevel=" + nextLevel);
             // 处理下一层
             List<AclModuleLevelDto> tempList = (List<AclModuleLevelDto>) levelAclModuleMap.get(nextLevel);
             if(!CollectionUtils.isEmpty(tempList)){

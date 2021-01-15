@@ -38,4 +38,5 @@ public interface UserRoleMapper {
 
     @Delete("delete from sys_user_role where id = #{id}")
     void del(@Param("id") int id);
+
 }

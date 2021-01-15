@@ -30,6 +30,11 @@ public class RoleMenuServiceImpl implements RoleMenuService {
         roleMenuMapper.delByUserId(roleId);
     }
 
+    @Override
+    public List<Integer> selectMenuIdsByRoleIds(List<Integer> roleIds) {
+        return roleMenuMapper.getMenuIdListByRoleIdList(roleIds);
+    }
+
 
     @Override
     @Transactional

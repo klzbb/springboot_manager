@@ -3,8 +3,11 @@ package com.konglingzhan.manager.controller;
 import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.param.MenuParam;
+import com.konglingzhan.manager.routes.RoutesService;
 import com.konglingzhan.manager.service.MenuService;
+import com.konglingzhan.manager.service.RoleService;
 import com.konglingzhan.manager.service.impl.SysTreeService;
+import com.konglingzhan.manager.util.UserUtil;
 import com.konglingzhan.manager.vo.Result;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +24,22 @@ public class MenuController {
     private MenuService menuService;
 
     @Resource
+    private RoleService roleService;
+    @Resource
     private SysTreeService sysTreeService;
+
+    @Resource
+    private RoutesService routesService;
+
+    /**
+     *  用户权限菜单路由
+     **/
+    @PostMapping("/getPermissionMenusByUid")
+    public Result getPermissionMenusByUid(){
+        int uid = UserUtil.getLoginUser().getId();
+        List<AclModuleLevelDto> permissionMenus = routesService.getPermissionMenusByUid(uid);
+        return Result.success(permissionMenus);
+    }
 
     @PostMapping("/add")
     public Result insert(@Valid MenuParam param){
@@ -53,7 +71,7 @@ public class MenuController {
     * */
     @PostMapping("/tree")
     public Result tree(){
-        List<AclModuleLevelDto> list = sysTreeService.aclModuleTree();
+        List<AclModuleLevelDto> list = sysTreeService.menuTree();
         return Result.success(list);
     }
 
@@ -81,4 +99,6 @@ public class MenuController {
         menuService.getMenuListByLevel(ids);
         return Result.success();
     }
+
+
 }

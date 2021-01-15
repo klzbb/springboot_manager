@@ -10,5 +10,7 @@ public interface UserRoleService {
 
     public List<UserRoleDto> all();
 
+    public List<Integer> getRoleIdListByUserId(int uid);
+
     public void del(int id);
 }

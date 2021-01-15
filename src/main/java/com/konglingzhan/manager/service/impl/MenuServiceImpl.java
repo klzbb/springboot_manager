@@ -90,6 +90,11 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    public List<Menu> getMenuListByMenuIds(List<Integer> menuIds) {
+        return menuMapper.getByIdList(menuIds);
+    }
+
+    @Override
     public void update(MenuParam param) {
         BeanValidator.check(param);
         if(checkExist(param.getParentId(),param.getName(),param.getId())){
@@ -115,4 +120,7 @@ public class MenuServiceImpl implements MenuService {
     public List<Menu> getMenuListByLevel(String level) {
         return menuMapper.getChildDeptListByLevel(level);
     }
+
+
+
 }

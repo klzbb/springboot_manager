@@ -10,4 +10,6 @@ public interface RoleMenuService {
     void save(List<Integer> menuIds,int roleId);
 
     void delByRoleId(int roleId);
+
+    List<Integer> selectMenuIdsByRoleIds(List<Integer> roleIds);
 }

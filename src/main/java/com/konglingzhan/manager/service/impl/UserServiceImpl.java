@@ -66,13 +66,15 @@ public class UserServiceImpl implements UserService {
             throw new ParamException("邮箱已经被占用");
         }
 
+        // 插入用户
         String password = passwordEncoder.encode(param.getPassword());
         User user = User.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(password).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
         user.setOperator(UserUtil.getLoginUser().getUsername());
         user.setOperateIp("127.0.0.1");
         user.setOperateTime(new Date());
-
         userMapper.insert(user);
+
+        // 用户与角色关联
         List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
         userRoleMapper.insertArr(user.getId(),roleList);
     }

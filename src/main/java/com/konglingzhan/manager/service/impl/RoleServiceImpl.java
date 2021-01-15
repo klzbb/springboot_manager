@@ -80,6 +80,7 @@ public class RoleServiceImpl implements RoleService {
     public boolean checkExist(String name , Integer id){
         return roleMapper.countByname(name,id) > 0;
     }
+
     @Override
     public List<Role> selectAllRole() {
         return roleMapper.selectAllRole();

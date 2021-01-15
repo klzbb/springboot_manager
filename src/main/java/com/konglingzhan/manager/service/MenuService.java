@@ -22,4 +22,6 @@ public interface MenuService {
     List<Menu> getMenuListByLevel(String level);
 
     void delByIds(List<Integer> ids);
+
+    List<Menu> getMenuListByMenuIds(List<Integer> menuIds);
 }
