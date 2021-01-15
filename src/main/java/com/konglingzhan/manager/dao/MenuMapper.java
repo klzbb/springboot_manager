@@ -11,6 +11,9 @@ public interface MenuMapper {
     void insert(Menu menu);
 
     @Select("select * from sys_menu")
+    @Results({
+            @Result(column = "parent_id",property = "parentId")
+    })
     List<Menu> selectAll();
 
     @Select("select * from sys_menu where name = #{name}")
