@@ -109,8 +109,12 @@ public class UserServiceImpl implements UserService {
         after.setOperateIp("127.0.0.1");
         after.setOperateTime(new Date());
 
+        // 更新用户表
         userMapper.updateById(after);
+
+        // 更新用户角色表
         List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
+        userRoleMapper.delByUid(after.getId());
         userRoleMapper.insertArr(after.getId(),roleList);
     }
 

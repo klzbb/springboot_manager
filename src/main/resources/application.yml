@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql:///java_manager?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
-    password: 123456
+    password: 12345678
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -32,13 +32,8 @@ spring:
 
 
 logging:
-  file:
-    name: /home/springManager/logs/logs.log
   level:
-    root: info
-    com.konglingzhan.manager.controller: warn
-
-
+    com.konglingzhan.manager.dao: debug
 
 mbbatis:
   type-aliases-package: com.konglingzhan.manager.dao
