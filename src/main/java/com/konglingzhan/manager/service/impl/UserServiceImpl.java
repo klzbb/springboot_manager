@@ -115,11 +115,13 @@ public class UserServiceImpl implements UserService {
         userMapper.updateById(after);
 
         // 更新用户角色表
+        userRoleMapper.delByUid(after.getId());
         if(param.getRolesStr().length() > 0){
             List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
-            userRoleMapper.delByUid(after.getId());
             userRoleMapper.insertArr(after.getId(),roleList);
         }
+
+
 
     }
 

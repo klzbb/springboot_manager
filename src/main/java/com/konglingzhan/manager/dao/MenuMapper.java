@@ -88,5 +88,8 @@ public interface MenuMapper {
                  "<foreach collection='idList' item='id' open='(' close=')' separator=',' > #{id} </foreach>",
             "</script>"
     })
+    @Results({
+            @Result(column = "parent_id",property = "parentId")
+    })
     List<Menu> getByIdList(@Param("idList") List<Integer> idList);
 }
