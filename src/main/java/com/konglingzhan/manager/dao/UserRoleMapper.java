@@ -33,6 +33,16 @@ public interface UserRoleMapper {
     })
     List<Integer> getRoleIdListByUserId(int userId);
 
+    @Select({
+            "<script>",
+                "select count(1)",
+                    "from",
+                "sys_user_role",
+                "where role_id = #{roleId}",
+            "</script>"
+    })
+    int countByRoleId(int roleId);
+
     @Select("select * from sys_user_role")
     List<UserRoleDto> all();
 

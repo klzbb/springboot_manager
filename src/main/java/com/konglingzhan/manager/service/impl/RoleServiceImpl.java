@@ -1,7 +1,9 @@
 package com.konglingzhan.manager.service.impl;
 
+import com.konglingzhan.manager.common.exception.CommonException;
 import com.konglingzhan.manager.dao.MenuMapper;
 import com.konglingzhan.manager.dao.RoleMenuMapper;
+import com.konglingzhan.manager.dao.UserRoleMapper;
 import com.konglingzhan.manager.entity.Role;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
@@ -32,6 +34,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Resource
     private RoleMenuService roleMenuService;
+
+    @Resource
+    private UserRoleMapper userRoleMapper;
 
     @Override
     @Transactional
@@ -92,7 +97,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void del(int roleId) {
+        if(userRoleMapper.countByRoleId(roleId) > 0){
+            throw new CommonException(-1,"请先解绑该角色绑定的用户");
+        }
         roleMapper.del(roleId);
         roleMenuMapper.deleteByRoleId(roleId);
     }

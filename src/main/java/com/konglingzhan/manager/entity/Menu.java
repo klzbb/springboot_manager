@@ -23,9 +23,11 @@ public class Menu {
 
     private String name;
 
-    private String url;
+    private String path;
 
     private String code;
+
+    private String icon;
 
     private Integer type;
 

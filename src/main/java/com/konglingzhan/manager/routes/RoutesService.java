@@ -27,14 +27,15 @@ public class RoutesService {
     @Resource
     private SysTreeService sysTreeService;
 
-    public List<AclModuleLevelDto> getPermissionMenusByUid(int uid){
+    public List<Menu> getPermissionMenusByUid(int uid){
         List<Integer> roleIds = userRoleService.getRoleIdListByUserId(uid);
         if(CollectionUtils.isEmpty(roleIds)){
             return new ArrayList<>();
         }
         List<Integer> menuIds = roleMenuService.selectMenuIdsByRoleIds(roleIds);
         List<Menu> menuList = menuService.getMenuListByMenuIds(menuIds);
-        List<AclModuleLevelDto> routes = sysTreeService.routesTree(menuList);
-        return routes;
+        return menuList;
+//        List<AclModuleLevelDto> routes = sysTreeService.routesTree(menuList);
+//        return routes;
     }
 }

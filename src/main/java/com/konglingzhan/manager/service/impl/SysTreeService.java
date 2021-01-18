@@ -174,6 +174,10 @@ public class SysTreeService {
 
         }
     }
+
+    /**
+     * 部门树
+     **/
     public List<DeptLevelDto> deptTree(){
         List<Dept> deptList = deptMapper.selectAll();
         List<DeptLevelDto> dtoList = new ArrayList<>();
@@ -209,7 +213,6 @@ public class SysTreeService {
 
         // 递归生成树
         transformDeptTree(deptLevelList,LevelUtil.ROOT, levelDeptMap);
-        System.out.println("levelDeptMap=" + levelDeptMap);
         return rootList;
     }
 

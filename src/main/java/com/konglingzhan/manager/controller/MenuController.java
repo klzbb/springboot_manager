@@ -32,12 +32,13 @@ public class MenuController {
     private RoutesService routesService;
 
     /**
-     *  用户权限菜单路由
+     *  前端动态路由
      **/
     @PostMapping("/getPermissionMenusByUid")
     public Result getPermissionMenusByUid(){
         int uid = UserUtil.getLoginUser().getId();
-        List<AclModuleLevelDto> permissionMenus = routesService.getPermissionMenusByUid(uid);
+//        AclModuleLevelDto
+        List<Menu> permissionMenus = routesService.getPermissionMenusByUid(uid);
         return Result.success(permissionMenus);
     }
 

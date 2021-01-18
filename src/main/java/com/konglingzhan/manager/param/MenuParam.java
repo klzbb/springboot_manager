@@ -21,8 +21,8 @@ public class MenuParam {
     @Length(min=2,max = 20,message = "(名称长度为2-20个字段)")
     private String name;
 
-    @Length(min = 6,max = 100,message = "url长度需在6-100个字符之间")
-    private String url;
+    @Length(min = 1,max = 100,message = "path长度需在1-100个字符之间")
+    private String path;
 
     @NotNull(message = "必须指定菜单的类型")
     @Min(value = 1, message = "菜单类型不合法")
