@@ -75,8 +75,10 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(user);
 
         // 用户与角色关联
-        List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
-        userRoleMapper.insertArr(user.getId(),roleList);
+        if(param.getRolesStr().length() > 0){
+            List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
+            userRoleMapper.insertArr(user.getId(),roleList);
+        }
     }
 
 
@@ -113,9 +115,12 @@ public class UserServiceImpl implements UserService {
         userMapper.updateById(after);
 
         // 更新用户角色表
-        List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
-        userRoleMapper.delByUid(after.getId());
-        userRoleMapper.insertArr(after.getId(),roleList);
+        if(param.getRolesStr().length() > 0){
+            List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
+            userRoleMapper.delByUid(after.getId());
+            userRoleMapper.insertArr(after.getId(),roleList);
+        }
+
     }
 
 
