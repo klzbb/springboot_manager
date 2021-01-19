@@ -79,6 +79,7 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.update(role);
 
         // 角色、权限关联
+        roleMenuService.delByRoleId(param.getId());
         if(param.getMenuIds().length() > 0){
             List<Integer> menuIds = StringUtil.splitToListInt(param.getMenuIds());
             roleMenuService.save(menuIds,role.getId());
