@@ -1,11 +1,13 @@
 package com.konglingzhan.manager.routes;
 
+import com.konglingzhan.manager.common.domain.router.VueRouter;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.service.MenuService;
 import com.konglingzhan.manager.service.RoleMenuService;
 import com.konglingzhan.manager.service.UserRoleService;
 import com.konglingzhan.manager.service.impl.SysTreeService;
+import com.konglingzhan.manager.util.TreeUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -27,15 +29,25 @@ public class RoutesService {
     @Resource
     private SysTreeService sysTreeService;
 
-    public List<Menu> getPermissionMenusByUid(int uid){
+    public ArrayList<VueRouter<Menu>> getPermissionMenusByUid(int uid){
         List<Integer> roleIds = userRoleService.getRoleIdListByUserId(uid);
         if(CollectionUtils.isEmpty(roleIds)){
             return new ArrayList<>();
         }
         List<Integer> menuIds = roleMenuService.selectMenuIdsByRoleIds(roleIds);
         List<Menu> menuList = menuService.getMenuListByMenuIds(menuIds);
-        return menuList;
-//        List<AclModuleLevelDto> routes = sysTreeService.routesTree(menuList);
-//        return routes;
+        List<VueRouter<Menu>> routes = new ArrayList<>();
+        menuList.forEach(menu -> {
+            VueRouter<Menu> route = new VueRouter<>();
+            route.setId(menu.getId().toString());
+            route.setParentId(menu.getParentId().toString());
+            route.setIcon(menu.getIcon());
+            route.setPath(menu.getPath());
+            route.setComponent(menu.getComponent());
+            route.setName(menu.getComponentName());
+            routes.add(route);
+        });
+
+        return TreeUtil.buildVueRouter(routes);
     }
 }

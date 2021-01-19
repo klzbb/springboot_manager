@@ -37,4 +37,7 @@ public interface RoleMenuMapper {
 
     @Delete("delete from sys_role_menu where #{roleId}")
     void delByUserId(@Param("roleId") int roleId);
+
+    @Select("select count(1) from sys_role_menu where menu_id = #{menuId}")
+    int countByMenuId(@Param("menuId") int menuId);
 }

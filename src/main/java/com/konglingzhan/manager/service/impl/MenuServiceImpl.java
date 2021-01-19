@@ -1,5 +1,7 @@
 package com.konglingzhan.manager.service.impl;
 
+import com.konglingzhan.manager.common.exception.CommonException;
+import com.konglingzhan.manager.dao.RoleMenuMapper;
 import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.MenuMapper;
@@ -22,6 +24,9 @@ import java.util.Objects;
 public class MenuServiceImpl implements MenuService {
     @Resource
     private MenuMapper menuMapper;
+
+    @Resource
+    private RoleMenuMapper roleMenuMapper;
 
     @Override
     public void insert(MenuParam param) {
@@ -80,8 +85,12 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public void delById(int id) {
-        menuMapper.delById(id);
+    @Transactional
+    public void delById(int menuId) {
+        if(roleMenuMapper.countByMenuId(menuId) > 0){
+           throw new CommonException(-1,"请先解绑该菜单在角色中的关联");
+        }
+        menuMapper.delById(menuId);
     }
 
     @Override

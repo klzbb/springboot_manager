@@ -29,6 +29,11 @@ public class Menu {
 
     private String icon;
 
+    private String component;
+
+    @Column(name = "component_name")
+    private String componentName;
+
     private Integer type;
 
     @Column(name = "parent_id")

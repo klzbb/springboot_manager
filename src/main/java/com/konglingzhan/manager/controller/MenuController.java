@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.controller;
 
+import com.konglingzhan.manager.common.domain.router.VueRouter;
 import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.param.MenuParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Validated
@@ -37,8 +39,7 @@ public class MenuController {
     @PostMapping("/getPermissionMenusByUid")
     public Result getPermissionMenusByUid(){
         int uid = UserUtil.getLoginUser().getId();
-//        AclModuleLevelDto
-        List<Menu> permissionMenus = routesService.getPermissionMenusByUid(uid);
+        ArrayList<VueRouter<Menu>> permissionMenus = routesService.getPermissionMenusByUid(uid);
         return Result.success(permissionMenus);
     }
 
