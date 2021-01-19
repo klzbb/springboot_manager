@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.routes;
 
 import com.konglingzhan.manager.common.domain.router.VueRouter;
+import com.konglingzhan.manager.common.exception.CommonException;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
 import com.konglingzhan.manager.entity.Menu;
 import com.konglingzhan.manager.service.MenuService;
@@ -30,11 +31,17 @@ public class RoutesService {
     private SysTreeService sysTreeService;
 
     public ArrayList<VueRouter<Menu>> getPermissionMenusByUid(int uid){
+
         List<Integer> roleIds = userRoleService.getRoleIdListByUserId(uid);
         if(CollectionUtils.isEmpty(roleIds)){
-            return new ArrayList<>();
+            throw new CommonException(-1,"该用户没有绑定任何有效的角色");
         }
+
         List<Integer> menuIds = roleMenuService.selectMenuIdsByRoleIds(roleIds);
+        if(CollectionUtils.isEmpty(menuIds)){
+            throw new CommonException(-1,"该用户没有绑定任何有效的菜单");
+        }
+
         List<Menu> menuList = menuService.getMenuListByMenuIds(menuIds);
         List<VueRouter<Menu>> routes = new ArrayList<>();
         menuList.forEach(menu -> {
