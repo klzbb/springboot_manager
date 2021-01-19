@@ -53,9 +53,10 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.insert(role);
 
         // 角色、权限关联
-        List<Integer> menuIds = StringUtil.splitToListInt(param.getMenuIds());
-        roleMenuService.save(menuIds,role.getId());
-
+        if(param.getMenuIds().length() > 0){
+            List<Integer> menuIds = StringUtil.splitToListInt(param.getMenuIds());
+            roleMenuService.save(menuIds,role.getId());
+        }
     }
 
     @Override
@@ -78,8 +79,10 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.update(role);
 
         // 角色、权限关联
-        List<Integer> menuIds = StringUtil.splitToListInt(param.getMenuIds());
-        roleMenuService.save(menuIds,role.getId());
+        if(param.getMenuIds().length() > 0){
+            List<Integer> menuIds = StringUtil.splitToListInt(param.getMenuIds());
+            roleMenuService.save(menuIds,role.getId());
+        }
     }
 
     public boolean checkExist(String name , Integer id){
