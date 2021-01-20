@@ -31,6 +31,12 @@ public class MenuParam {
 
     private Integer parentId = 0;
 
+    private String componentName;
+
+    private String component;
+
+    private String icon;
+
     @NotNull(message = "菜单展示顺序不能为空")
     private Integer seq;
 

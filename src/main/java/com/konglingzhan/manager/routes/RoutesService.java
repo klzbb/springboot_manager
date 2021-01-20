@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.routes;
 
+import com.konglingzhan.manager.common.domain.router.RouterMeta;
 import com.konglingzhan.manager.common.domain.router.VueRouter;
 import com.konglingzhan.manager.common.exception.CommonException;
 import com.konglingzhan.manager.dto.AclModuleLevelDto;
@@ -48,7 +49,7 @@ public class RoutesService {
             VueRouter<Menu> route = new VueRouter<>();
             route.setId(menu.getId().toString());
             route.setParentId(menu.getParentId().toString());
-            route.setIcon(menu.getIcon());
+            route.setMeta(new RouterMeta(menu.getName(),menu.getIcon(),true));
             route.setPath(menu.getPath());
             route.setComponent(menu.getComponent());
             route.setName(menu.getComponentName());

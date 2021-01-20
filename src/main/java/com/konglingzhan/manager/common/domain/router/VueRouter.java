@@ -29,9 +29,12 @@ public class VueRouter<T> implements Serializable {
 
     private String icon;
 
+    @JsonIgnore
     private String redirect;
 
-    private List<VueRouter<T>> children;
+    private RouterMeta meta;
+
+    private List<VueRouter<T>> children = new ArrayList<>();
 
     @JsonIgnore
     private boolean hasParent = false;

@@ -96,7 +96,8 @@ public interface MenuMapper {
             "</script>"
     })
     @Results({
-            @Result(column = "parent_id",property = "parentId")
+            @Result(column = "parent_id",property = "parentId"),
+            @Result(column = "component_name",property = "componentName")
     })
     List<Menu> getByIdList(@Param("idList") List<Integer> idList);
 }

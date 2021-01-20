@@ -33,7 +33,18 @@ public class MenuServiceImpl implements MenuService {
         if(checkExist(param.getParentId(),param.getName(),param.getId())){
             throw new ParamException("同一层级下存在相同的权限名称");
         }
-        Menu menu = Menu.builder().path(param.getPath()).type(param.getType()).name(param.getName()).parentId(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
+        Menu menu = Menu.builder()
+                        .path(param.getPath())
+                        .type(param.getType())
+                        .name(param.getName())
+                        .parentId(param.getParentId())
+                        .seq(param.getSeq())
+                        .status(param.getStatus())
+                        .remark(param.getRemark())
+                        .componentName(param.getComponentName())
+                        .icon(param.getIcon())
+                        .component(param.getComponent())
+                        .build();
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId());
         menu.setLevel(level);
         menu.setOperator("admin");
