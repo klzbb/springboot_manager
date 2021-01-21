@@ -34,9 +34,8 @@ public interface RoleMenuMapper {
     })
     void batchInsert(@Param("roleMenuList") List<RoleMenu> roleMenuList);
 
-
-    @Delete("delete from sys_role_menu where #{roleId}")
-    void delByUserId(@Param("roleId") int roleId);
+    @Delete("delete from sys_role_menu where role_id = #{roleId}")
+    void delByRoleId(@Param("roleId") int roleId);
 
     @Select("select count(1) from sys_role_menu where menu_id = #{menuId}")
     int countByMenuId(@Param("menuId") int menuId);
