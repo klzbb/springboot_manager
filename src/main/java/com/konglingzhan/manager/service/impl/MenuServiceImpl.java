@@ -11,6 +11,8 @@ import com.konglingzhan.manager.service.MenuService;
 import com.konglingzhan.manager.util.BeanValidator;
 import com.konglingzhan.manager.util.LevelUtil;
 import com.konglingzhan.manager.util.UserUtil;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class MenuServiceImpl implements MenuService {
     @Resource
     private MenuMapper menuMapper;
@@ -59,14 +62,13 @@ public class MenuServiceImpl implements MenuService {
         String oldLevelPrefix = before.getLevel();
         if(!after.getLevel().equals(before.getLevel())){
             // 更新关联menu的level值
-            List<Menu> list = menuMapper.getChildDeptListByLevel(before.getLevel());
+            String paramLevel = LevelUtil.calculateLevel(before.getLevel(), before.getId());
+            List<Menu> list = menuMapper.getChildDeptListByLevel(paramLevel);
             if(CollectionUtils.isNotEmpty(list)){
                 for (Menu menu : list){
                     String level = menu.getLevel();
-                    if(level.indexOf(oldLevelPrefix) == 0){
                         level = newLevelPrefix + level.substring(oldLevelPrefix.length());
                         menu.setLevel(level);
-                    }
                 }
                 menuMapper.batchUpdateLevel(list);
             }
@@ -122,7 +124,20 @@ public class MenuServiceImpl implements MenuService {
         }
         Menu before = menuMapper.selectByPrimaryKey(param.getId());
         Objects.requireNonNull(before,"待更新菜单不存在");
-        Menu after = Menu.builder().id(param.getId()).name(param.getName()).parentId(param.getParentId()).seq(param.getSeq()).status(param.getStatus()).remark(param.getRemark()).build();
+
+        Menu after = Menu.builder()
+                         .id(param.getId())
+                         .path(param.getPath())
+                         .type(param.getType())
+                         .name(param.getName())
+                         .parentId(param.getParentId())
+                         .seq(param.getSeq())
+                         .status(param.getStatus())
+                         .remark(param.getRemark())
+                         .componentName(param.getComponentName())
+                         .icon(param.getIcon())
+                         .component(param.getComponent())
+                         .build();
         String level = LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId());
         after.setLevel(level);
         after.setOperator(UserUtil.getLoginUser().getUsername());
