@@ -27,7 +27,7 @@ public class RoleMenuServiceImpl implements RoleMenuService {
 
     @Override
     public void delByRoleId(int roleId) {
-        roleMenuMapper.delByUserId(roleId);
+        roleMenuMapper.delByRoleId(roleId);
     }
 
     @Override
