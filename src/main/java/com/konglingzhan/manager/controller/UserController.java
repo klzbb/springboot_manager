@@ -6,7 +6,8 @@ import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.dto.UserDto;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
-import com.konglingzhan.manager.param.UserParam;
+import com.konglingzhan.manager.param.UserAddParam;
+import com.konglingzhan.manager.param.UserUpdateParam;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -29,20 +30,19 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/register")
-    public Result register(@Valid UserParam param) {
+    public Result register(@Valid UserAddParam param) {
         userService.insertUser(param);
         return Result.success("注册用户成功");
     }
 
     @PostMapping("/userAll")
     public Result userAll(@Valid PageQuery pageQuery){
-        log.info("test7");
         PageResult<UserDto> userList = userService.userAll(pageQuery);
         return Result.success(userList);
     }
 
     @PostMapping("/user/updateById")
-    public Result updateById(UserParam param){
+    public Result updateById(UserUpdateParam param){
         userService.updateById(param);
         return Result.success();
     }

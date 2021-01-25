@@ -5,12 +5,12 @@ import com.konglingzhan.manager.dto.LoginUserInfo;
 import com.konglingzhan.manager.dto.PageResult;
 import com.konglingzhan.manager.dto.UserDto;
 import com.konglingzhan.manager.entity.User;
-import com.konglingzhan.manager.common.RequestHolder;
 import com.konglingzhan.manager.dao.RoleMapper;
 import com.konglingzhan.manager.dao.UserMapper;
 import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.PageQuery;
-import com.konglingzhan.manager.param.UserParam;
+import com.konglingzhan.manager.param.UserAddParam;
+import com.konglingzhan.manager.param.UserUpdateParam;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.util.BeanValidator;
 //import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,6 @@ import com.konglingzhan.manager.util.BeanValidator;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import com.konglingzhan.manager.util.StringUtil;
 import com.konglingzhan.manager.util.UserUtil;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void insertUser(UserParam param) {
+    public void insertUser(UserAddParam param) {
         // 业务校验
         if(checkTelephoneExist(param.getTelephone(),param.getId())){
             throw new ParamException("电话已经被占用");
@@ -84,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateById(UserParam param) {
+    public void updateById(UserUpdateParam param) {
         BeanValidator.check(param);
 
         User before = userMapper.selectByPrimaryKey(param.getId());

@@ -31,6 +31,8 @@ public class RoutesService {
     @Resource
     private SysTreeService sysTreeService;
 
+
+
     public ArrayList<VueRouter<Menu>> getPermissionMenusByUid(int uid){
 
         List<Integer> roleIds = userRoleService.getRoleIdListByUserId(uid);
