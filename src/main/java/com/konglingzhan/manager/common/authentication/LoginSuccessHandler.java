@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.konglingzhan.manager.dao.UserMapper;
 import com.konglingzhan.manager.dto.LoginUserInfo;
+import com.konglingzhan.manager.util.JsonUtil;
 import com.konglingzhan.manager.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -44,14 +45,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         loginUserInfo.put("token",token);
         loginUserInfo.put("user",user);
 
-        Map map = new HashMap();
-        map.put("code",0);
-        map.put("data",loginUserInfo);
-        map.put("msg","登录成功");
-        ObjectMapper objectMapper = new ObjectMapper();
+        Map userInfo = new HashMap();
+        userInfo.put("code",0);
+        userInfo.put("data",loginUserInfo);
+        userInfo.put("msg","登录成功");
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
-        out.write(objectMapper.writeValueAsString(map));
+        out.write(JsonUtil.toJsonString(userInfo));
         out.flush();
         out.close();
     }

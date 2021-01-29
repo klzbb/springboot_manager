@@ -13,9 +13,6 @@ import com.konglingzhan.manager.param.UserAddParam;
 import com.konglingzhan.manager.param.UserUpdateParam;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.util.BeanValidator;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import com.konglingzhan.manager.util.StringUtil;
 import com.konglingzhan.manager.util.UserUtil;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -118,9 +115,6 @@ public class UserServiceImpl implements UserService {
             List<Integer> roleList = StringUtil.splitToListInt(param.getRolesStr());
             userRoleMapper.insertArr(after.getId(),roleList);
         }
-
-
-
     }
 
 
@@ -172,7 +166,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delUserById(int id) {
         userMapper.delUserById(id);
-//        userRoleMapper
     }
 
     @Override
