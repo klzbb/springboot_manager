@@ -3,6 +3,8 @@ server:
   port: 9999
   servlet:
     context-path: /app
+    session:
+      timeout: 60
 
 spring:
   datasource:

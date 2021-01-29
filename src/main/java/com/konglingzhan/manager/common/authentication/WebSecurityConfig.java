@@ -1,6 +1,5 @@
 package com.konglingzhan.manager.common.authentication;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.konglingzhan.manager.common.filter.JwtAuthenticationFilter;
 import com.konglingzhan.manager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
-
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Configuration
@@ -73,8 +67,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and().csrf().disable();
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/register").permitAll()
+                .antMatchers("/register",
+                        "/login/timeout"
+                ).permitAll()
                 .anyRequest().authenticated()
+                .and()
+                    .sessionManagement().invalidSessionUrl("/login/timeout")
                 .and()
                     .formLogin()
                     .loginProcessingUrl("/login")
@@ -92,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             System.out.println("LogoutHandler");
                         }
                      })
-                    .logoutSuccessHandler((req,res,authentition) -> {
+                    .logoutSuccessHandler((req,res,authention) -> {
                         res.setContentType("application/json;charset=utf-8");
                         PrintWriter out = res.getWriter();
                         out.write("{\"data\":\"success\",\"msg\":\"注销登录\",\"code\":0}");

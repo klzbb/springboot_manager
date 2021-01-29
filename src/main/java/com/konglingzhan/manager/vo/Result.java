@@ -1,6 +1,5 @@
 package com.konglingzhan.manager.vo;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
 
 public class Result<T> {
 
