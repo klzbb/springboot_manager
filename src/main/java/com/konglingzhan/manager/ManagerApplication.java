@@ -10,5 +10,4 @@ public class ManagerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManagerApplication.class, args);
     }
-
 }
