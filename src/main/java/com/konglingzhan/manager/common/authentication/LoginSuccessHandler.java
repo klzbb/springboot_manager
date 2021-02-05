@@ -49,11 +49,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         LoginUserInfo user = userMapper.getUserInfo(UserUtil.getLoginUser().getId());
         loginUserInfo.put("token",token);
         loginUserInfo.put("user",user);
+        loginUserInfo.put("authentication",JsonUtil.toJsonString(authentication));
 
         Map userInfo = new HashMap();
         userInfo.put("code",0);
         userInfo.put("data",loginUserInfo);
         userInfo.put("msg","登录成功");
+
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.write(JsonUtil.toJsonString(userInfo));

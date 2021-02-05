@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.konglingzhan.manager.util.JsonUtil;
 import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -54,6 +55,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             log.error("[登录失败] - [%s]其他错误");
             result = new Result(-1,"Login其他错误");
         }
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.write(JsonUtil.toJsonString(result));

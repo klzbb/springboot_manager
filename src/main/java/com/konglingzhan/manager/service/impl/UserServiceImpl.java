@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException("不存在该用户");
         }
+//        return new org.springframework.security.core.userdetails.User(1,2,3);
         return new SecurityUser(user);
     }
 
