@@ -1,18 +1,22 @@
 package com.konglingzhan.manager.controller;
 
 import com.konglingzhan.manager.common.validate.code.ImageCode;
+import com.konglingzhan.manager.vo.Result;
+import org.apache.axis.encoding.Base64;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
+import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
@@ -23,11 +27,26 @@ public class ValidateCodeController {
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
+    /**
+     * 生成Base64 图形验证码
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/code/image")
-    public void createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ImageCode imageCode = createImageCode(request);
-        sessionStrategy.setAttribute(new ServletWebRequest(request),SESSION_KEY,imageCode);
-        ImageIO.write(imageCode.getImage(),"JPEG",response.getOutputStream());
+    public Result createCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        ImageCode imageCode = createImageCode(request); // 图片流
+        sessionStrategy.setAttribute(new ServletWebRequest(request),SESSION_KEY,imageCode); // 保存在session
+
+        // 图片流转base64图片
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ImageIO.write(imageCode.getImage(), "png", stream);
+        String base64 = Base64.encode(stream.toByteArray());
+        String base64Url = "data:image/png;base64," + base64;
+        return Result.success(base64Url);
+
     }
     private ImageCode createImageCode(HttpServletRequest request){
         int width = 67;

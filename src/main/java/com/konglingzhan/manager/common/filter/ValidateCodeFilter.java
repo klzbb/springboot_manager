@@ -1,10 +1,12 @@
 package com.konglingzhan.manager.common.filter;
 
 import com.konglingzhan.manager.common.exception.ValidateCodeException;
+import com.konglingzhan.manager.common.properties.SecurityConstants;
 import com.konglingzhan.manager.common.validate.code.ImageCode;
 import com.konglingzhan.manager.controller.ValidateCodeController;
 import com.konglingzhan.manager.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -17,8 +19,10 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Pattern;
 import java.io.IOException;
 
+@Order(1)
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
     private AuthenticationFailureHandler authenticationFailureHandler;
@@ -27,12 +31,16 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        if(StringUtils.equals("/login",httpServletRequest.getRequestURI())
-                && StringUtils.equals(httpServletRequest.getMethod(),"post")){
+        String reqURI = httpServletRequest.getRequestURI();
+        String reqMethod = httpServletRequest.getMethod();
+        if(StringUtils.equals("/app/login",reqURI)
+                && StringUtils.equals(reqMethod,"POST")){
             try {
                 validate(new ServletWebRequest(httpServletRequest));
             } catch (ValidateCodeException e){
-                authenticationFailureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,e);
+//                throw new ValidateCodeException("验证嘛")
+//                authenticationFailureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,e);
+                return;
             }
         }
         filterChain.doFilter(httpServletRequest,httpServletResponse);

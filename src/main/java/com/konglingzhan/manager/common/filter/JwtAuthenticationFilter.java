@@ -1,5 +1,6 @@
 package com.konglingzhan.manager.common.filter;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -10,6 +11,7 @@ import java.io.IOException;
 /**
  * 拦截器实现方案之: filter(过滤器)
  **/
+@Order(2)
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override

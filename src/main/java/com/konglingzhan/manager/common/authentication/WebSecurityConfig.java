@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.common.authentication;
 
 import com.konglingzhan.manager.common.filter.JwtAuthenticationFilter;
+import com.konglingzhan.manager.common.filter.ValidateCodeFilter;
 import com.konglingzhan.manager.common.properties.SecurityConstants;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.util.JsonUtil;
@@ -23,19 +24,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * 实现自定义用户认证逻辑步骤
- * 1.处理用户信息获取逻辑 - UserDetailsService
- * 2.处理用户校验逻辑    - UserDetails
- * 3.处理密码加密解密逻辑 - PasswordEncoder
- */
+
 @Configuration
 @Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -71,15 +66,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * 自定义JwtAuthenticationFilter（将被注入到spring-security filter链中）
-     * @return
-     */
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(){
-        return new JwtAuthenticationFilter();
-    }
+//    @Bean
+//    public JwtAuthenticationFilter jwtAuthenticationFilter(){
+//        return new JwtAuthenticationFilter();
+//    }
 
+    @Bean
+    public ValidateCodeFilter validateCodeFilter(){
+        return new ValidateCodeFilter();
+    }
     /**
      * http相关的配置，包括登入登出、异常处理、会话管理等
      *
@@ -88,20 +83,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception{
+
         // Add our custom JWT security filter
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        // validateCodeFilter to validate imageCode
+//        httpSecurity.addFilterBefore(validateCodeFilter(),UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.cors().and().csrf().disable();
+
 
         httpSecurity
                 // 放行接口
                 .authorizeRequests()
                 .antMatchers(
                         "/register",
-                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                        "/code/image",
-                        "/login/timeout")
-                    .permitAll()
+                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL,
+                        "/login/timeout",
+                        "/code/image"
+                    ).permitAll()
                 .anyRequest()
                 .authenticated()
 
@@ -120,10 +120,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    }
 //                })
 
-                 // 会话管理（登录超时）
-                .and()
-                .sessionManagement()
-                .invalidSessionUrl("/login/timeout")
+                // 会话管理（登录超时）
+//                .and()
+//                .sessionManagement()
+//                .invalidSessionUrl("/login/timeout")
 
                 // 登录
                 .and()
@@ -132,6 +132,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL)
                 .successHandler(loginSuccessHandler)
                 .failureHandler(loginFailureHandler)
+                .permitAll()
 
                 // 登出
                 .and()

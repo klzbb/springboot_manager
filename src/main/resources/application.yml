@@ -4,13 +4,13 @@ server:
   servlet:
     context-path: /app
     session:
-      timeout: 60 # 连续60s不操作，会话失效
+      timeout: 3600 # 连续60s不操作，会话失效
 
 spring:
   datasource:
     url: jdbc:mysql:///java_manager?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
-    password: 123456
+    password: 12345678
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
