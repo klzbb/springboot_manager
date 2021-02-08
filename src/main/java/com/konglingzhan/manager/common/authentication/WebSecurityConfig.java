@@ -22,11 +22,15 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -49,6 +53,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
+
+    @Resource
+    private DataSource dataSource;
+
+
 
     /**
      * 配置认证方式等
@@ -76,6 +85,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ValidateCodeFilter validateCodeFilter(){
         return new ValidateCodeFilter();
+    }
+
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+//        tokenRepository.setCreateTableOnStartup(true); // 启动时创建记住我功能需要的表
+        return tokenRepository;
     }
 
     /**
@@ -107,25 +125,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
 
-                // 异常处理（权限拒绝，登录失效）
-//                .and().exceptionHandling()
-//                .authenticationEntryPoint(new AuthenticationEntryPoint() {
-//                    @Override
-//                    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-//                        System.out.println("authenticationEntryPoint");
-//                    }
-//                })
-//                .accessDeniedHandler(new AccessDeniedHandler() {
-//                    @Override
-//                    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-//                        System.out.println("accessDeniedHandler");
-//                    }
-//                })
-
                 // 会话管理（登录超时）
 //                .and()
 //                .sessionManagement()
 //                .invalidSessionUrl("/login/timeout")
+
+                // 记住我
+//                .and()
+//                .rememberMe()
+//                .tokenRepository(persistentTokenRepository())
+//                .tokenValiditySeconds(SecurityConstants.rememberMeSeconds)
+//                .userDetailsService(userService)
 
                 // 登录
                 .and()

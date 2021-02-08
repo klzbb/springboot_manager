@@ -14,4 +14,9 @@ public interface SecurityConstants {
      */
     public static final String DEFAULT_LOGIN_PROCESSING_URL = "/login";
 
+    /**
+     * 记住我过期时间
+     */
+    public static final int rememberMeSeconds = 3600;
+
 }
