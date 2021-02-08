@@ -1,6 +1,7 @@
 package com.konglingzhan.manager.common.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.konglingzhan.manager.common.exception.ValidateCodeException;
 import com.konglingzhan.manager.util.JsonUtil;
 import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -50,12 +51,15 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             // 内部错误
             log.error("[登录失败] - [%s]内部错误");
             result = new Result(-1,"内部错误");
+        } else if(e instanceof ValidateCodeException){
+            // 验证码错误
+            log.error("[登录失败] - [%s]验证码错误");
+            result = new Result(-1,e.getMessage());
         } else {
             // 其他错误
             log.error("[登录失败] - [%s]其他错误");
-            result = new Result(-1,"Login其他错误");
+            result = new Result(-1,e.getMessage());
         }
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.write(JsonUtil.toJsonString(result));

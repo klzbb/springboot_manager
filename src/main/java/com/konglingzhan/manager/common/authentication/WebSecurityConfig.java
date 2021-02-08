@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Configuration
@@ -75,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public ValidateCodeFilter validateCodeFilter(){
         return new ValidateCodeFilter();
     }
+
     /**
      * http相关的配置，包括登入登出、异常处理、会话管理等
      *
@@ -88,17 +91,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // validateCodeFilter to validate imageCode
-//        httpSecurity.addFilterBefore(validateCodeFilter(),UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(validateCodeFilter(),UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.cors().and().csrf().disable();
-
 
         httpSecurity
                 // 放行接口
                 .authorizeRequests()
                 .antMatchers(
                         "/register",
-                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL,
+                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         "/login/timeout",
                         "/code/image"
                     ).permitAll()
@@ -143,7 +145,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler((req,res,authention) -> {
                     res.setContentType("application/json;charset=utf-8");
                     PrintWriter out = res.getWriter();
-                    out.write("{\"data\":\"success\",\"msg\":\"注销登录\",\"code\":0}");
+                    Map logoutInfo = new HashMap();
+                    logoutInfo.put("code",0);
+                    logoutInfo.put("msg","注销登录");
+                    out.write(JsonUtil.toJsonString(logoutInfo));
                     out.flush();
                     out.close();
                 });

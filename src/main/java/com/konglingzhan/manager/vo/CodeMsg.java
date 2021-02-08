@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CodeMsg {
-
     //成功
     public static final int CODE_SUCCESS=0;
     //失败

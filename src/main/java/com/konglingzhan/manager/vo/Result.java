@@ -6,6 +6,8 @@ public class Result<T> {
     private String msg;
     private int code;
     private T data;
+
+
     public Result(int code,String msg, T data) {
         this.code = code;
         this.msg = msg;
@@ -25,6 +27,8 @@ public class Result<T> {
     public static <T> Result<T> success(T data){
         return new Result<T>(CodeMsg.CODE_SUCCESS,"success",data);
     }
+
+
     /**
      * 成功，不需要传入参数
      * @return

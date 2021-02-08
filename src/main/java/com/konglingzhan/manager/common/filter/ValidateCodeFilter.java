@@ -15,16 +15,19 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Pattern;
 import java.io.IOException;
 
-@Order(1)
+
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
+    @Resource
     private AuthenticationFailureHandler authenticationFailureHandler;
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
@@ -38,8 +41,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             try {
                 validate(new ServletWebRequest(httpServletRequest));
             } catch (ValidateCodeException e){
-//                throw new ValidateCodeException("验证嘛")
-//                authenticationFailureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,e);
+                authenticationFailureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,e);
                 return;
             }
         }
@@ -49,7 +51,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
 
         ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, ValidateCodeController.SESSION_KEY);
-
         String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),"imageCode");
 
         if(StringUtils.isBlank(codeInRequest)){
