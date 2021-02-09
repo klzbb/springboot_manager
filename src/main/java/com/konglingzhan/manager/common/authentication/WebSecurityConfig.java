@@ -37,6 +37,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * 1.spring-security 过滤器执行顺序
+ * WebAsyncManagerIntegrationFilter - 提供SecurityContext和spring Web的集成
+ * ChannelProcessingFilter - 如果你访问的channel错了，那首先就会在channel之间进行跳转，如http变为https
+ * SecurityContextPersistenceFilter - 加载SecurityContext对象，然后加载到SecurityContextHolder
+ * HeaderWriterFilter - 主要是对响应信息的请求头添加一些配置
+ * CsrfFilter - 主要防止跨站请求伪造
+ * LogoutFilter - 登出操作的处理
+ * UsernamePasswordAuthenticationFilter - 主要是用户名密码登录认证
+ * RequestCacheAwareFilter - 用于用户登录成功后，重新恢复因为登录被打断的请求
+ * SecurityContextHolderAwareRequestFilter - 填充ServletRequest实现servlet API安全方法的包装器
+ * AnonymousAuthenticationFilter - 匿名用户信息的填充
+ * SessionManagementFilter - 会话的管理机制
+ * ExceptionTranslationFilter  - 对于任意的AccessDeniedException类型的异常和AuthenticationException类型异常的处理
+ *
+ *
+ * 2.spring-security 核心组件
+ * AuthenticationFilter - 过滤器
+ * AuthenticationToken - 包装后的认证类（传递给AuthenticationManager）
+ * AuthenticationManager - 认证管理器（接受authenticationToken使用特定的authenticationProvider认证）
+ * AccessDecisionManager - 授权管理器
+ */
+
 @Configuration
 @Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
