@@ -7,7 +7,10 @@ import com.konglingzhan.manager.dto.UserDto;
 import com.konglingzhan.manager.entity.User;
 import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.UserAddParam;
+import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.param.UserUpdateParam;
+import com.konglingzhan.manager.param.common.UserAdd;
+import com.konglingzhan.manager.param.common.UserUpdate;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.vo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +33,7 @@ public class UserController {
     private  UserService userService;
 
     @PostMapping("/register")
-    public Result register(@Valid UserAddParam param) {
+    public Result register(@Validated({UserAdd.class}) UserParam param) {
         userService.insertUser(param);
         return Result.success("注册用户成功");
     }
@@ -42,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/user/updateById")
-    public Result updateById(UserUpdateParam param){
+    public Result updateById(@Validated({UserUpdate.class}) UserParam param){
         userService.updateById(param);
         return Result.success();
     }

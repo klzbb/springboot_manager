@@ -7,6 +7,8 @@ import com.konglingzhan.manager.controller.ValidateCodeController;
 import com.konglingzhan.manager.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -68,4 +70,21 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         }
         sessionStrategy.removeAttribute(request,ValidateCodeController.SESSION_KEY);
     }
+
+//    @Override
+//    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
+//
+//        String reqURI = httpServletRequest.getRequestURI();
+//        String reqMethod = httpServletRequest.getMethod();
+//        if(StringUtils.equals("/app/login",reqURI)
+//                && StringUtils.equals(reqMethod,"POST")){
+//            try {
+//                validate(new ServletWebRequest(httpServletRequest));
+//            } catch (ValidateCodeException e){
+//                authenticationFailureHandler.onAuthenticationFailure(httpServletRequest,httpServletResponse,e);
+//                return null;
+//            }
+//        }
+//        return new AbstractAuthentication();
+//    }
 }

@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -39,6 +40,7 @@ import java.util.Map;
 
 /**
  * 1.spring-security 过滤器执行顺序
+ * FilterChainProxy -
  * WebAsyncManagerIntegrationFilter - 提供SecurityContext和spring Web的集成
  * ChannelProcessingFilter - 如果你访问的channel错了，那首先就会在channel之间进行跳转，如http变为https
  * SecurityContextPersistenceFilter - 加载SecurityContext对象，然后加载到SecurityContextHolder
@@ -64,7 +66,10 @@ import java.util.Map;
 @Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+//    @Autowired
+//    private UserService userService;
+
+    @Resource
     private UserService userService;
     /**
      * 登录失败的处理
@@ -119,6 +124,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return tokenRepository;
     }
 
+    @Override
+    public void configure(WebSecurity webSecurity){
+        // 不经过securityFilter过滤链
+        webSecurity.ignoring().antMatchers("/code/image");
+    }
     /**
      * http相关的配置，包括登入登出、异常处理、会话管理等
      *
@@ -143,7 +153,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/register",
                         SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         "/login/timeout",
-                        "/code/image"
+                        "/test/*"
                     ).permitAll()
                 .anyRequest()
                 .authenticated()

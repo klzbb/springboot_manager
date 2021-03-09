@@ -10,6 +10,7 @@ import com.konglingzhan.manager.dao.UserMapper;
 import com.konglingzhan.manager.common.exception.ParamException;
 import com.konglingzhan.manager.param.PageQuery;
 import com.konglingzhan.manager.param.UserAddParam;
+import com.konglingzhan.manager.param.UserParam;
 import com.konglingzhan.manager.param.UserUpdateParam;
 import com.konglingzhan.manager.service.UserService;
 import com.konglingzhan.manager.util.BeanValidator;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void insertUser(UserAddParam param) {
+    public void insertUser(UserParam param) {
         // 业务校验
         if(checkTelephoneExist(param.getTelephone(),param.getId())){
             throw new ParamException("电话已经被占用");
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateById(UserUpdateParam param) {
+    public void updateById(UserParam param) {
         BeanValidator.check(param);
 
         User before = userMapper.selectByPrimaryKey(param.getId());
